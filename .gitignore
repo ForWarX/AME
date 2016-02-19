@@ -1,3 +1,4 @@
 .idea
 AME Design
 App/Runtime/*
+!App/Runtime/index.html
