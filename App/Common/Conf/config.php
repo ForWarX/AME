@@ -9,8 +9,8 @@ return array(
     'DB_TYPE'                => 'mysql',
     'DB_HOST'                => 'localhost',
     'DB_NAME'                => 'ameri670_ame',
-    'DB_USER'                => '',
-    'DB_PWD'                 => '',
+    'DB_USER'                => 'ameri670_admin',
+    'DB_PWD'                 => 'Pbcc123@',
     'DB_PORT'                => '3306',
     'DB_PREFIX'              => 'ame_',
 
