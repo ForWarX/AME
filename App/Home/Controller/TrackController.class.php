@@ -29,9 +29,14 @@ class TrackController extends Controller {
 
             if ($info['http_code'] == 200) {
                 $xml = new \SimpleXMLElement($data);
-                nice_print(object_to_array($xml));
+                //nice_print(object_to_array($xml));
+                $result = object_to_array($xml);
+                $result = $result['significant-events']['occurrence'];
+                $this->assign("track_pin", $pin);
+                $this->assign("track_result", $result);
             } else {
-                print_r($info);
+                //print_r($info);
+                $this->assign("track_error", $info);
             }
         }
 
