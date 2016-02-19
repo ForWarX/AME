@@ -1,11 +1,6 @@
-/* ¡Ÿ ±¥¶¿Ì */
-body {
-    min-width: 600px;
-}
-
-/* À˘”–≥ﬂ¥Á */
+/* ÈÄöÁî®Â∞∫ÂØ∏ */
 .header-top-pic {
-    height: 75px;
+    height: 40px;
 }
 .ame-bk-color {
     background-color: rgb(47,50,55);
@@ -24,17 +19,20 @@ body {
 .track-form {
     height: 100%;
     background: url('../img/web/AME_Track_bk.jpg') no-repeat center;
-    background-size: 100%;
+    background-size: cover;
     padding: 1% 10%;
 }
 .index-mid-tab > span {
     display: block;
     margin-top: 10px;
-    font-size: 20px;
+    font-size: 10px;
+}
+.index-mid-tab > img {
+    width: 35px;
 }
 .index-article-header {
     background: url('../img/web/AME_Title_bk.jpg') no-repeat center;
-    background-size: 100%;
+    background-size: cover;
     height: 40px;
     line-height: 40px;
     font-size: 20px;
@@ -71,22 +69,81 @@ body {
 .index-activity-title {
     font-weight: bold;
 }
+.index-track {
+    height: 250px;
+}
+.track-title {
+    font-size: 15px;
+}
+.footer-article-category {
+    font-weight: bold;
+    font-size: 10px;
+}
+.footer-article li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 5px;
+}
+.ame-nav {
+    font-size: 10px
+}
 
-/* –°∆¡ƒª */
-@media (min-width: 768px) {
+/* ‰∏çËÉΩÊõ¥Â∞èÁöÑÂ±èÂπï */
+@media (min-width: 450px) {
     .header-top-pic {
-        height: 150px;
+        height: 60px;
+    }
+    .ame-nav {
+        font-size: 15px
+    }
+    .footer-article-category {
+        font-size: 15px;
+    }
+    .footer-article li {
+        font-size: 10px;
     }
 }
 
-/* ÷–µ»∆¡ƒª */
-@media (min-width: 992px) {
-
+/* Â∞èÂ±èÂπï */
+@media (min-width: 768px) {
+    .header-top-pic {
+        height: 100px;
+    }
+    .index-mid-tab > img {
+        width: 81px;
+    }
+    .index-mid-tab > span {
+        display: block;
+        margin-top: 10px;
+        font-size: 20px;
+    }
+    .index-track {
+        height: 450px;
+    }
+    .track-title {
+        font-size: 24px;
+    }
+    .ame-nav {
+        font-size: 20px
+    }
+    .footer-article-category {
+        font-size: 24px;
+    }
+    .footer-article li {
+        font-size: 18px;
+    }
 }
 
-/* ¥Û∆¡ƒª */
+/* ‰∏≠Â±èÂπï */
+@media (min-width: 992px) {
+    .header-top-pic {
+        height: 120px;
+    }
+}
+
+/* Â§ßÂ±èÂπï */
 @media (min-width: 1200px) {
     .header-top-pic {
-        height: 200px;
+        height: 150px;
     }
 }

@@ -31,7 +31,7 @@
     </div>
 
     <!-- 导航 -->
-    <div class="row" style="margin-top: 10px; margin-bottom: 10px; font-size: 20px;;">
+    <div class="row ame-nav" style="margin-top: 10px; margin-bottom: 10px;">
         <div class="col-xs-10 col-xs-offset-1 ame-bk-color">
             <table class="table table-no-border text-center" style="margin-bottom: 0;">
                 <tbody>
@@ -51,11 +51,11 @@
 </div>
 
     <div class="container-fluid">
-        <div class="row" style="height: 450px; margin-bottom: 20px;">
-            <div class="col-xs-3 col-xs-offset-1" style="padding-left: 0; height: 100%;">
+        <div class="row index-track" style="margin-bottom: 20px;">
+            <div class="col-xs-3 col-xs-offset-1" style="padding-left: 0; padding-right: 10px; height: 100%;">
                 <!-- 包裹查询开始 -->
                 <form class="track-form" action="<?php echo ROOT_PATH; ?>Home/Track/track" method="post" target="_blank">
-                    <h3 class="text-center" style="color: white;;">包裹查询</h3>
+                    <h3 class="text-center track-title" style="color: white;">包裹查询</h3>
                     <div class="form-group">
                         <label for="pin"></label>
                         <input type="text" name="pin" class="form-control" id="pin" placeholder="输入包裹追踪号">
@@ -69,7 +69,7 @@
                 </form>
                 <!-- 包裹查询结束 -->
             </div>
-            <div class="col-xs-7" style="padding-right: 0; height: 100%;">
+            <div class="col-xs-7" style="padding-left: 10px; padding-right: 0; height: 100%;">
                 <img style="width: 100%; height: 100%;" src="http://b.fastcompany.net/multisite_files/fastcompany/poster/2013/11/3021587-poster-map.jpg">
             </div>
         </div>
@@ -108,7 +108,7 @@
         <div class="row" style="margin-top: 20px;">
             <div class="col-xs-10 col-xs-offset-1">
                 <div class="row">
-                    <div class="col-xs-4 index-article" style="padding-right: 25px;">
+                    <div class="col-xs-12 col-md-4 index-article" style="padding-right: 25px;">
                         <div class="row index-article-header text-center">新闻公告</div>
                         <div class="row index-article-block">
                             <ul class="list-unstyled">
@@ -118,7 +118,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-xs-4 index-article" style="padding-left: 20px; padding-right: 20px;">
+                    <div class="col-xs-12 col-md-4 index-article" style="padding-left: 20px; padding-right: 20px;">
                         <div class="row index-article-header text-center">活动促销</div>
                         <div class="row index-article-block">
                             <?php for($i=0; $i < 5; $i++) { ?>
@@ -134,7 +134,7 @@
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="col-xs-4 index-article" style="padding-left: 25px;">
+                    <div class="col-xs-12 col-md-4 index-article" style="padding-left: 25px;">
                         <div class="row index-article-header text-center">常见问题</div>
                         <div class="row index-article-block">
                             <ul class="list-unstyled">
@@ -149,6 +149,81 @@
 
     <!-- 页脚 -->
     <div class="container-fluid" style="border-top: 2px solid rgb(246,213,159); height: 300px; margin-top: 25px;">
+    <div class="row">
+        <div class="col-xs-2 col-xs-offset-1 footer-article text-center">
+            <h3 class="footer-article-category">服务指南</h3>
+            <ul class="list-unstyled">
+                <li>服务流程</li>
+                <li>会员介绍</li>
+                <li>特色团购</li>
+                <li>常见问题</li>
+                <li>联系客服</li>
+            </ul>
+        </div>
+        <div class="col-xs-2 footer-article text-center">
+            <h3 class="footer-article-category">配送方式</h3>
+            <ul class="list-unstyled">
+                <li>配送查询</li>
+                <li>当日送达</li>
+                <li>次日送达</li>
+                <li>急速1小时</li>
+                <li>配送收费标准</li>
+            </ul>
+        </div>
+        <div class="col-xs-2 footer-article text-center">
+            <h3 class="footer-article-category">支付方式</h3>
+            <ul class="list-unstyled">
+                <li>货到付款</li>
+                <li>网上支付</li>
+                <li>微信支付</li>
+                <li>国内支付</li>
+                <li>金券使用</li>
+            </ul>
+        </div>
+        <div class="col-xs-2 footer-article text-center">
+            <h3 class="footer-article-category">售后指南</h3>
+            <ul class="list-unstyled">
+                <li>售后政策</li>
+                <li>价格保护</li>
+                <li>退款说明</li>
+                <li>返修/退换货</li>
+                <li>取消订单</li>
+            </ul>
+        </div>
+        <div class="col-xs-2 footer-article text-center">
+            <h3 class="footer-article-category">关于AME</h3>
+            <ul class="list-unstyled">
+                <li>关于我们</li>
+                <li>联系方式</li>
+                <li>金融服务</li>
+                <li>商家业务</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-xs-12 text-center">
+            <a href="#">网站联盟</a>
+            |
+            <a href="#">热门搜索</a>
+            |
+            <a href="#">友情链接</a>
+            |
+            <a href="#">AME社区</a>
+            |
+            <a href="#">诚征英才</a>
+            |
+            <a href="#">商家登录</a>
+            |
+            <a href="#">供应商登录</a>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-xs-12 text-center">
+            Copyright© AME美洲快递 2007-2016. All Rights Reserved
+        </div>
+    </div>
 </div>
 </body>
 </html>

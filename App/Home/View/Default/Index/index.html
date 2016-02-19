@@ -8,11 +8,11 @@
     <include file="App/Home/View/Default/common/header.html" />
 
     <div class="container-fluid">
-        <div class="row" style="height: 450px; margin-bottom: 20px;">
-            <div class="col-xs-3 col-xs-offset-1" style="padding-left: 0; height: 100%;">
+        <div class="row index-track" style="margin-bottom: 20px;">
+            <div class="col-xs-3 col-xs-offset-1" style="padding-left: 0; padding-right: 10px; height: 100%;">
                 <!-- 包裹查询开始 -->
                 <form class="track-form" action="<?php echo ROOT_PATH; ?>Home/Track/track" method="post" target="_blank">
-                    <h3 class="text-center" style="color: white;;">包裹查询</h3>
+                    <h3 class="text-center track-title" style="color: white;">包裹查询</h3>
                     <div class="form-group">
                         <label for="pin"></label>
                         <input type="text" name="pin" class="form-control" id="pin" placeholder="输入包裹追踪号">
@@ -26,7 +26,7 @@
                 </form>
                 <!-- 包裹查询结束 -->
             </div>
-            <div class="col-xs-7" style="padding-right: 0; height: 100%;">
+            <div class="col-xs-7" style="padding-left: 10px; padding-right: 0; height: 100%;">
                 <img style="width: 100%; height: 100%;" src="http://b.fastcompany.net/multisite_files/fastcompany/poster/2013/11/3021587-poster-map.jpg">
             </div>
         </div>
@@ -65,7 +65,7 @@
         <div class="row" style="margin-top: 20px;">
             <div class="col-xs-10 col-xs-offset-1">
                 <div class="row">
-                    <div class="col-xs-4 index-article" style="padding-right: 25px;">
+                    <div class="col-xs-12 col-md-4 index-article" style="padding-right: 25px;">
                         <div class="row index-article-header text-center">新闻公告</div>
                         <div class="row index-article-block">
                             <ul class="list-unstyled">
@@ -75,7 +75,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-xs-4 index-article" style="padding-left: 20px; padding-right: 20px;">
+                    <div class="col-xs-12 col-md-4 index-article" style="padding-left: 20px; padding-right: 20px;">
                         <div class="row index-article-header text-center">活动促销</div>
                         <div class="row index-article-block">
                             <?php for($i=0; $i < 5; $i++) { ?>
@@ -91,7 +91,7 @@
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="col-xs-4 index-article" style="padding-left: 25px;">
+                    <div class="col-xs-12 col-md-4 index-article" style="padding-left: 25px;">
                         <div class="row index-article-header text-center">常见问题</div>
                         <div class="row index-article-block">
                             <ul class="list-unstyled">
