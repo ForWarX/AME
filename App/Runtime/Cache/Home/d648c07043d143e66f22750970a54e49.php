@@ -21,7 +21,7 @@
                         <th>时区</th>
                         <th>地点</th>
                         <th>详细</th>
-                        <th>零时地点</th>
+                        <th>存放地点</th>
                         <th>签名人</th>
                     </tr>
                     </thead>
