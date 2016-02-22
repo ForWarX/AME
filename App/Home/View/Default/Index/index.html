@@ -2,6 +2,7 @@
 <html>
 <head>
     <?php include("App/Home/View/Default/common/head.html"); ?>
+    <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/js/common.js"></script>
 </head>
 <body>
     <!-- 页头 -->
@@ -76,8 +77,8 @@
                         <div class="row index-article-header text-center">新闻公告</div>
                         <div class="row index-article-block">
                             <ul class="list-unstyled">
-                                <?php for($i=0; $i < 12; $i++) { ?>
-                                    <li class="index-article-title">2016年春节期间AME速运服务公告</li>
+                                <?php foreach($news as $val) { ?>
+                                    <li class="index-article-title">{$val}</li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -85,17 +86,46 @@
                     <div class="col-xs-12 col-md-4 index-article" style="padding-left: 20px; padding-right: 20px;">
                         <div class="row index-article-header text-center">活动促销</div>
                         <div class="row index-article-block">
-                            <?php for($i=0; $i < 5; $i++) { ?>
+                            <?php foreach($activities as $activity) { ?>
                                 <div class="index-activity-block">
                                     <img src="<?php echo ROOT_PATH; ?>App/Home/View/Default/img/web/AME_Icon_Rob.png">
-                                    <span class="index-activity-title">americomall网上下单免运费</span>
-                                    <p>
-                                        活动截止时间：2016-02-25
+                                    <span class="index-activity-title">{$activity.title}</span>
+                                    <p class="countdown" data-end_time="{$activity.end_time}">
+                                        活动截止时间：<span class="end_date"></span>
                                         <br>
-                                        剩余时间：2小时56分钟21秒
+                                        剩余时间：<span class="remain_time">2小时56分钟21秒</span>
                                     </p>
                                 </div>
                             <?php } ?>
+                            <script>
+                                // 活动促销相关代码
+                                var cur_time = {$cur_time}; // 服务器当前时间
+                                var countdown = $(".countdown");
+                                $(function() {
+                                    countdown.each(function() {
+                                        var tar = $(this);
+                                        var end_time = tar.data("end_time");
+                                        var end_date = $.myTime.UnixToDate(end_time, 'date');
+                                        tar.find(".end_date").html(end_date['year'] + '-' + end_date['month'] + '-' + end_date['day']);
+                                    });
+                                    remain_time();
+                                    setInterval(count_time, 1000);
+                                });
+
+                                function remain_time() {
+                                    countdown.each(function() {
+                                        var tar = $(this);
+                                        var end_time = tar.data("end_time");
+                                        var remain = $.myTime.TimeRemain(cur_time, end_time);
+                                        tar.find(".remain_time").html(remain['hour'] + '小时' + remain['minute'] + '分钟' + remain['second'] + "秒");
+                                    });
+                                }
+
+                                function count_time() {
+                                    cur_time++;
+                                    remain_time();
+                                }
+                            </script>
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-4 index-article" style="padding-left: 25px;">
