@@ -74,6 +74,10 @@
                     result['hour'] = hour;
                     result['minute'] = minute;
                     result['second'] = second;
+                } else {
+                    result['hour'] = 0;
+                    result['minute'] = 0;
+                    result['second'] = 0;
                 }
                 return result;
             }

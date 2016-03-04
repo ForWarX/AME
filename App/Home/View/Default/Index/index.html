@@ -22,15 +22,17 @@
                         <label for="email"></label>
                         <input type="text" class="form-control" id="email" placeholder="邮箱追踪" disabled>
                     </div>
+                    <!--
                     <label class="radio-inline" style="color: white;">
                         <input type="radio" name="type" value="real" checked> 真实
                     </label>
                     <label class="radio-inline" style="color: white;">
                         <input type="radio" name="type" value="test"> 测试
                     </label>
+                    -->
                     <button type="submit" class="btn btn-success btn-block" style="color: black; font-weight: bold;">查询</button>
                     <input type="hidden" name="api" value="detail">
-                    <!--<input type="hidden" name="type" value="test">-->
+                    <input type="hidden" name="type" value="test">
                 </form>
                 <!-- 包裹查询结束 -->
             </div>
@@ -112,6 +114,7 @@
                                     setInterval(count_time, 1000);
                                 });
 
+                                // 剩余时间倒计时
                                 function remain_time() {
                                     countdown.each(function() {
                                         var tar = $(this);

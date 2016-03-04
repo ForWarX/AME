@@ -102,6 +102,9 @@
     .footer-article li {
         font-size: 10px;
     }
+    .pic_style{
+        width:100%;
+    }
 }
 
 /* 小屏幕 */
@@ -132,12 +135,19 @@
     .footer-article li {
         font-size: 18px;
     }
+    .pic_style{
+        width:100%;
+    }
 }
 
 /* 中屏幕 */
 @media (min-width: 992px) {
     .header-top-pic {
         height: 120px;
+    }
+    .pic_style{
+        height: 240px;
+        width:100%;
     }
 }
 
@@ -146,4 +156,38 @@
     .header-top-pic {
         height: 150px;
     }
+    .pic_style{
+        height: 330px;
+        width:100%;
+    }
+}
+
+/* 价格查询 */
+.price_style{
+    color: white;
+    background-color: rgb(47,50,55);
+    vertical-align:top;
+}
+.price_style2{
+    color: red;
+    font-weight: bold;
+    background-color: rgb(47,50,55);
+    vertical-align:top;
+    text-align:center;
+
+}
+#price_header{
+    width: 60%;
+    margin-top: 60px;
+    margin-left: 18%;
+    margin-bottom: 10%;
+    text-align:center;
+}
+.login_but_style{
+    width: 100%;
+    background-color: #1FB996;
+    border-radius:10px;
+    height: 40px;
+    color:white;
+    font-size: 18px;
 }

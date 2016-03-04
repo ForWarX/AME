@@ -35,4 +35,13 @@ class IndexController extends Controller {
 
         $this->display();
     }
+    public function price_check(){
+        $this->display();
+    }
+    public function about_us(){
+        $this->display();
+    }
+    public function login(){
+        $this->display();
+    }
 }
