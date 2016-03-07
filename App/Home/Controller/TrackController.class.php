@@ -44,7 +44,7 @@ class TrackController extends Controller {
     }
 
     public function test($type="test") {
-        echo "type: " . $type . "<br>";
+        //echo "type: " . $type . "<br>";
         if ($type == 'real') {
             $username = C("cp_real_username");
             $password = C("cp_real_password");
@@ -58,8 +58,8 @@ class TrackController extends Controller {
         $url .= "/rs/ship/price";
         //$post_data = array("username" => "bob","key" => "12345");
         $post_data = file_get_contents('1.xml');
-        $username = "6e93d53968881714";
-        $password = "0bfa9fcb9853d1f51ee57a";
+        //$username = "6e93d53968881714";
+        //$password = "0bfa9fcb9853d1f51ee57a";
 
         $header[]="Accept: application/vnd.cpc.ship.rate-v3+xml";
         $header[]="Content-Type: application/vnd.cpc.ship.rate-v3+xml";
@@ -81,14 +81,16 @@ class TrackController extends Controller {
         curl_close($ch);
 
         if ($info['http_code'] == 200) {
-            echo "===================<br>";
-            nice_print($info);
+            //echo "===================<br>";
+            //nice_print($info);
             nice_print($data);
             echo "<br>===================<br>";
             $xml = new \SimpleXMLElement($data);
             $result = object_to_array($xml);
-            $result = $result['significant-events']['occurrence'];
+            /*$data = str_replace("<", "&lt", $data);
+            $data = str_replace(">", "&gt", $data);*/
             nice_print($result);
+            //nice_print($result);
             //$this->assign("result", $result);
         } else {
             nice_print($info);
