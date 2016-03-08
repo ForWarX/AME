@@ -6,91 +6,127 @@
 <body>
     <!-- 页头 -->
     <?php include("App/Home/View/Default/common/header.html"); ?>
+    <h1 style="text-align: center;">物流费率与结算周期</h1>
     <table class="table table-bordered" id="price_header">
         <thead>
             <tr>
-                <th class="price_style" style=" vertical-align:top;width: 15%;text-align:center;">货品</th>
-                <th class="price_style2" style=" vertical-align:top;width: 30%;text-align:center;">禁运物品</th>
-                <th class="price_style" style=" vertical-align:top;width: 30%;text-align:center;">包裹<span style="color: #0FC1B9;">数</span>量/箱<br>（打包建议）</th>
-                <th class="price_style" style=" vertical-align:top;width: 15%;text-align:center;">包裹<span style="color: #0FC1B9;">重</span>量/箱</th>
-                <th class="price_style" style=" vertical-align:top;width: 10%;text-align:center;">包裹总金额/箱</th>
+                <th class="price_style" style=" vertical-align:top;width: 15%;">类別</th>
+                <th class="price_style" style=" vertical-align:top;width: 30%;">类別</th>
+                <th class="price_style" style=" vertical-align:top;width: 30%;">内容</th>
+                <th class="price_style" style=" vertical-align:top;width: 15%;">限重或数量</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th scope="row" style="text-align:center;">保健品</th>
-                <td rowspan="5">含肉类食品、肉泥、奶制品（奶粉除外)、古董、玉石、二手货、宠物食品、厨刀、海产品干货、奢侈品、可做种子食品的坚果等物品<span style="color: red;">不收寄</span></td>
-                <td>一箱6件内，同类物品4件以内</td>
-                <td>10磅以内</td>
-                <td>150美元以内</td>
+                <th scope="row" style="text-align:center;">A 类</th>
+                <td>母嬰用品类</td>
+                <td></td>
+                <td>6磅</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">普通服装</th>
-                <td>成人衣服4件以内；童装7件以内</td>
-                <td>8磅以内</td>
-                <td>500美元以内</td>
+                <th scope="row" style="text-align:center;"></th>
+                <td>普通品牌服裝</td>
+                <td></td>
+                <td>10磅</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">普通包</th>
-                <td>杂牌包1箱2个，不建议混装</td>
-                <td>8磅以内</td>
-                <td>500美元以内</td>
+                <th scope="row" style="text-align:center;"></th>
+                <td rowspan="1">生活日用品类</td>
+                <td></td>
+                <td>10磅</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">奶粉</th>
-                <td>900g规格以内，一箱2罐，不建议混装<br>600g规格以内，一箱3罐，不建议混装</td>
-                <td>8磅以内</td>
-                <td>150美元以内</td>
+                <th scope="row" style="text-align:center;"></th>
+                <td>食品类</td>
+                <td></td>
+                <td>10磅</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">母婴辅食、食品<br>日用品、玩具</th>
-                <td>合理自用</td>
-                <td>10磅以内</td>
-                <td>150美元以内</td>
+                <th scope="row" style="text-align:center;">B 类</th>
+                <td rowspan="1">保健品类</td>
+                <td></td>
+                <td>10磅</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">品牌包</th>
-                <td rowspan="2">一线品牌、奢侈品牌（如LV,爱马仕，GUCCI，迪奥，阿玛尼，Prada等）<span style="color: red;">不收寄</span></td>
-                <td>品牌包1箱1个，不建议混装</td>
-                <td>8磅以内</td>
-                <td>500美元以内</td>
+                <th scope="row" style="text-align:center;"></th>
+                <td>普通化妆护肤品</td>
+                <td></td>
+                <td>6磅</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">品牌服饰</th>
-                <td>成人衣服4件以内；童装7件以内</td>
-                <td>8磅以内</td>
-                <td>500美元以内</td>
+                <th scope="row" style="text-align:center;">C 类</th>
+                <td>电子产品</td>
+                <td></td>
+                <td>1个</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">护肤品、化妆品</th>
-                <td>香水、喷雾、指甲油、精油灯<span style="color: red;">不收寄</span></td>
-                <td>同类物品3件议内</td>
-                <td>普通品牌3磅以内；<br>高级品牌2磅之内</td>
-                <td>150美元以内</td>
+                <th scope="row" style="text-align:center;"></th>
+                <td>小家电类</td>
+                <td></td>
+                <td>1个</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">电子数码产品</th>
-                <td>苹果产品、手机、电脑、相机、摄像机、电子书、数码配件等<span style="color: red;">不收寄</span></td>
-                <td>电动剃须刀，电动吸奶器1箱1件、手表1箱1个、耳温枪1箱2支</td>
-                <td>60磅以内</td>
-                <td>500美元以内</td>
+                <th scope="row" style="text-align:center;"></th>
+                <td>箱包类</td>
+                <td></td>
+                <td>1个</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">小家电</th>
-                <td>大物件家电、高额家电、二手家电等<span style="color: red;">不收寄</span></td>
-                <td>榨汁机、空气净化器、扫地机、净水器等小家电1箱1件，不可混装</td>
-                <td>60磅以内</td>
-                <td>500美元以内</td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align:center;">大体积物品</th>
-                <td>超大体积物品、二手货<span style="color: red;">不收寄</span></td>
-                <td>婴儿车、安全座椅等超过15磅单一体积物品不可混装</td>
-                <td>单件物品60磅以内</td>
-                <td>500美元以内</td>
+                <th scope="row" style="text-align:center;">不能清关品名</th>
+                <td  colspan="2">
+                    国际奢侈品牌(如 LV,ARMANI,HERMES等)手机.笔记本电脑.平板电脑.人参.花旗参.西洋参.海参.鱼翅.燕窝.电脑配件.
+                    相机及镜头.BOSE 音箱.医疗用品.药用品.汽车配件.
+                    易燃易 爆危险品.易腐蚀品.管制刀具.毒品.军火.文物古玩.国家货币.贵重金银首饰.钻石.
+                    （海关明文规定禁 运物品)
+                </td>
+                <td></td>
             </tr>
         </tbody>
     </table>
+    <table class="table table-bordered" id="price_header">
+        <thead>
+        <tr>
+            <th class="price_style">计费重量</th>
+            <th class="price_style"  colspan="2">A 类</th>
+            <th class="price_style"  colspan="2">B 类</th>
+            <th class="price_style"  colspan="2">C 类</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row" style="text-align:center;">磅数</th>
+            <td>首磅</td>
+            <td>续磅</td>
+            <td>首磅</td>
+            <td>续磅</td>
+            <td>首磅</td>
+            <td>续磅</td>
+
+        </tr>
+        <tr>
+            <th scope="row" style="text-align:center;">0-3磅</th>
+            <td colspan="2">$12</td>
+            <td colspan="2">$12</td>
+            <td colspan="2">$15</td>
+        </tr>
+        <tr>
+            <th scope="row" style="text-align:center;">3磅以上</th>
+            <td>$5</td>
+            <td>$4</td>
+            <td>$5</td>
+            <td>$4</td>
+            <td></td>
+            <td>$6</td>
+        </tr>
+        <tr>
+            <td colspan="7">
+                备注：所有包裹丢失或破损，一定请出示图片或书面的形式来确认，之后会按破损的比例来计算赔偿或者以最高$100的金额赔偿。
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
     <!-- 页脚 -->
     <?php include("App/Home/View/Default/common/footer.html"); ?>
 </body>

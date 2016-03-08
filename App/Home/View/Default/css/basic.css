@@ -164,17 +164,9 @@
 
 /* 价格查询 */
 .price_style{
-    color: white;
-    background-color: rgb(47,50,55);
-    vertical-align:top;
-}
-.price_style2{
-    color: red;
-    font-weight: bold;
-    background-color: rgb(47,50,55);
     vertical-align:top;
     text-align:center;
-
+    width: 14%;
 }
 #price_header{
     width: 60%;
