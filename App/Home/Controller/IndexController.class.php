@@ -53,4 +53,14 @@ class IndexController extends Controller {
     public function notes(){ //理赔免责说明
         $this->display();
     }
+    public function send_policy(){ //发货原则
+        $this->display();
+    }
+    public function customs(){ //海关政策
+        $this->display();
+    }
+    public function restriction_goods(){ //禁限运品
+        $this->display();
+    }
+
 }
