@@ -50,7 +50,7 @@ class IndexController extends Controller {
     public function customer_process(){  //服务流程
         $this->display();
     }
-    public function notes(){
+    public function notes(){ //理赔免责说明
         $this->display();
     }
 }
