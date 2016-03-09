@@ -57,9 +57,25 @@ class TrackController extends Controller {
 
         $url .= "/rs/ship/price";
         //$post_data = array("username" => "bob","key" => "12345");
-        $post_data = file_get_contents('1.xml');
+        //$post_data = file_get_contents('1.xml');
         //$username = "6e93d53968881714";
         //$password = "0bfa9fcb9853d1f51ee57a";
+
+
+        $post_data = '<?xml version="1.0" encoding="utf-8"?>
+<mailing-scenario xmlns="http://www.canadapost.ca/ws/ship/rate-v3">
+	<customer-number>0008246386</customer-number>
+	<parcel-characteristics>
+		<weight>1</weight>
+	</parcel-characteristics>
+	<origin-postal-code>K2B8J6</origin-postal-code>
+	<destination>
+		<domestic>
+			<postal-code>J0E1X0</postal-code>
+		</domestic>
+	</destination>
+</mailing-scenario>';
+
 
         $header[]="Accept: application/vnd.cpc.ship.rate-v3+xml";
         $header[]="Content-Type: application/vnd.cpc.ship.rate-v3+xml";
@@ -83,8 +99,8 @@ class TrackController extends Controller {
         if ($info['http_code'] == 200) {
             //echo "===================<br>";
             //nice_print($info);
-            nice_print($data);
-            echo "<br>===================<br>";
+            //nice_print($data);
+            //echo "<br>===================<br>";
             $xml = new \SimpleXMLElement($data);
             $result = object_to_array($xml);
             /*$data = str_replace("<", "&lt", $data);
