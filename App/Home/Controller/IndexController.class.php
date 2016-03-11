@@ -62,5 +62,7 @@ class IndexController extends Controller {
     public function restriction_goods(){ //禁限运品
         $this->display();
     }
-
+    public function info_express(){
+        $this->display();
+    }
 }
