@@ -6,125 +6,170 @@
 <body>
     <!-- 页头 -->
     <?php include("App/Home/View/Default/common/header.html"); ?>
-    <h1 style="text-align: center;">物流费率与结算周期</h1>
+    <h1 style="text-align: center;">物流費率與結算周期</h1>
     <table class="table table-bordered" id="price_header">
         <thead>
             <tr>
-                <th class="price_style" style=" vertical-align:top;width: 15%;">类別</th>
-                <th class="price_style" style=" vertical-align:top;width: 30%;">类別</th>
+                <th class="price_style" style=" vertical-align:top;width: 15%;">類別</th>
+                <th class="price_style" style=" vertical-align:top;width: 30%;">類別</th>
                 <th class="price_style" style=" vertical-align:top;width: 30%;">内容</th>
                 <th class="price_style" style=" vertical-align:top;width: 15%;">限重或数量</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th scope="row" style="text-align:center;">A 类</th>
-                <td>母嬰用品类</td>
-                <td></td>
-                <td>6磅</td>
+                <th scope="row" style="text-align:center;">A 類</th>
+                <td>naifeng</td>
+                <td>奶粉,液體奶</td>
+                <td>6磅(不能多於3罐)</td>
             </tr>
             <tr>
                 <th scope="row" style="text-align:center;"></th>
-                <td>普通品牌服裝</td>
-                <td></td>
+                <td>母嬰用品类</td>
+                <td>奶粉,液體奶,米粉，嬰兒用品，嬰兒服裝，吸奶器，嬰兒保健品等</td>
                 <td>10磅</td>
             </tr>
             <tr>
                 <th scope="row" style="text-align:center;"></th>
-                <td rowspan="1">生活日用品类</td>
-                <td></td>
+                <td>普通品牌服裝</td>
+                <td>各類服裝，衣服，褲子，鞋帽飾品，單價50美金以下</td>
+                <td>10磅(3件以下,不可混合裝箱)</td>
+            </tr>
+            <tr>
+                <th scope="row" style="text-align:center;"></th>
+                <td rowspan="1">生活日用品類</td>
+                <td>各式家庭裝飾品，清潔用品,廚房用品</td>
                 <td>10磅</td>
             </tr>
             <tr>
                 <th scope="row" style="text-align:center;"></th>
                 <td>食品类</td>
-                <td></td>
+                <td>各種零食，原料，咖啡，食用油等</td>
                 <td>10磅</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">B 类</th>
-                <td rowspan="1">保健品类</td>
-                <td></td>
+                <th scope="row" style="text-align:center;">B 類</th>
+                <td rowspan="1">保健品類</td>
+                <td>如維生素，鈣片，魚油，各類補液,各種小兒咀嚼片等；</td>
                 <td>10磅</td>
             </tr>
             <tr>
                 <th scope="row" style="text-align:center;"></th>
-                <td>普通化妆护肤品</td>
-                <td></td>
-                <td>6磅</td>
+                <td>普通化妝護膚品</td>
+                <td>如黃油，潤膚露，洗浴液，洗發水，眼霜，日霜，唇膏，卸妝水等；</td>
+                <td>10磅</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">C 类</th>
-                <td>电子产品</td>
-                <td></td>
-                <td>1个</td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align:center;"></th>
-                <td>小家电类</td>
-                <td></td>
-                <td>1个</td>
+                <th scope="row" style="text-align:center;">C 類</th>
+                <td>電子產品</td>
+                <td>手機配件, mp3、耳機, 電子書, 遊戲手柄, 各類板卡、內存,CUP</td>
+                <td>100加元以下</td>
             </tr>
             <tr>
                 <th scope="row" style="text-align:center;"></th>
-                <td>箱包类</td>
-                <td></td>
-                <td>1个</td>
+                <td>小家電類</td>
+                <td>剃須刀、理發器、耳溫計、攪拌器，豆漿機，電飯煲，吸塵器，掃地機等</td>
+                <td>100加元以下</td>
             </tr>
             <tr>
-                <th scope="row" style="text-align:center;">不能清关品名</th>
-                <td  colspan="2">
-                    国际奢侈品牌(如 LV,ARMANI,HERMES等)手机.笔记本电脑.平板电脑.人参.花旗参.西洋参.海参.鱼翅.燕窝.电脑配件.
-                    相机及镜头.BOSE 音箱.医疗用品.药用品.汽车配件.
-                    易燃易 爆危险品.易腐蚀品.管制刀具.毒品.军火.文物古玩.国家货币.贵重金银首饰.钻石.
-                    （海关明文规定禁 运物品)
+                <th scope="row" style="text-align:center;"></th>
+                <td>箱包類</td>
+                <td>單價100加幣以下的普通品牌包</td>
+                <td>100加元以下(不可混合装箱)</td>
+            </tr>
+            <tr>
+                <th scope="row" style="text-align:center;">不能清關品名</th>
+                <td>
+                    國際奢侈品牌(如 LV,ARMANI,HERMES等)手機.笔記本電腦.
+                    平板電腦.人參.花旗參.西洋參.海參.魚翅.燕窩.电脑配件.
+                    相机及鏡頭.BOSE 音箱.医疗用品.葯用品.汽車配件.易燃易 爆危險品.易腐蝕品.
+                    管制刀具.毒品.軍火.文物古玩.國家貨幣.貴重金銀首飾.鑽石.（海關明文規定禁 運物品)
                 </td>
-                <td></td>
+                <td>禁運</td>
+                <td>禁運</td>
             </tr>
         </tbody>
     </table>
     <table class="table table-bordered" id="price_header">
         <thead>
-        <tr>
-            <th class="price_style">计费重量</th>
-            <th class="price_style"  colspan="2">A 类</th>
-            <th class="price_style"  colspan="2">B 类</th>
-            <th class="price_style"  colspan="2">C 类</th>
-        </tr>
+            <tr>
+                <th class="price_style">计费重量</th>
+                <th class="price_style"  colspan="2">A 類</th>
+                <th class="price_style"  colspan="2">B 類</th>
+                <th class="price_style"  colspan="2">C 類</th>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row" style="text-align:center;">磅数</th>
-            <td>首磅</td>
-            <td>续磅</td>
-            <td>首磅</td>
-            <td>续磅</td>
-            <td>首磅</td>
-            <td>续磅</td>
+            <tr>
+                <th scope="row" style="text-align:center;">磅数</th>
+                <td>首磅</td>
+                <td>续磅</td>
+                <td>首磅</td>
+                <td>续磅</td>
+                <td>首磅</td>
+                <td>续磅</td>
 
-        </tr>
-        <tr>
-            <th scope="row" style="text-align:center;">0-3磅</th>
-            <td colspan="2">$12</td>
-            <td colspan="2">$12</td>
-            <td colspan="2">$15</td>
-        </tr>
-        <tr>
-            <th scope="row" style="text-align:center;">3磅以上</th>
-            <td>$5</td>
-            <td>$4</td>
-            <td>$5</td>
-            <td>$4</td>
-            <td></td>
-            <td>$6</td>
-        </tr>
-        <tr>
-            <td colspan="7">
-                备注：所有包裹丢失或破损，一定请出示图片或书面的形式来确认，之后会按破损的比例来计算赔偿或者以最高$100的金额赔偿。
-            </td>
-        </tr>
+            </tr>
+            <tr>
+                <th scope="row" style="text-align:center;">0-3磅</th>
+                <td colspan="2">$12</td>
+                <td colspan="2">$12</td>
+                <td colspan="2">$15</td>
+            </tr>
+            <tr>
+                <th scope="row" style="text-align:center;">3磅以上</th>
+                <td></td>
+                <td>$4</td>
+                <td></td>
+                <td>$4</td>
+                <td></td>
+                <td>$6</td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    備註：所有包裹丟失或破損，壹定請出示圖片或書面的形式來確認，之後會按破損的比例來計算賠償或者以最高$100的金額賠償。
+                </td>
+            </tr>
         </tbody>
     </table>
+    <div class="container-fluid" style="margin-left: 18%;" >
+        <div class="col-md-10">
+            <div class="row">
+                <b>美洲快遞壹號線：</b>
+                <br>1、奶粉專線， 4加元/lb，每箱不能超3罐
+                <br>2、計算體積費；
+                <br>3、清關時效在10-15個工作日左右，具體以海關實際操作情況為準；
+                <br>4、僅適用於奶粉或液體奶，且需限制在個人自用範圍內。
+                <br>5、每箱限重8磅（不可分割商品除外），
+                <br>6、需提供收件人身份證信息（填寫身份證號並上傳身份證正反面），否則不予清關；
+                <br>保單：郵寄商品價值必須要與申報相同，最高保額為每單CAD100。
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <b>美洲快遞二號線：：</b>
+                <br>1、個人自用專線， 4加元/lb，3磅起運；
+                <br>2、計算體積費；
+                <br>3、清關時效在10-15個工作日左右，具體以海關實際操作情況為準；
+                <br>4、僅適用於A,B類，且需限制在個人自用範圍內。
+                <br>5、每箱限重10磅（不可分割商品除外），
+                <br>6、需提供收件人身份證信息（填寫身份證號並上傳身份證正反面），否則不予清關；
+                <br>保單： 郵寄商品價值必須要與申報相同，最高保額為每單CAD100。
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <b>美洲快遞三號線：</b>
+                <br>1、個人自用專線可混合裝箱，但價格以C類來算, 6加元/lb，3磅起運；
+                <br>2、計算體積費；
+                <br>3、清關時效在10個工作日左右，具體以海關實際操作情況為準；
+                <br>4、僅適用於A,B,C類(奶粉除外)，且需限制在個人自用範圍內。
+                <br>5、每箱限重10磅（不可分割商品除外），
+                <br>6、需提供收件人身份證信息（填寫身份證號並上傳身份證正反面），否則不予清關；
+                <br>保單： 郵寄商品價值必須要與申報相同，最高保額為每單CAD100。
+            </div>
+        </div>
+    </div>
     <!-- 页脚 -->
     <?php include("App/Home/View/Default/common/footer.html"); ?>
 </body>
