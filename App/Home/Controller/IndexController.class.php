@@ -65,4 +65,7 @@ class IndexController extends Controller {
     public function info_express(){
         $this->display();
     }
+    public function membership(){
+        $this->display();
+    }
 }
