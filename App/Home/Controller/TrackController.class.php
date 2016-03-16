@@ -66,7 +66,12 @@ class TrackController extends Controller {
 <mailing-scenario xmlns="http://www.canadapost.ca/ws/ship/rate-v3">
 	<customer-number>0008246386</customer-number>
 	<parcel-characteristics>
-		<weight>1</weight>
+		<weight>0</weight>
+		<dimensions>
+            <length>0</length>
+            <width>0</width>
+            <height>0</height>
+        </dimensions>
 	</parcel-characteristics>
 	<origin-postal-code>K2B8J6</origin-postal-code>
 	<destination>
