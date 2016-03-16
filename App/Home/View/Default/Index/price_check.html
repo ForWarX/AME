@@ -6,14 +6,14 @@
 <body>
     <!-- 页头 -->
     <?php include("App/Home/View/Default/common/header.html"); ?>
-    <h1 style="text-align: center;">物流費率與結算周期</h1>
+    <h1 style="text-align: center;">運費與清關路線查詢</h1>
     <table class="table table-bordered" id="price_header">
         <thead>
             <tr>
-                <th class="price_style" style=" vertical-align:top;width: 15%;">類別</th>
-                <th class="price_style" style=" vertical-align:top;width: 30%;">類別</th>
-                <th class="price_style" style=" vertical-align:top;width: 30%;">内容</th>
-                <th class="price_style" style=" vertical-align:top;width: 15%;">限重或数量</th>
+                <th class="price_style" style=" vertical-align:top;width: 15%;text-align:center;">類別</th>
+                <th class="price_style" style=" vertical-align:top;width: 30%;text-align:center;">類別</th>
+                <th class="price_style" style=" vertical-align:top;width: 30%;text-align:center;">内容</th>
+                <th class="price_style" style=" vertical-align:top;width: 15%;text-align:center;">限重或数量</th>
             </tr>
         </thead>
         <tbody>
@@ -57,7 +57,7 @@
                 <th scope="row" style="text-align:center;"></th>
                 <td>普通化妝護膚品</td>
                 <td>如黃油，潤膚露，洗浴液，洗發水，眼霜，日霜，唇膏，卸妝水等；</td>
-                <td>10磅</td>
+                <td>10磅(不可混合装箱)</td>
             </tr>
             <tr>
                 <th scope="row" style="text-align:center;">C 類</th>
@@ -80,10 +80,7 @@
             <tr>
                 <th scope="row" style="text-align:center;">不能清關品名</th>
                 <td>
-                    國際奢侈品牌(如 LV,ARMANI,HERMES等)手機.笔記本電腦.
-                    平板電腦.人參.花旗參.西洋參.海參.魚翅.燕窩.电脑配件.
-                    相机及鏡頭.BOSE 音箱.医疗用品.葯用品.汽車配件.易燃易 爆危險品.易腐蝕品.
-                    管制刀具.毒品.軍火.文物古玩.國家貨幣.貴重金銀首飾.鑽石.（海關明文規定禁 運物品)
+                    國際奢侈品牌(如 LV,ARMANI,HERMES等)手機.筆記本電腦.平板電腦.人參.花旗參.西洋參.海參.魚翅.燕窩.電腦配件. 相機及鏡頭.BOSE 音箱.
                 </td>
                 <td>禁運</td>
                 <td>禁運</td>
@@ -147,7 +144,7 @@
         </div>
         <div class="col-md-10">
             <div class="row">
-                <b>美洲快遞二號線：：</b>
+                <b>美洲快遞二號線：</b>
                 <br>1、個人自用專線， 4加元/lb，3磅起運；
                 <br>2、計算體積費；
                 <br>3、清關時效在10-15個工作日左右，具體以海關實際操作情況為準；

@@ -68,4 +68,10 @@ class IndexController extends Controller {
     public function membership(){
         $this->display();
     }
+    public function news(){
+        $this->display();
+    }
+    public function question(){
+        $this->display();
+    }
 }
