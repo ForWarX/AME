@@ -3,7 +3,8 @@ namespace Home\Controller;
 use Think\Controller;
 
 class TrackController extends Controller {
-    public function track(){
+    // Canada Post
+    public function cp_track(){
         $pin = I("pin");
         if ($pin != '') {
             $api = I("api") != '' ? I("api") : 'detail';
@@ -43,7 +44,8 @@ class TrackController extends Controller {
         $this->display();
     }
 
-    public function test($type="test") {
+    // Canada Post
+    public function cp_test($type="test") {
         //echo "type: " . $type . "<br>";
         if ($type == 'real') {
             $username = C("cp_real_username");
