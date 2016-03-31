@@ -77,5 +77,11 @@ class IndexController extends Controller {
     public function cooperation(){
         $this->display();
     }
+    public function location(){
+        $this->display();
+    }
+    public function location_share(){
+        $this->display();
+    }
 
 }
