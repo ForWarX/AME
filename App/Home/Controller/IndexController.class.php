@@ -74,4 +74,8 @@ class IndexController extends Controller {
     public function question(){
         $this->display();
     }
+    public function cooperation(){
+        $this->display();
+    }
+
 }
