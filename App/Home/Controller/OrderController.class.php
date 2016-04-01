@@ -11,6 +11,10 @@ class OrderController extends Controller {
     public function order() {
         if (IS_POST) {
             // 提交订单
+            nice_print(I("post."));
+
+            $this->assign("post", I("post."));
+            //$model = M("order");
         }
 
         $this->display();
