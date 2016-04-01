@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <?php include("App/Home/View/Default/common/head.html"); ?>
+
+    <style>
+        .order_block {
+            border: 1px solid #9C8F8F;
+            padding-top: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 页头 -->
+    <?php include("App/Home/View/Default/common/header.html"); ?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <form class="form-horizontal" action="" method="post">
+                    <!-- 寄件人 -->
+                    <div class="col-sm-12 order_block">
+                        <div class="form-group">
+                            <label for="s_name" class="col-sm-2 control-label">Sender/寄件人*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_name" name="s_name">
+                            </div>
+                            <label for="s_compony" class="col-sm-2 control-label">Company/公司</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_compony" name="s_compony">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="s_city" class="col-sm-2 control-label">City/城市*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_city" name="s_city">
+                            </div>
+                            <label for="s_prov" class="col-sm-2 control-label">Prov/省*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_prov" name="s_province">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="s_addr" class="col-sm-2 control-label">Address/地址*</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="s_addr" name="s_address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="s_zip" class="col-sm-2 control-label">Postcode/郵編*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_zip" name="s_zip">
+                            </div>
+                            <label for="s_country" class="col-sm-2 control-label">Country/國家*</label>
+                            <div class="col-sm-4">
+                                <select name="s_country" id="s_country"  class="form-control">
+                                    <option value="US">America/美國</option>
+                                    <option value="CA" selected>Canada/加拿大</option>
+                                    <option value="CN">China/中國</option>
+                                    <option value="TW">Taiwan/台灣</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="s_email" class="col-sm-2 control-label">Email/電郵*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_email" name="s_email">
+                            </div>
+                            <label for="s_phone" class="col-sm-2 control-label">Phone/電話*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_phone" name="s_phone">
+                            </div>
+                        </div>
+                    </div><!-- 寄件人結束 -->
+
+                    <!-- 收件人 -->
+                    <div class="col-sm-12 order_block">
+                        <div class="form-group">
+                            <label for="r_name" class="col-sm-2 control-label">Recipient/收件人*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="r_name" name="r_name">
+                            </div>
+                            <label for="r_compony" class="col-sm-2 control-label">Company/公司</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="r_compony" name="r_compony">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="r_city" class="col-sm-2 control-label">City/城市*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="r_city" name="r_city">
+                            </div>
+                            <label for="r_prov" class="col-sm-2 control-label">Prov/省*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="r_prov" name="r_province">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="r_addr" class="col-sm-2 control-label">Address/地址*</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="r_addr" name="r_address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="r_zip" class="col-sm-2 control-label">Postcode/郵編*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="r_zip" name="r_zip">
+                            </div>
+                            <label for="r_country" class="col-sm-2 control-label">Country/國家*</label>
+                            <div class="col-sm-4">
+                                <select name="s_country" id="r_country"  class="form-control">
+                                    <option value="US">America/美國</option>
+                                    <option value="CA">Canada/加拿大</option>
+                                    <option value="CN" selected>China/中國</option>
+                                    <option value="TW">Taiwan/台灣</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="r_email" class="col-sm-2 control-label">Email/電郵*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="r_email" name="r_email">
+                            </div>
+                            <label for="r_phone" class="col-sm-2 control-label">Phone/電話*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="r_phone" name="r_phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="r_id" class="col-sm-2 control-label">ID #/中國身份證*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="r_id" name="r_id">
+                            </div>
+                        </div>
+                    </div><!-- 收件人結束 -->
+
+                    <!-- 产品清单 -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>UPC/條形碼</th>
+                                    <th>Brand/品牌</th>
+                                    <th>English Name/英文名</th>
+                                    <th>Chinese Name/中文名</th>
+                                    <th>Quantity/數量</th>
+                                    <th>Unit Value/單價（RMB）</th>
+                                </tr>
+                                <?php for($i=0; $i < 4; $i++) { ?>
+                                    <tr>
+                                        <td>
+                                            <label for="code" class="sr-only"></label>
+                                            <input type="text" name="code[]" id="code">
+                                        </td>
+                                        <td>
+                                            <label for="brand" class="sr-only"></label>
+                                            <input type="text" name="brand[]" id="brand">
+                                        </td>
+                                        <td>
+                                            <label for="name_en" class="sr-only"></label>
+                                            <input type="text" name="name_en[]" id="name_en">
+                                        </td>
+                                        <td>
+                                            <label for="name_cn" class="sr-only"></label>
+                                            <input type="text" name="name_cn[]" id="name_cn">
+                                        </td>
+                                        <td>
+                                            <label for="quantity" class="sr-only"></label>
+                                            <input type="text" name="quantity[]" id="quantity">
+                                        </td>
+
+                                        <td>
+                                            <label for="unit_value" class="sr-only"></label>
+                                            <input type="text" name="unit_value[]" id="unit_value">
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </table>
+                        </div>
+                    </div><!-- 产品清单结束 -->
+
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Submit / 提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <?php include("App/Home/View/Default/common/footer.html"); ?>
+</body>
+</html>

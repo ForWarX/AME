@@ -1,4 +1,9 @@
 <?php
+/**
+ * var_dump优化版
+ * @param $tar
+ * @param string $space
+ */
 function nice_print($tar, $space="") {
     if (is_object($tar) || is_array($tar)) {
         if ($space != "") echo "(<br>";
@@ -13,6 +18,11 @@ function nice_print($tar, $space="") {
     }
 }
 
+/**
+ * 对象转换成数组
+ * @param $obj
+ * @return array
+ */
 function object_to_array($obj) {
     $arr = is_object($obj) ? get_object_vars($obj) : $obj;
     if (is_array($arr)) {
