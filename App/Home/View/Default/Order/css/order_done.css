@@ -1,0 +1,23 @@
+.order_print_field {
+    width: 26%;
+    padding-left: 5px;
+}
+.order_print_data {
+    padding-left: 5px;
+    width: 24%;
+}
+.receiver .order_print_field {
+    border-right: 1px;
+}
+.sender, .receiver {
+    font-size: medium;
+    margin-top: 20px;
+    width: 49%;
+}
+.sender {
+    border-left: 0;
+}
+.receiver {
+    border-right: 0;
+    margin-left: 2%;
+}

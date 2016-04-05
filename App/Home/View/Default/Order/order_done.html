@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <?php include("App/Home/View/Default/common/head.html"); ?>
+
+    <script src="<?php echo ROOT_PATH; ?>Public/bootstrap/js/jquery-migrate-1.1.0.js"></script><!--jqprint不兼容高版本jquery，这是迁移辅助插件-->
+    <script src="<?php echo ROOT_PATH; ?>Public/bootstrap/js/jquery.jqprint.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="<?php echo ROOT_PATH; ?>App/Home/View/Default/Order/css/order_done.css">
+</head>
+<body>
+    <!-- 页头 -->
+    <?php include("App/Home/View/Default/common/header.html"); ?>
+
+    <div class="container-fluid">
+        <!-- 打印订单 -->
+        <?php if (!empty($order)) { ?>
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <!-- 打印区域，为了不受窗口大小影响，写死宽度 -->
+                    <div id="print_area" style="width: 1024px; border: 1px solid #000; margin-left: auto; margin-right: auto;">
+                        <!-- 表单头部 -->
+                        <div style="width: 40%; display: inline-block; float: left; text-align:center">
+                            <img src="<?php echo ROOT_PATH; ?>App/Home/View/Default/img/web/about_us_logo.png" style="width: 308px;">
+                        </div>
+                        <div style="width: 60%; display: inline-block;">
+                            <h3>Tracking #/運單號：{$order.ame_no}</h3>
+                            <h3>Date/日期：{$order.date}</h3>
+                        </div><!-- 表单头部结束 -->
+
+                        <!-- AME信息 -->
+                        <div style="width: 100%; border-top: 1px solid #000; border-bottom: 1px solid #000; padding-left: 15px;">
+                            <h5><b>Address/地址：3445 Sheppard Ave E, Scarborough, Ontario, Canada M1T 3K5</b></h5>
+                            <h5><b>
+                                <span>Phone/電話： 905-604-4677</span>
+                                <span style="margin-left: 35px;">Email/郵編： info@americoexpress.ca</span>
+                            </b></h5>
+                            <h5><b>Website/網址： www.americoexpress.com</b></h5>
+                        </div><!-- AME信息结束 -->
+
+                        <!-- 寄/收件人信息 -->
+                        <div style="width: 100%; display: flex;">
+                            <table class="sender" border="1">
+                                <tr>
+                                    <td class="order_print_field">Sender/ 寄件人:</td>
+                                    <td colspan="3" class="order_print_data">{$order.s_name}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Company/公司:</td>
+                                    <td colspan="3" class="order_print_data">{$order.s_company}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">City/城市:</td>
+                                    <td class="order_print_data">{$order.s_city}</td>
+                                    <td class="order_print_field">Province/省:</td>
+                                    <td class="order_print_data">{$order.s_province}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Address/地址:</td>
+                                    <td colspan="3" class="order_print_data">{$order.s_address}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Postcode/郵編:</td>
+                                    <td class="order_print_data">{$order.s_zip}</td>
+                                    <td class="order_print_field">Country/國家:</td>
+                                    <td class="order_print_data">{$order.s_country}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">E-mail/電郵:</td>
+                                    <td colspan="3" class="order_print_data">{$order.s_email}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Phone/電話:</td>
+                                    <td colspan="3" class="order_print_data">{$order.s_phone}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Mbr#/会员号:</td>
+                                    <td colspan="3" class="order_print_data">{$order.s_id}</td>
+                                </tr>
+                            </table><!-- 寄件人结束 -->
+                            <table class="receiver" border="1">
+                                <tr>
+                                    <td class="order_print_field">Recipient/收件人:</td>
+                                    <td colspan="3" class="order_print_data">{$order.r_name}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Company/公司:</td>
+                                    <td colspan="3" class="order_print_data">{$order.r_company}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">City/城市:</td>
+                                    <td class="order_print_data" style="border-right: 1px;">{$order.r_city}</td>
+                                    <td class="order_print_field">Province/省:</td>
+                                    <td class="order_print_data" style="width: 25%;">{$order.r_province}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Address/地址:</td>
+                                    <td colspan="3" class="order_print_data">{$order.r_address}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Postcode/郵編:</td>
+                                    <td class="order_print_data" style="border-right: 1px;">{$order.r_zip}</td>
+                                    <td class="order_print_field">Country/國家:</td>
+                                    <td class="order_print_data">{$order.r_country}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">E-mail/電郵:</td>
+                                    <td colspan="3" class="order_print_data">{$order.r_email}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">Phone/電話:</td>
+                                    <td colspan="3" class="order_print_data">{$order.r_phone}</td>
+                                </tr>
+                                <tr>
+                                    <td class="order_print_field">ID #/中國身份證:</td>
+                                    <td colspan="3" class="order_print_data">{$order.r_id}</td>
+                                </tr>
+                            </table><!-- 收件人结束 -->
+                        </div><!-- 寄/收件人信息结束 -->
+
+                        <!-- 产品信息 -->
+                        <div style="">
+                            123
+                        </div><!-- 产品信息结束 -->
+
+                        <!-- 手填区域 -->
+                        <div style="">
+                            123
+                        </div><!-- 手填区域结束 -->
+
+                        <!-- 声明 -->
+                        <div style="">
+                            123
+                        </div><!-- 声明结束 -->
+                    </div><!-- 打印区域结束 -->
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;">
+                <div class="col-sm-10 col-sm-offset-1 text-center">
+                    <button class="btn btn-lg btn-primary" onclick="printer('print_area');">Print / 打印</button>
+                </div>
+            </div>
+        <!-- 未找到订单 -->
+        <?php } else { ?>
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1 text-center">
+                    Cannot find order / 找不到訂單
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+
+    <!-- 页脚 -->
+    <?php include("App/Home/View/Default/common/footer.html"); ?>
+
+    <script>
+        function printer(id) {
+            $("#" + id).jqprint();
+        }
+    </script>
+</body>
+</html>

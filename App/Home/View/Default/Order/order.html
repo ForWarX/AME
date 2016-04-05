@@ -16,6 +16,13 @@
         .order_add_goods_row label {
             cursor: pointer;
         }
+        .remove_good {
+            vertical-align: middle !important;
+            text-align: center;
+        }
+        .remove_good > a {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -26,6 +33,16 @@
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
                 <form class="form-horizontal" action="" method="post" onsubmit="return order_form_check($(this));">
+                    <!-- 会员号 -->
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="s_id" class="col-sm-2 control-label">Membership/會員號</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_id" name="s_id" value="{$post.s_id}">
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 寄件人 -->
                     <div class="col-sm-12 order_block">
                         <div class="form-group">
@@ -33,9 +50,9 @@
                             <div class="col-sm-4">
                                 <input type="text" class="form-control order_required" id="s_name" name="s_name" value="{$post.s_name}">
                             </div>
-                            <label for="s_compony" class="col-sm-2 control-label" id="s_compony_label">Company/公司</label>
+                            <label for="s_company" class="col-sm-2 control-label" id="s_company_label">Company/公司</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="s_compony" name="s_compony" value="{$post.s_compony}">
+                                <input type="text" class="form-control" id="s_compony" name="s_company" value="{$post.s_company}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -88,9 +105,9 @@
                             <div class="col-sm-4">
                                 <input type="text" class="form-control order_required" id="r_name" name="r_name" value="{$post.r_name}">
                             </div>
-                            <label for="r_compony" class="col-sm-2 control-label" id="r_compony_label">Company/公司</label>
+                            <label for="r_company" class="col-sm-2 control-label" id="r_company_label">Company/公司</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="r_compony" name="r_compony" value="{$post.r_compony}">
+                                <input type="text" class="form-control" id="r_company" name="r_company" value="{$post.r_company}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -116,7 +133,7 @@
                             </div>
                             <label for="r_country" class="col-sm-2 control-label">Country/國家*</label>
                             <div class="col-sm-4">
-                                <select name="s_country" id="r_country"  class="form-control">
+                                <select name="r_country" id="r_country"  class="form-control">
                                     <option value="US">America/美國</option>
                                     <option value="CA">Canada/加拿大</option>
                                     <option value="CN" selected>China/中國</option>
@@ -135,7 +152,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="r_id" class="col-sm-2 control-label" id="r_id_label">ID #/中國身份證*</label>
+                            <label for="r_id" class="col-sm-2 control-label" id="r_id_label">China ID #/中國身份證*</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control order_required" id="r_id" name="r_id" value="{$post.r_id}">
                             </div>
@@ -154,38 +171,42 @@
                                         <th>Chinese Name/中文名*</th>
                                         <th>Quantity/數量*</th>
                                         <th>Unit Value/單價（C$）*</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="order_goods_list">
-                                    <?php for($i=0; $i < 4; $i++) { ?>
+                                    <?php for($i=0; $i < count($post['code']); $i++) { ?>
                                         <tr>
                                             <td>
                                                 <label for="code" class="sr-only"></label>
-                                                <input type="text" name="code[]" id="code">
+                                                <input type="text" name="code[]" id="code" value="{$post.code.$i}">
                                             </td>
                                             <td>
                                                 <label for="brand" class="sr-only"></label>
-                                                <input type="text" name="brand[]" id="brand">
+                                                <input type="text" name="brand[]" id="brand" value="{$post.brand.$i}">
                                             </td>
                                             <td>
                                                 <label for="name_en" class="sr-only"></label>
-                                                <input type="text" name="name_en[]" id="name_en">
+                                                <input type="text" name="name_en[]" id="name_en" value="{$post.name_en.$i}">
                                             </td>
                                             <td>
                                                 <label for="name_cn" class="sr-only"></label>
-                                                <input type="text" name="name_cn[]" id="name_cn">
+                                                <input type="text" name="name_cn[]" id="name_cn" value="{$post.name_cn.$i}">
                                             </td>
                                             <td>
                                                 <label for="quantity" class="sr-only"></label>
-                                                <input type="text" name="quantity[]" id="quantity">
+                                                <input type="text" name="quantity[]" id="quantity" value="{$post.quantity.$i}">
                                             </td>
                                             <td>
                                                 <label for="unit_value" class="sr-only"></label>
-                                                <input type="text" name="unit_value[]" id="unit_value">
+                                                <input type="text" name="unit_value[]" id="unit_value" value="{$post.unit_value.$i}">
+                                            </td>
+                                            <td class="remove_good">
+                                                <a onclick="order_remove_good($(this));"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                             </td>
                                         </tr>
                                     <?php } ?>
-                                    <tr><!-- 添加新行 -->
+                                    <tr class="order_add_goods"><!-- 添加新行 -->
                                         <td colspan="6" class="order_add_goods_row" onclick="order_add_goods_row($(this), event);">
                                             + Add Good / 添加商品
                                             <label for="add_num" class="sr_only"></label>
@@ -199,27 +220,30 @@
                                                     <tr>
                                                         <td>
                                                             <label for="code" class="sr-only"></label>
-                                                            <input type="text" name="code[]" id="code">
+                                                            <input type="text" name="code[]" id="code" disabled>
                                                         </td>
                                                         <td>
                                                             <label for="brand" class="sr-only"></label>
-                                                            <input type="text" name="brand[]" id="brand">
+                                                            <input type="text" name="brand[]" id="brand" disabled>
                                                         </td>
                                                         <td>
                                                             <label for="name_en" class="sr-only"></label>
-                                                            <input type="text" name="name_en[]" id="name_en">
+                                                            <input type="text" name="name_en[]" id="name_en" disabled>
                                                         </td>
                                                         <td>
                                                             <label for="name_cn" class="sr-only"></label>
-                                                            <input type="text" name="name_cn[]" id="name_cn">
+                                                            <input type="text" name="name_cn[]" id="name_cn" disabled>
                                                         </td>
                                                         <td>
                                                             <label for="quantity" class="sr-only"></label>
-                                                            <input type="text" name="quantity[]" id="quantity">
+                                                            <input type="text" name="quantity[]" id="quantity" disabled>
                                                         </td>
                                                         <td>
                                                             <label for="unit_value" class="sr-only"></label>
-                                                            <input type="text" name="unit_value[]" id="unit_value">
+                                                            <input type="text" name="unit_value[]" id="unit_value" disabled>
+                                                        </td>
+                                                        <td class="remove_good">
+                                                            <a onclick="order_remove_good($(this));"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -243,6 +267,14 @@
     <?php include("App/Home/View/Default/common/footer.html"); ?>
 
     <script>
+        // 表单信息检查
+        var order_error = "<?php if (!empty($order_error)) { echo $order_error; } ?>";
+        $(function() {
+            if (order_error != "") {
+                alert(order_error);
+            }
+        });
+
         // 添加产品信息行
         function order_add_goods_row(ele, event) {
             if (!$(event.target).is("input")) {
@@ -252,6 +284,9 @@
                 for(; num > 0; num--) {
                     if (copy == null) {
                         copy = tr.find(".new_goods_row").find("tr").clone();
+                        copy.find("input").each(function() {
+                            $(this).removeAttr("disabled");
+                        });
                     } else {
                         copy = copy.clone();
                     }
@@ -262,9 +297,11 @@
 
         // 表单验证
         function order_form_check(e) {
-            var tar = e.find(".order_required");
             var doSubmit = true;
-            tar.each(function() {
+
+            // 检查必填项
+            var required = e.find(".order_required");
+            required.each(function() {
                 var t = $(this);
                 if (t.val().length == 0) {
                     doSubmit = false;
@@ -272,7 +309,50 @@
                     return false; // 跳出each
                 }
             });
+
+            if (!doSubmit) return false;
+
+            // 检查产品信息是否完善
+            // 每一行填了一个信息其它信息也都必须填上
+            var goods_list = $("#order_goods_list").find(">tr[class!=order_add_goods]");
+            if (goods_list.length > 0) {
+                var code_list = [];
+                goods_list.each(function () {
+                    var hasData = null;
+                    $(this).find("td").find(">input").each(function () {
+                        if (hasData == null) {
+                            var code = $(this).val();
+
+                            if ($.inArray(code, code_list) > -1) {
+                                doSubmit = false;
+                                alert("Duplicate goods info / 產品信息重複");
+                                return false; // 跳出each
+                            }
+
+                            code_list.push(code);
+                            hasData = code != "";
+                        } else if (hasData != ($(this).val() != "")) {
+                            doSubmit = false;
+                            alert("Goods info missing / 產品信息不全");
+                            return false; // 跳出each
+                        }
+                    });
+
+                    if (!doSubmit) {
+                        return false; // 跳出each
+                    }
+                });
+            } else {
+                doSubmit = false;
+                alert("No goods info / 無產品信息");
+            }
+
             return doSubmit;
+        }
+
+        // 删除产品信息
+        function order_remove_good(e) {
+            e.parent().parent().remove();
         }
     </script>
 </body>

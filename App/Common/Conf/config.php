@@ -5,6 +5,9 @@ return array(
     // 禁止访问的模块
     'MODULE_DENY_LIST'       => array('Common', 'Runtime', 'Upload'),
 
+    // 时区
+    'DEFAULT_TIMEZONE'       => 'America/Toronto',
+
     // 数据库
     'DB_TYPE'                => 'mysql',
     'DB_HOST'                => 'localhost',
