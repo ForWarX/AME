@@ -119,18 +119,65 @@
                         </div><!-- 寄/收件人信息结束 -->
 
                         <!-- 产品信息 -->
-                        <div style="">
-                            123
+                        <div style="width: 100%; margin-top: 20px;">
+                            <table style="width: 100%; text-align: center;" border="1">
+                                <thead><tr>
+                                    <th style="text-align: center;">UPC/條形碼</th>
+                                    <th style="text-align: center;">Brand/品牌</th>
+                                    <th style="text-align: center;">Item English Name/商品英文名</th>
+                                    <th style="text-align: center;">Item Chinese Name/商品中文名</th>
+                                    <th style="text-align: center;">Quantity/數量</th>
+                                    <th style="text-align: center;">Unit value/單價</th>
+                                </tr></thead>
+                                <tbody>
+                                    <?php foreach($goods as $good) { ?>
+                                        <tr>
+                                            <td>{$good.code}</td>
+                                            <td>{$good.brand}</td>
+                                            <td>{$good.name_en}</td>
+                                            <td>{$good.name_cn}</td>
+                                            <td>{$good.quantity}</td>
+                                            <td>{$good.unit_value}</td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div><!-- 产品信息结束 -->
 
                         <!-- 手填区域 -->
-                        <div style="">
-                            123
+                        <div style="width: 100%; margin-top: 25px; font-size: larger; font-weight: 600;">
+                            <div style="width: 40%; border-bottom: 1px solid #000; display: inline-block;">
+                                <span>Sender's Signature</span>
+                                <br>
+                                <span>寄件人簽名</span>
+                            </div>
+                            <div style="width: 40%; border-bottom: 1px solid #000; display: inline-block; float: right;">
+                                <span>Weight / lbs</span>
+                                <br>
+                                <span>重量 / 磅</span>
+                            </div>
+                        </div>
+                        <div style="width: 100%; margin-top: 25px; font-size: larger; font-weight: 600;">
+                            <div style="width: 40%; border-bottom: 1px solid #000; display: inline-block;">
+                                <span>Date</span>
+                                <br>
+                                <span>日期</span>
+                            </div>
+                            <div style="width: 40%; border-bottom: 1px solid #000; display: inline-block; float: right;">
+                                <span>Total Charge / CAD</span>
+                                <br>
+                                <span>費用 / 加幣</span>
+                            </div>
                         </div><!-- 手填区域结束 -->
 
                         <!-- 声明 -->
-                        <div style="">
-                            123
+                        <div style="width: 100%; margin-top: 25px; padding: 0 10px;">
+                            <p>1.根據中國有關規定,海外包裹快遞進入中國大陸需要提供收件人身份證複印件正反兩面。</p>
+                            <p>2.托運物品實際包裹裝箱情況填寫，我公司對任何因為包裹清單填寫造成的延遲清關，退關等不負責任。</p>
+                            <p>3.根據中國海關與本國航空要求，我公司有權對快件開包檢查，對於中國海關要求包裹徵稅，我公司會通知寄件人支付該部分稅款，並有權利在收到寄件人稅款後才予以清關。一切以中國海關核計為準和最後決定。</p>
+                            <p>4.由於海關清關的不確定性，我公司不對包裹抵達收件人手裡的時間做任何承諾，一般情況會在第一天本地機場到達，第三天到達中國機場海關。</p>
+                            <p>5.如未購買保險，本包裹丟失賠償上限為100加元整。</p>
+                            <p>6.保證上述向海關申報內容真實性，如出現虛假申報，一切後果需本人承擔。</p>
                         </div><!-- 声明结束 -->
                     </div><!-- 打印区域结束 -->
                 </div>
