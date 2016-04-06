@@ -66,7 +66,7 @@ class OrderController extends Controller {
                     's_city' => $data['s_city'],
                     's_province' => $data['s_province'],
                     's_address' => $data['s_address'],
-                    's_zip' => $data['s_zip'],
+                    's_zip' => strtoupper($data['s_zip']),
                     's_country' => $data['s_country'],
                     's_email' => $data['s_email'],
                     's_phone' => $data['s_phone'],
@@ -75,7 +75,7 @@ class OrderController extends Controller {
                     'r_city' => $data['r_city'],
                     'r_province' => $data['r_province'],
                     'r_address' => $data['r_address'],
-                    'r_zip' => $data['r_zip'],
+                    'r_zip' => strtoupper($data['r_zip']),
                     'r_country' => $data['r_country'],
                     'r_email' => $data['r_email'],
                     'r_phone' => $data['r_phone'],
@@ -179,7 +179,7 @@ class OrderController extends Controller {
                     foreach($goods_list as $key=>$val) {
                         $goods[$key]['quantity'] = $val['quantity'];
                     }
-//nice_print($order);
+
                     $this->assign('order', $order);
                     $this->assign('goods', $goods);
                 }
@@ -189,6 +189,13 @@ class OrderController extends Controller {
         $this->display();
     }
 
+    // 条形码
+    public function order_bar($code='17951abc', $text='AME1604050001') {
+        $barcode = new \Org\Barcode\Barcode128($code, $text);
+        $barcode->createBarCode();
+    }
+
+    // 测试储存的订单，跳转到订单完成页
     public function order_test($id=0) {
         session("order_done_id", $id);
         redirect('../../order_done.html');

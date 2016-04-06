@@ -313,6 +313,7 @@
             if (!doSubmit) return false;
 
             // 检查产品信息是否完善
+            // 必须要有至少一个产品
             // 每一行填了一个信息其它信息也都必须填上
             var goods_list = $("#order_goods_list").find(">tr[class!=order_add_goods]");
             if (goods_list.length > 0) {
