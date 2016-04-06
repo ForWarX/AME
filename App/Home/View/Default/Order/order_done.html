@@ -20,13 +20,20 @@
                     <!-- 打印区域，为了不受窗口大小影响，写死宽度 -->
                     <div id="print_area" style="width: 1024px; border: 1px solid #000; margin-left: auto; margin-right: auto;">
                         <!-- 表单头部 -->
-                        <div style="width: 40%; display: inline-block; float: left; text-align:center">
+                        <div style="width: 50%; display: inline-block; float: left; text-align:center">
                             <img src="<?php echo ROOT_PATH; ?>App/Home/View/Default/img/web/about_us_logo.png" style="width: 308px;">
                         </div>
-                        <div style="width: 60%; display: inline-block;">
+                        <div style="width: 50%; display: inline-block;">
                             <h3>Tracking #/運單號：{$order.ame_no}</h3>
-                            <h4>Date/日期：{$order.date}<span style="margin-left: 10px;"><img src="<?php echo ROOT_PATH; ?>/Home/Order/order_bar/code/{$order.ame_no}/text/{$order.ame_no}.html"></span></h4>
+                            <h3>Date/日期：{$order.date}</h3>
                         </div><!-- 表单头部结束 -->
+
+                        <!-- 条形码 -->
+                        <div style="width: 100%; border-top: 1px solid #000; margin-top: 5px;">
+                            <div style="width: 50%; text-align: center; margin: 0 auto;">
+                                <img src="<?php echo ROOT_PATH; ?>/Home/Order/order_bar/code/{$order.ame_no}/text/{$order.ame_no}.html" style="margin-top: 15px;">
+                            </div>
+                        </div><!-- 条形码结束 -->
 
                         <!-- AME信息 -->
                         <div style="width: 100%; border-top: 1px solid #000; border-bottom: 1px solid #000; padding-left: 15px;">
@@ -145,7 +152,7 @@
                         </div><!-- 产品信息结束 -->
 
                         <!-- 手填区域 -->
-                        <div style="width: 100%; margin-top: 25px; font-size: larger; font-weight: 600;">
+                        <div style="width: 100%; margin-top: 25px; font-size: larger; font-weight: 600; line-height: 30px;">
                             <div style="width: 40%; border-bottom: 1px solid #000; display: inline-block;">
                                 <span>Sender's Signature</span>
                                 <br>
@@ -157,7 +164,7 @@
                                 <span>重量 / 磅</span>
                             </div>
                         </div>
-                        <div style="width: 100%; margin-top: 25px; font-size: larger; font-weight: 600;">
+                        <div style="width: 100%; margin-top: 25px; font-size: larger; font-weight: 600; line-height: 30px;">
                             <div style="width: 40%; border-bottom: 1px solid #000; display: inline-block;">
                                 <span>Date</span>
                                 <br>

@@ -11,10 +11,10 @@ class Barcode128 {
     const STARTB = 104;
     const STARTC = 105;
     const STOP = 106;
-    private $unit_width = 2; //单位宽度 缺省1个象素
+    private $unit_width = 2; //单位宽度 缺省2个象素，好像1.5像素以上才能被扫描出来
     private $is_set_height = false;
     private $width = -1;
-    private $height = 35;
+    private $height = 50;
     private $quiet_zone = 6;
     private $font_height = 15;
     private $font_type = 4;
@@ -141,7 +141,8 @@ class Barcode128 {
             $this->width +=11;
             $ch = substr($this->code,$i,$step);
             $val = $this->getValueFromChar($ch);
-            $val_sum += $val;
+            $val_sum += ($i/$step+1)*$val;
+            //$val_sum += $val;
             $this->bin_code .= $this->codes[$val];
         }
         $this->width *=$this->unit_width;
@@ -202,7 +203,7 @@ class Barcode128 {
         {
             imagechar($this->image, $this->font_type, 6*$this->unit_width+$t_sx+$i*$t_x, $t_y ,$this->text{$i}, $this->color);
         }
-        ob_end_clean(); // 清除多余的输出
+        ob_clean(); // 清除多余的输出
         if (!$file_name)
         {
             header("Content-Type: image/" . $image_type);
