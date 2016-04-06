@@ -11,7 +11,7 @@ class Barcode128 {
     const STARTB = 104;
     const STARTC = 105;
     const STOP = 106;
-    private $unit_width = 1; //单位宽度 缺省1个象素
+    private $unit_width = 2; //单位宽度 缺省1个象素
     private $is_set_height = false;
     private $width = -1;
     private $height = 35;
