@@ -141,8 +141,7 @@ class Barcode128 {
             $this->width +=11;
             $ch = substr($this->code,$i,$step);
             $val = $this->getValueFromChar($ch);
-            $val_sum += ($i/$step+1)*$val;
-            //$val_sum += $val;
+            $val_sum += ($i/$step+1)*$val; // $val_sum += $val; 最初代码，应该是错的
             $this->bin_code .= $this->codes[$val];
         }
         $this->width *=$this->unit_width;

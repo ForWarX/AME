@@ -3,8 +3,39 @@ namespace Home\Controller;
 use Think\Controller;
 
 class TrackController extends Controller {
+    public function track($ame_no=null) {
+        if (empty($ame_no)) {
+            $ame_no = I("ame_no");
+        }
+        if (!empty($ame_no)) {
+            $model = M("order");
+            $data = $model->field("ame_no,date,state")->where("ame_no='" . $ame_no . "'")->find();
+            $data['date'] = date("m/d/Y", $data['date']);
+            $data['state'] = self::$state_details[$data['state']];
+
+            $this->assign("order_info", $data);
+        }
+
+        $this->display();
+    }
+
+    /**************************************
+     * Private Members
+     **************************************/
+    private static $state_details = array(
+        "pending" => "Pending / 待處理",
+        "cancel" => "Cancel / 取消",
+        "done" => "Done / 完成",
+    );
+
+
+    /**************************************
+     * Canada Post Functions
+     **************************************/
+
     // Canada Post
-    public function cp_track(){
+    // 参数：pin, api, type(real|test)
+    public function cp_track() {
         $pin = I("pin");
         if ($pin != '') {
             $api = I("api") != '' ? I("api") : 'detail';

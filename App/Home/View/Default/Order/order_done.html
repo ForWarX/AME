@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
                     <!-- 打印区域，为了不受窗口大小影响，写死宽度 -->
-                    <div id="print_area" style="width: 1024px; border: 1px solid #000; margin-left: auto; margin-right: auto;">
+                    <div id="print_area" style="width: 1024px; border: 1px solid #000; margin-left: auto; margin-right: auto; position: relative;">
                         <!-- 表单头部 -->
                         <div style="width: 50%; display: inline-block; float: left; text-align:center">
                             <img src="<?php echo ROOT_PATH; ?>App/Home/View/Default/img/web/about_us_logo.png" style="width: 308px;">
@@ -31,7 +31,7 @@
                         <!-- 条形码 -->
                         <div style="width: 100%; border-top: 1px solid #000; margin-top: 5px;">
                             <div style="width: 50%; text-align: center; margin: 0 auto;">
-                                <img src="<?php echo ROOT_PATH; ?>/Home/Order/order_bar/code/{$order.ame_no}/text/{$order.ame_no}.html" style="margin-top: 15px;">
+                                <img src="<?php echo ROOT_PATH; ?>Home/BarCode/create/code/{$order.ame_no}/text/{$order.ame_no}.html" style="margin-top: 15px;">
                             </div>
                         </div><!-- 条形码结束 -->
 
@@ -185,7 +185,13 @@
                             <p>4.由於海關清關的不確定性，我公司不對包裹抵達收件人手裡的時間做任何承諾，一般7-10天送達。</p>
                             <p>5.如未購買保險，本包裹丟失賠償上限為100加元整。</p>
                             <p>6.保證上述向海關申報內容真實性，如出現虛假申報，一切後果需本人承擔。</p>
+                            <p>7.掃一掃右側的二維碼查詢訂單。</p>
                         </div><!-- 声明结束 -->
+
+                        <!-- 二维码 -->
+                        <div style="position: absolute; bottom: 0; right: 0;">
+                            <img src="{$QRCode}">
+                        </div><!-- 二维码结束 -->
                     </div><!-- 打印区域结束 -->
                 </div>
             </div>

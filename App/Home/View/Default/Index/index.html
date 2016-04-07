@@ -12,27 +12,13 @@
         <div class="row index-track" style="margin-bottom: 20px;">
             <div class="col-xs-3 col-xs-offset-1" style="padding-left: 0; padding-right: 10px; height: 100%;">
                 <!-- 包裹查询开始 -->
-                <form class="track-form" action="<?php echo ROOT_PATH; ?>Home/Track/track" method="post" target="_blank">
+                <form class="track-form" action="<?php echo ROOT_PATH; ?>Home/Track/track.html" method="post" target="_blank">
                     <h3 class="text-center track-title" style="color: white;">包裹查询</h3>
                     <div class="form-group">
                         <label for="pin"></label>
-                        <input type="text" name="pin" class="form-control" id="pin" placeholder="输入包裹追踪号">
+                        <input type="text" name="ame_no" class="form-control" id="pin" placeholder="输入包裹追踪号">
                     </div>
-                    <div class="form-group">
-                        <label for="email"></label>
-                        <input type="text" class="form-control" id="email" placeholder="邮箱追踪" disabled>
-                    </div>
-                    <!--
-                    <label class="radio-inline" style="color: white;">
-                        <input type="radio" name="type" value="real" checked> 真实
-                    </label>
-                    <label class="radio-inline" style="color: white;">
-                        <input type="radio" name="type" value="test"> 测试
-                    </label>
-                    -->
                     <button type="submit" class="btn btn-success btn-block" style="color: black; font-weight: bold;">查询</button>
-                    <input type="hidden" name="api" value="detail">
-                    <input type="hidden" name="type" value="test">
                 </form>
                 <!-- 包裹查询结束 -->
             </div>

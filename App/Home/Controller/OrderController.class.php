@@ -182,17 +182,16 @@ class OrderController extends Controller {
 
                     $this->assign('order', $order);
                     $this->assign('goods', $goods);
+
+                    // 二维码
+                    $qr_data = urlencode('http://' . $_SERVER['HTTP_HOST'] . ROOT_PATH . 'Home/Track/track/ame_no/' . $order['ame_no'] . '.html');
+                    $qr_url = ROOT_PATH . 'Home/QRCode/create.html?code=' . $qr_data;
+                    $this->assign('QRCode', $qr_url);
                 }
             }
         }
 
         $this->display();
-    }
-
-    // 条形码
-    public function order_bar($code='17951abc', $text='AME1604050001') {
-        $barcode = new \Org\Barcode\Barcode128($code, $text);
-        $barcode->createBarCode();
     }
 
     // 测试储存的订单，跳转到订单完成页
