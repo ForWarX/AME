@@ -52,7 +52,7 @@ class AdminController extends Controller {
             $map = null;
             $model = M('Order');
             $count = $model->where($map)->count(); // 记录总数
-            $Page = new \Think\Page($count, 1);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+            $Page = new \Think\Page($count, 2);// 实例化分页类 传入总记录数和每页显示的记录数(25)
             //分页跳转的时候保证查询条件
             foreach($map as $key=>$val) {
                 $Page->parameter[$key] = urlencode($val);
