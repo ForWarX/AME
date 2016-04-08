@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <?php include("App/Home/View/Default/common/admin_head.html"); ?>
+</head>
+<body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>">
+    <div class="container-fluid container-top-margin">
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">
+                <table class="table table-striped table-bordered">
+                    <thead><tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>AME单号</th>
+                        <th>下单日期</th>
+                        <th>寄件人</th>
+                        <th>收件人</th>
+                        <th>重量(kg)</th>
+                        <th>快递公司</th>
+                        <th>快递单号</th>
+                        <th>订单状态</th>
+                        <th>操作</th>
+                    </tr></thead>
+                    <tbody>
+                        <?php foreach($orders as $order) { ?>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>{$order.id}</td>
+                                <td>{$order.ame_no}</td>
+                                <td>{$order.date}</td>
+                                <td>{$order.s_name}</td>
+                                <td>{$order.r_name}</td>
+                                <td>{$order.weight}</td>
+                                <td>{$order.track_company}</td>
+                                <td>{$order.trank_no}</td>
+                                <td>{$order.state}</td>
+                                <td>
+                                    <button 
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-xs-12 text-right">
+                {$page}
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面控制器 -->
+    <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
+</body>
+</html>

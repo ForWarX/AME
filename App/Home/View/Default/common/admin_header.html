@@ -1,7 +1,28 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="">
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <!-- 品牌和小屏幕显示方式 -->
+        <div class="navbar-header">
+            <!-- 小屏幕导航列表 -->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ame-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button><!-- 小屏幕导航列表结束 -->
 
+            <!-- Logo -->
+            <div class="navbar-header navbar-left">
+                <a class="navbar-brand" href="index.html" style="padding: 0;">
+                    <img alt="Brand" src="<?php echo ROOT_PATH; ?>App/Home/View/Default/img/web/about_us_logo.png" style="height: 50px;">
+                </a>
+            </div><!-- Logo结束 -->
         </div>
+
+        <!-- 顶部导航元素，小屏幕最多只能显示一个元素 -->
+        <ul class="nav navbar-nav navbar-right">
+            <?php if ($AUTH) { ?>
+                <li><a href="logout.html">Sign Out</a></li>
+            <?php } ?>
+        </ul><!-- 顶部导航元素结束 -->
     </div>
-</div>
+</nav>

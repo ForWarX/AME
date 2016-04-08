@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html class="admin-global">
 <head>
-    <?php include("App/Home/View/Default/common/head.html"); ?>
+    <?php include("App/Home/View/Default/common/admin_head.html"); ?>
 </head>
-<body>
+<body class="admin-global">
     <!-- 页头 -->
     <?php include("App/Home/View/Default/common/admin_header.html"); ?>
 
-    <div class="container-fluid">
+    <div class="container-fluid admin-container">
         <div class="row">
-            <div class="col-xs-12">
+            <!-- 侧导航 -->
+            <div class="col-md-1 col-sm-2 col-xs-12 sidebar-menu">
+                <?php include "App/Home/View/Default/common/admin_side_nav.html"; ?>
+            </div>
 
+            <!-- 内容 -->
+            <div class="col-md-11 col-sm-10 col-xs-12 admin-area">
+                <iframe id="admin_main_iframe" src="welcome.html"></iframe>
             </div>
         </div>
     </div>
+
+    <!-- 侧导航控制器 -->
+    <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_side_nav.js"></script>
 </body>
 </html>
