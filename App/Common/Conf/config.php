@@ -2,6 +2,9 @@
 return array(
     //'配置项'=>'配置值'
 
+    // 调试
+    //'SHOW_PAGE_TRACE' =>true,
+
     // 禁止访问的模块
     'MODULE_DENY_LIST'       => array('Common', 'Runtime', 'Upload'),
 
