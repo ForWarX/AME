@@ -3,48 +3,49 @@
 <head>
     <?php include("App/Home/View/Default/common/admin_head.html"); ?>
 </head>
-<body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>">
+<body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
     <div class="container-fluid container-top-margin">
         <div class="row">
             <div class="col-sm-12">
-                <div class="page-header">
-                    <h1 class="text-center">
-                        {$order.ame_no} <small>{$order.date}</small>
-                        <button class="btn btn-primary btn-lg" style="float: right;">提交改动</button>
-                    </h1>
-                </div>
-                <form class="form-horizontal">
+                <form class="form-horizontal" action="" method="post">
+                    <div class="page-header">
+                        <h1 class="text-center">
+                            {$order.ame_no} <small>{$order.date}</small>
+                            <button class="btn btn-primary btn-lg" type="submit" style="float: right;">提交改动</button>
+                        </h1>
+                    </div>
+
                     <h3>订单状态：{$order.state}</h3>
 
                     <h3>寄件人</h3>
                     <div class="form-group">
                         <label for="s_name" class="col-sm-1 control-label">姓名</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="s_name" name="s_name" value="{$order.s_name}">
+                            <input type="text" class="form-control update" id="s_name" data-name="s_name" value="{$order.s_name}">
                         </div>
                         <label for="s_company" class="col-sm-1 control-label">公司</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="s_company" name="s_company" value="{$order.s_company}">
+                            <input type="text" class="form-control update" id="s_company" data-name="s_company" value="{$order.s_company}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="s_address" class="col-sm-1 control-label">地址</label>
                         <div class="col-sm-11">
-                            <input type="text" class="form-control" id="s_address" name="s_address" value="{$order.s_address}">
+                            <input type="text" class="form-control update" id="s_address" data-name="s_address" value="{$order.s_address}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="s_city" class="col-sm-1 control-label">城市</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="s_city" name="s_city" value="{$order.s_city}">
+                            <input type="text" class="form-control update" id="s_city" data-name="s_city" value="{$order.s_city}">
                         </div>
                         <label for="s_province" class="col-sm-1 control-label">省份</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="s_province" name="s_province" value="{$order.s_province}">
+                            <input type="text" class="form-control update" id="s_province" data-name="s_province" value="{$order.s_province}">
                         </div>
                         <label for="s_country" class="col-sm-1 control-label">国家</label>
                         <div class="col-sm-3">
-                            <select name="s_country" id="s_country"  class="form-control">
+                            <select data-name="s_country" id="s_country"  class="form-control update">
                                 <?php foreach($countries as $country) { ?>
                                     <option value="{$country.code}" <?php if ($country['code']==$order['s_country']) {?>selected<?php } ?>>{$country.name_cn}</option>
                                 <?php } ?>
@@ -54,21 +55,21 @@
                     <div class="form-group">
                         <label for="s_zip" class="col-sm-1 control-label">邮编</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="s_zip" name="s_zip" value="{$order.s_zip}">
+                            <input type="text" class="form-control update" id="s_zip" data-name="s_zip" value="{$order.s_zip}">
                         </div>
                         <label for="s_phone" class="col-sm-1 control-label">电话</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="s_phone" name="s_phone" value="{$order.s_phone}">
+                            <input type="text" class="form-control update" id="s_phone" data-name="s_phone" value="{$order.s_phone}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="s_email" class="col-sm-1 control-label">邮箱</label>
                         <div class="col-sm-5">
-                            <input type="email" class="form-control" id="s_email" name="s_email" value="{$order.s_email}">
+                            <input type="email" class="form-control update" id="s_email" data-name="s_email" value="{$order.s_email}">
                         </div>
                         <label for="s_id" class="col-sm-1 control-label">会员</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="s_id" name="s_id" value="{$order.s_id}">
+                            <input type="text" class="form-control update" id="s_id" data-name="s_id" value="{$order.s_id}">
                         </div>
                     </div>
 
@@ -76,33 +77,33 @@
                     <div class="form-group">
                         <label for="r_name" class="col-sm-1 control-label">姓名</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="r_name" name="r_name" value="{$order.r_name}">
+                            <input type="text" class="form-control update" id="r_name" data-name="r_name" value="{$order.r_name}">
                         </div>
                         <label for="r_company" class="col-sm-1 control-label">公司</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="r_company" name="r_company" value="{$order.r_company}">
+                            <input type="text" class="form-control update" id="r_company" data-name="r_company" value="{$order.r_company}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="r_address" class="col-sm-1 control-label">地址</label>
                         <div class="col-sm-11">
-                            <input type="text" class="form-control" id="r_address" name="r_address" value="{$order.r_address}">
+                            <input type="text" class="form-control update" id="r_address" data-name="r_address" value="{$order.r_address}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="r_city" class="col-sm-1 control-label">城市</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="r_city" name="r_city" value="{$order.r_city}">
+                            <input type="text" class="form-control update" id="r_city" data-name="r_city" value="{$order.r_city}">
                         </div>
                         <label for="r_province" class="col-sm-1 control-label">省份</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="r_province" name="r_province" value="{$order.r_province}">
+                            <input type="text" class="form-control update" id="r_province" data-name="r_province" value="{$order.r_province}">
                         </div>
                         <label for="r_country" class="col-sm-1 control-label">国家</label>
                         <div class="col-sm-3">
-                            <select name="r_country" id="r_country"  class="form-control">
+                            <select data-name="r_country" id="r_country"  class="form-control update">
                                 <?php foreach($countries as $country) { ?>
-                                <option value="{$country.code}" <?php if ($country['code']==$order['r_country']) {?>selected<?php } ?>>{$country.name_cn}</option>
+                                    <option value="{$country.code}" <?php if ($country['code']==$order['r_country']) {?>selected<?php } ?>>{$country.name_cn}</option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -110,21 +111,21 @@
                     <div class="form-group">
                         <label for="r_zip" class="col-sm-1 control-label">邮编</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="r_zip" name="r_zip" value="{$order.r_zip}">
+                            <input type="text" class="form-control update" id="r_zip" data-name="r_zip" value="{$order.r_zip}">
                         </div>
                         <label for="r_phone" class="col-sm-1 control-label">电话</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="r_phone" name="r_phone" value="{$order.r_phone}">
+                            <input type="text" class="form-control update" id="r_phone" data-name="r_phone" value="{$order.r_phone}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="r_email" class="col-sm-1 control-label">邮箱</label>
                         <div class="col-sm-5">
-                            <input type="email" class="form-control" id="r_email" name="r_email" value="{$order.r_email}">
+                            <input type="email" class="form-control update" id="r_email" data-name="r_email" value="{$order.r_email}">
                         </div>
                         <label for="r_id" class="col-sm-1 control-label">证件</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="r_id" name="r_id" value="{$order.r_id}">
+                            <input type="text" class="form-control update" id="r_id" data-name="r_id" value="{$order.r_id}">
                         </div>
                     </div>
 
@@ -166,6 +167,13 @@
         function good_detail($id) {
             //window.location = "";
         }
+
+        // 修改数据后加入name属性
+        $(".update").on("change", function() {
+            var tar = $(this);
+            var name = tar.data("name");
+            tar.attr("name", name);
+        });
     </script>
 </body>
 </html>

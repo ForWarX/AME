@@ -7,10 +7,10 @@
     <div class="container-fluid container-top-margin">
         <div class="row">
             <div class="col-sm-12 col-xs-12">
-                <form class="form-inline" action="" method="post" onsubmit="return check_cond($(this));">
+                <form class="form-inline" action="" method="post">
                     <div class="form-group">
                         <label for="condition">模糊查找</label>
-                        <input type="text" id="condition" name="condition" placeholder="ID、单号">
+                        <input type="text" id="condition" name="condition">
                     </div>
 
                     <!-- 之前的查询内容 -->
@@ -30,35 +30,35 @@
                 <table class="table table-bordered table-hover">
                     <thead><tr>
                         <th><input type="checkbox" onclick="select_all($(this));"></th>
-                        <th>ID</th>
-                        <th>AME单号</th>
-                        <th>下单日期</th>
-                        <th>寄件人</th>
-                        <th>收件人</th>
-                        <th>重量(kg)</th>
-                        <th>快递公司</th>
-                        <th>快递单号</th>
-                        <th>订单状态</th>
+                        <th>会员号</th>
+                        <th>名字</th>
+                        <th>公司</th>
+                        <th>地址</th>
+                        <th>城市</th>
+                        <th>省份</th>
+                        <th>国家</th>
+                        <th>邮编</th>
+                        <th>电话</th>
+                        <th>邮箱</th>
                         <th>操作</th>
                     </tr></thead>
                     <tbody>
-                        <?php foreach($orders as $order) { ?>
+                        <?php foreach($users as $user) { ?>
                             <tr>
                                 <td><input type="checkbox" class="select_tar"></td>
-                                <td>{$order.id}</td>
-                                <td>{$order.ame_no}</td>
-                                <td>{$order.date}</td>
-                                <td>{$order.s_name}</td>
-                                <td>{$order.r_name}</td>
-                                <td>{$order.weight}</td>
-                                <td>{$order.track_company}</td>
-                                <td>{$order.trank_no}</td>
-                                <td>{$order.state}</td>
+                                <td>{$user.user_id}</td>
+                                <td>{$user.name}</td>
+                                <td>{$user.company}</td>
+                                <td>{$user.address}</td>
+                                <td>{$user.city}</td>
+                                <td>{$user.province}</td>
+                                <td>{$user.country}</td>
+                                <td>{$user.zip}</td>
+                                <td>{$user.phone}</td>
+                                <td>{$user.email}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_done/id/{$order.id}.html" role="button">查看</a>
-                                    <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
-                                    <a class="btn btn-default btn-xs" href="#" role="button">完成</a>
-                                    <a class="btn btn-default btn-xs" href="#" role="button">取消</a>
+                                    <a class="btn btn-default btn-xs" href="user_detail/id/{$user.id}.html" role="button">修改</a>
+                                    <a class="btn btn-default btn-xs" href="user_delete/id/{$user.id}.html" role="button" onclick="return confirm('确定删除？');">删除</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -75,17 +75,5 @@
 
     <!-- 页面控制器 -->
     <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
-
-    <script>
-        // 模糊查找条件检查
-        function check_cond(e) {
-            var cond = e.find("#condition").val();
-            if (cond.indexOf("/") != -1) {
-                alert("查询条件不能带有 /");
-                return false;
-            }
-            return true;
-        }
-    </script>
 </body>
 </html>

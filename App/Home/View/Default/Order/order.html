@@ -38,7 +38,10 @@
                         <div class="form-group">
                             <label for="s_id" class="col-sm-2 control-label">Membership/會員號</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="s_id" name="s_id" value="{$post.s_id}">
+                                <input type="text" class="form-control" id="s_id" name="s_id" value="{$post.s_id}" onchange="get_member_info($(this));">
+                            </div>
+                            <div class="col-sm-6">
+                                <h5>（填寫會員號后將自動填寫部分信息）</h5>
                             </div>
                         </div>
                     </div>
@@ -52,7 +55,7 @@
                             </div>
                             <label for="s_company" class="col-sm-2 control-label" id="s_company_label">Company/公司</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="s_compony" name="s_company" value="{$post.s_company}">
+                                <input type="text" class="form-control" id="s_company" name="s_company" value="{$post.s_company}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -352,6 +355,36 @@
         // 删除产品信息
         function order_remove_good(e) {
             e.parent().parent().remove();
+        }
+
+        // 获取会员信息
+        function get_member_info(e) {
+            $id = e.val();
+            if ($id.length > 0) {
+                $url = "<?php echo ROOT_PATH;?>Home/Order/ajax_user_data/id/" + $id + ".html";
+                $.get($url, function (data) {
+                    if (data != null) {
+                        var tar = $("#s_name");
+                        if (tar.val() == "") tar.val(data['name']);
+                        tar = $("#s_company");
+                        if (tar.val() == "") tar.val(data['company']);
+                        tar = $("#s_city");
+                        if (tar.val() == "") tar.val(data['city']);
+                        tar = $("#s_prov");
+                        if (tar.val() == "") tar.val(data['province']);
+                        tar = $("#s_addr");
+                        if (tar.val() == "") tar.val(data['address']);
+                        tar = $("#s_zip");
+                        if (tar.val() == "") tar.val(data['zip']);
+                        tar = $("#s_country");
+                        tar.val(data['country']);
+                        tar = $("#s_email");
+                        if (tar.val() == "") tar.val(data['email']);
+                        tar = $("#s_phone");
+                        if (tar.val() == "") tar.val(data['phone']);
+                    }
+                });
+            }
         }
     </script>
 </body>

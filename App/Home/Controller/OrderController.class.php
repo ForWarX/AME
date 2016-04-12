@@ -205,6 +205,16 @@ class OrderController extends Controller {
         redirect('../../order_done.html');
     }
 
+    // ajax获取用户信息
+    // 需要会员号参数
+    public function ajax_user_data($id=null) {
+        if (IS_AJAX && !empty($id)) {
+            $model = M("user");
+            $user = $model->where("user_id='%s'", $id)->find();
+            $this->ajaxReturn($user);
+        }
+    }
+
     // ================================================================================================
     //                                             私有成员
     // ================================================================================================

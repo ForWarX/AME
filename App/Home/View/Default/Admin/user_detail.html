@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <?php include("App/Home/View/Default/common/admin_head.html"); ?>
+</head>
+<body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
+    <div class="container-fluid container-top-margin">
+        <div class="row">
+            <div class="col-sm-12">
+                <form class="form-horizontal" action="" method="post">
+                    <div class="page-header">
+                        <h1 class="text-center">
+                            会员信息
+                            <button class="btn btn-primary btn-lg" type="submit" style="float: right;">提交改动</button>
+                        </h1>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user_id" class="col-sm-1 control-label">会员</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control update" id="user_id" data-name="user_id" value="{$user.user_id}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-1 control-label">姓名</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control update" id="name" data-name="name" value="{$user.name}">
+                        </div>
+                        <label for="company" class="col-sm-1 control-label">公司</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control update" id="company" data-name="company" value="{$user.company}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="col-sm-1 control-label">地址</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control update" id="address" data-name="address" value="{$user.address}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="city" class="col-sm-1 control-label">城市</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control update" id="city" data-name="city" value="{$user.city}">
+                        </div>
+                        <label for="province" class="col-sm-1 control-label">省份</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control update" id="province" data-name="province" value="{$user.province}">
+                        </div>
+                        <label for="country" class="col-sm-1 control-label">国家</label>
+                        <div class="col-sm-3">
+                            <select data-name="country" id="country"  class="form-control update">
+                                <option></option>
+                                <?php foreach($countries as $country) { ?>
+                                    <option value="{$country.code}" <?php if ($country['code']==$user['country']) {?>selected<?php } ?>>{$country.name_cn}</option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="zip" class="col-sm-1 control-label">邮编</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control update" id="zip" data-name="zip" value="{$user.zip}">
+                        </div>
+                        <label for="phone" class="col-sm-1 control-label">电话</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control update" id="phone" data-name="phone" value="{$user.phone}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-1 control-label">邮箱</label>
+                        <div class="col-sm-5">
+                            <input type="email" class="form-control update" id="email" data-name="email" value="{$user.email}">
+                        </div>
+                        <label for="id_card" class="col-sm-1 control-label">证件</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control update" id="id_card" data-name="id_card" value="{$user.id_card}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面控制器 -->
+    <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
+
+    <script>
+        // 修改数据后加入name属性
+        $(".update").on("change", function() {
+            var tar = $(this);
+            var name = tar.data("name");
+            tar.attr("name", name);
+        });
+    </script>
+</body>
+</html>
