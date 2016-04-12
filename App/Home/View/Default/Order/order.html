@@ -79,10 +79,9 @@
                             <label for="s_country" class="col-sm-2 control-label">Country/國家*</label>
                             <div class="col-sm-4">
                                 <select name="s_country" id="s_country"  class="form-control">
-                                    <option value="US">America/美國</option>
-                                    <option value="CA" selected>Canada/加拿大</option>
-                                    <option value="CN">China/中國</option>
-                                    <option value="TW">Taiwan/台灣</option>
+                                    <?php foreach($countries as $country) { ?>
+                                    <option value="{$country.code}" <?php if ($country['code']=='CA') {?>selected<?php } ?>>{$country.name_en}/{$country.name_zh}</option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -134,10 +133,9 @@
                             <label for="r_country" class="col-sm-2 control-label">Country/國家*</label>
                             <div class="col-sm-4">
                                 <select name="r_country" id="r_country"  class="form-control">
-                                    <option value="US">America/美國</option>
-                                    <option value="CA">Canada/加拿大</option>
-                                    <option value="CN" selected>China/中國</option>
-                                    <option value="TW">Taiwan/台灣</option>
+                                    <?php foreach($countries as $country) { ?>
+                                        <option value="{$country.code}" <?php if ($country['code']=='CN') {?>selected<?php } ?>>{$country.name_en}/{$country.name_zh}</option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>

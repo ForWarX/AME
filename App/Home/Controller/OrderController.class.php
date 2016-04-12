@@ -145,18 +145,23 @@ class OrderController extends Controller {
             }
         }
 
+        // 获取国家代码
+        $model = M("order_country");
+        $countries = $model->where("is_open=1")->order("name_en")->select();
+        $this->assign("countries", $countries);
+
         $this->display();
     }
 
     // 查看已保存的订单
     // 为了防止查看别人的订单，统一从session里获取订单的id，所以调用此页面前要先存订单id
     // session key: order_done_id
-    public function order_done() {
-        $id = session("order_done_id");
+    public function order_done($id=null) {
+        if (empty($id)) $id = session("order_done_id");
         if (!empty($id)) {
             // 获取订单信息
             $model = M("order");
-            $order = $model->where("id=" . $id)->find();
+            $order = $model->where("id='%d'", $id)->find();
 
             if (!empty($order)) {
                 $order['date'] = date("m/d/Y", $order['date']); // 处理日期

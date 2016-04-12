@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <?php include("App/Home/View/Default/common/admin_head.html"); ?>
+</head>
+<body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>">
+    <div class="container-fluid container-top-margin">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-header">
+                    <h1 class="text-center">
+                        {$order.ame_no} <small>{$order.date}</small>
+                        <button class="btn btn-primary btn-lg" style="float: right;">提交改动</button>
+                    </h1>
+                </div>
+                <form class="form-horizontal">
+                    <h3>订单状态：{$order.state}</h3>
+
+                    <h3>寄件人</h3>
+                    <div class="form-group">
+                        <label for="s_name" class="col-sm-1 control-label">姓名</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="s_name" name="s_name" value="{$order.s_name}">
+                        </div>
+                        <label for="s_company" class="col-sm-1 control-label">公司</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="s_company" name="s_company" value="{$order.s_company}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="s_address" class="col-sm-1 control-label">地址</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" id="s_address" name="s_address" value="{$order.s_address}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="s_city" class="col-sm-1 control-label">城市</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="s_city" name="s_city" value="{$order.s_city}">
+                        </div>
+                        <label for="s_province" class="col-sm-1 control-label">省份</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="s_province" name="s_province" value="{$order.s_province}">
+                        </div>
+                        <label for="s_country" class="col-sm-1 control-label">国家</label>
+                        <div class="col-sm-3">
+                            <select name="s_country" id="s_country"  class="form-control">
+                                <?php foreach($countries as $country) { ?>
+                                    <option value="{$country.code}" <?php if ($country['code']==$order['s_country']) {?>selected<?php } ?>>{$country.name_cn}</option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="s_zip" class="col-sm-1 control-label">邮编</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="s_zip" name="s_zip" value="{$order.s_zip}">
+                        </div>
+                        <label for="s_phone" class="col-sm-1 control-label">电话</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="s_phone" name="s_phone" value="{$order.s_phone}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="s_email" class="col-sm-1 control-label">邮箱</label>
+                        <div class="col-sm-5">
+                            <input type="email" class="form-control" id="s_email" name="s_email" value="{$order.s_email}">
+                        </div>
+                        <label for="s_id" class="col-sm-1 control-label">会员</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="s_id" name="s_id" value="{$order.s_id}">
+                        </div>
+                    </div>
+
+                    <h3>收件人</h3>
+                    <div class="form-group">
+                        <label for="r_name" class="col-sm-1 control-label">姓名</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="r_name" name="r_name" value="{$order.r_name}">
+                        </div>
+                        <label for="r_company" class="col-sm-1 control-label">公司</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="r_company" name="r_company" value="{$order.r_company}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="r_address" class="col-sm-1 control-label">地址</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" id="r_address" name="r_address" value="{$order.r_address}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="r_city" class="col-sm-1 control-label">城市</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="r_city" name="r_city" value="{$order.r_city}">
+                        </div>
+                        <label for="r_province" class="col-sm-1 control-label">省份</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="r_province" name="r_province" value="{$order.r_province}">
+                        </div>
+                        <label for="r_country" class="col-sm-1 control-label">国家</label>
+                        <div class="col-sm-3">
+                            <select name="r_country" id="r_country"  class="form-control">
+                                <?php foreach($countries as $country) { ?>
+                                <option value="{$country.code}" <?php if ($country['code']==$order['r_country']) {?>selected<?php } ?>>{$country.name_cn}</option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="r_zip" class="col-sm-1 control-label">邮编</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="r_zip" name="r_zip" value="{$order.r_zip}">
+                        </div>
+                        <label for="r_phone" class="col-sm-1 control-label">电话</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="r_phone" name="r_phone" value="{$order.r_phone}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="r_email" class="col-sm-1 control-label">邮箱</label>
+                        <div class="col-sm-5">
+                            <input type="email" class="form-control" id="r_email" name="r_email" value="{$order.r_email}">
+                        </div>
+                        <label for="r_id" class="col-sm-1 control-label">证件</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="r_id" name="r_id" value="{$order.r_id}">
+                        </div>
+                    </div>
+
+                    <h3>商品清单</h3>
+                    <table class="table table-hover">
+                        <thead><tr>
+                            <th>条形码</th>
+                            <th>中文名</th>
+                            <th>英文名</th>
+                            <th>品牌</th>
+                            <th>数量</th>
+                            <th>单价（C$）</th>
+                            <th>备案状态</th>
+                        </tr></thead>
+                        <tbody class="admin_goods_list">
+                            <?php foreach($goods as $good) { ?>
+                                <tr onclick="good_detail({$good.id});">
+                                    <td>{$good.code}</td>
+                                    <td>{$good.name_cn}</td>
+                                    <td>{$good.name_en}</td>
+                                    <td>{$good.brand}</td>
+                                    <td>{$good.quantity}</td>
+                                    <td>{$good.unit_value}</td>
+                                    <td>{$good.state}</td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面控制器 -->
+    <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
+
+    <script>
+        // 转到产品详情页
+        function good_detail($id) {
+            //window.location = "";
+        }
+    </script>
+</body>
+</html>

@@ -139,3 +139,7 @@
     display: table-cell;
     vertical-align: middle;
 }
+/*订单详情*/
+.admin_goods_list tr {
+    cursor: pointer;
+}

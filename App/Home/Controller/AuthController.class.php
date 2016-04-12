@@ -30,4 +30,11 @@ class AuthController extends Controller {
     public function is_admin() {
         return session("auth") == "ame_admin";
     }
+
+    // 重置session到期时间
+    public function auth_reset_time() {
+        $auth = session("auth");
+        session("auth", null);
+        session("auth", $auth);
+    }
 }
