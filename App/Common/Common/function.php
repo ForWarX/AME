@@ -31,3 +31,13 @@ function object_to_array($obj) {
         return $arr;
     }
 }
+
+// 简体转繁体
+function s2t($str) {
+    return \Org\Util\FanJianConvert::simple2tradition($str);
+}
+
+// 繁体转简体
+function t2s($str) {
+    return \Org\Util\FanJianConvert::tradition2simple($str);
+}

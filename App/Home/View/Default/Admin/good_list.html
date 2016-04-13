@@ -30,39 +30,24 @@
                 <table class="table table-bordered table-hover">
                     <thead><tr>
                         <th><input type="checkbox" onclick="select_all($(this));"></th>
-                        <th>ID</th>
-                        <th>AME单号</th>
-                        <th>下单日期</th>
-                        <th>寄件人</th>
-                        <th>收件人</th>
-                        <th>重量(kg)</th>
-                        <th>快递公司</th>
-                        <th>快递单号</th>
-                        <th>订单状态</th>
+                        <th>条形码</th>
+                        <th>中文名</th>
+                        <th>英文名</th>
+                        <th>单价（C$）</th>
+                        <th>备案状态</th>
                         <th>操作</th>
                     </tr></thead>
                     <tbody>
-                        <?php foreach($orders as $order) { ?>
+                        <?php foreach($goods as $good) { ?>
                             <tr>
                                 <td><input type="checkbox" class="select_tar"></td>
-                                <td>{$order.id}</td>
-                                <td>{$order.ame_no}</td>
-                                <td>{$order.date}</td>
-                                <td>{$order.s_name}</td>
-                                <td>{$order.r_name}</td>
-                                <td>{$order.weight}</td>
-                                <td>{$order.track_company}</td>
-                                <td>{$order.trank_no}</td>
-                                <td>{$order.state_detail}</td>
+                                <td>{$good.code}</td>
+                                <td>{$good.name_cn}</td>
+                                <td>{$good.name_en}</td>
+                                <td>{$good.unit_value}</td>
+                                <td>{$good.state_detail}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_done/id/{$order.id}.html" role="button">查看</a>
-                                    <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel') { ?>
-                                        <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
-                                        <a class="btn btn-default btn-xs" href="#" role="button">发送</a>
-                                    <?php } ?>
-                                    <?php if ($order['state'] == 'pending') { ?>
-                                        <a class="btn btn-default btn-xs" href="#" role="button">取消</a>
-                                    <?php } ?>
+                                    <a class="btn btn-default btn-xs" href="good_detail/id/{$good.id}.html" role="button">修改</a>
                                 </td>
                             </tr>
                         <?php } ?>

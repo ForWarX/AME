@@ -180,7 +180,7 @@
                                         <tr>
                                             <td>
                                                 <label for="code" class="sr-only"></label>
-                                                <input type="text" name="code[]" id="code" value="{$post.code.$i}">
+                                                <input type="text" name="code[]" id="code" value="{$post.code.$i}" onchange="get_good_info($(this));">
                                             </td>
                                             <td>
                                                 <label for="brand" class="sr-only"></label>
@@ -221,7 +221,7 @@
                                                     <tr>
                                                         <td>
                                                             <label for="code" class="sr-only"></label>
-                                                            <input type="text" name="code[]" id="code" disabled>
+                                                            <input type="text" name="code[]" id="code" onchange="get_good_info($(this));" disabled>
                                                         </td>
                                                         <td>
                                                             <label for="brand" class="sr-only"></label>
@@ -382,6 +382,27 @@
                         if (tar.val() == "") tar.val(data['email']);
                         tar = $("#s_phone");
                         if (tar.val() == "") tar.val(data['phone']);
+                    }
+                });
+            }
+        }
+
+        // 获取商品信息
+        function get_good_info(e) {
+            $code = e.val();
+            if ($id.length > 0) {
+                $url = "<?php echo ROOT_PATH;?>Home/Order/ajax_good_data/code/" + $code + ".html";
+                $.get($url, function (data) {
+                    if (data != null) {
+                        e = e.parent().parent();
+                        tar = e.find("#brand");
+                        tar.val(data['brand']);
+                        tar = e.find("#name_en");
+                        tar.val(data['name_en']);
+                        tar = e.find("#name_cn");
+                        tar.val(data['name_cn']);
+                        tar = e.find("#unit_value");
+                        tar.val(data['unit_value']);
                     }
                 });
             }

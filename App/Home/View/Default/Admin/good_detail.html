@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <?php include("App/Home/View/Default/common/admin_head.html"); ?>
+</head>
+<body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
+    <div class="container-fluid container-top-margin">
+        <div class="row">
+            <div class="col-sm-12">
+                <form class="form-horizontal" action="" method="post">
+                    <div class="page-header">
+                        <h1 class="text-center">
+                            商品信息 <small>{$good.state_detail}</small>
+                            <button class="btn btn-primary btn-lg" type="submit" style="float: right;">提交改动</button>
+                        </h1>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="code" class="col-sm-2 control-label">条形码</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="code" data-name="code" value="{$good.code}">
+                        </div>
+                        <label for="brand" class="col-sm-2 control-label">品牌</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="brand" data-name="brand" value="{$good.brand}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name_cn" class="col-sm-2 control-label">中文名</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="name_cn" data-name="name_cn" value="{$good.name_cn}">
+                        </div>
+                        <label for="name_en" class="col-sm-2 control-label">英文名</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="name_en" data-name="name_en" value="{$good.name_en}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="part_no" class="col-sm-2 control-label">型号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="part_no" data-name="part_no" value="{$good.part_no}">
+                        </div>
+                        <label for="spec" class="col-sm-2 control-label">规格</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="spec" data-name="spec" value="{$good.spec}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="made_in" class="col-sm-2 control-label">产地</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="made_in" data-name="made_in" value="{$good.made_in}">
+                        </div>
+                        <label for="func" class="col-sm-2 control-label">功能</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="func" data-name="func" value="{$good.func}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="use" class="col-sm-2 control-label">用途</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="use" data-name="use" value="{$good.use}">
+                        </div>
+                        <label for="tax_unit" class="col-sm-2 control-label">计税单位</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="tax_unit" data-name="tax_unit" value="{$good.tax_unit}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit_value" class="col-sm-2 control-label">单价（C$）</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="unit_value" data-name="unit_value" value="{$good.unit_value}">
+                        </div>
+                        <label for="tos" class="col-sm-2 control-label">业务类型</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="tos" data-name="tos" value="{$good.tos}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="district" class="col-sm-2 control-label">关区</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="district" data-name="district" value="{$good.district}">
+                        </div>
+                        <label for="art_no" class="col-sm-2 control-label">货号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="art_no" data-name="art_no" value="{$good.art_no}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="declare_unit" class="col-sm-2 control-label">申报单位</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="declare_unit" data-name="declare_unit" value="{$good.declare_unit}">
+                        </div>
+                        <label for="declare_num" class="col-sm-2 control-label">申报数量</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="declare_num" data-name="declare_num" value="{$good.declare_num}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="gross_weight" class="col-sm-2 control-label">毛重（kg）</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="gross_weight" data-name="gross_weight" value="{$good.gross_weight}">
+                        </div>
+                        <label for="net_weight" class="col-sm-2 control-label">净重（kg）</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="net_weight" data-name="net_weight" value="{$good.net_weight}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sequence" class="col-sm-2 control-label">物资序号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="sequence" data-name="sequence" value="{$good.sequence}">
+                        </div>
+                        <label for="rule_no" class="col-sm-2 control-label">规则型号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="rule_no" data-name="rule_no" value="{$good.rule_no}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="owner_code" class="col-sm-2 control-label">货主编码</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="owner_code" data-name="owner_code" value="{$good.owner_code}">
+                        </div>
+                        <label for="hs_code" class="col-sm-2 control-label">税则号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="hs_code" data-name="hs_code" value="{$good.hs_code}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tax" class="col-sm-2 control-label">税率</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="tax" data-name="tax" value="{$good.tax}">
+                        </div>
+                        <label for="cif_price" class="col-sm-2 control-label">完税价格（RMB）</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="cif_price" data-name="cif_price" value="{$good.cif_price}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="estimated_tariff" class="col-sm-2 control-label">预估关税（RMB）</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="estimated_tariff" data-name="estimated_tariff" value="{$good.estimated_tariff}">
+                        </div>
+                        <label for="total_price" class="col-sm-2 control-label">商品含税价（RMB）</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="total_price" data-name="id_card" value="{$good.total_price}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="made_date" class="col-sm-2 control-label">出厂日期</label>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control update" id="made_date" data-name="made_date" value="{$good.made_date}">
+                        </div>
+                        <label for="comment" class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control update" id="comment" data-name="comment" value="{$good.comment}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ingredients" class="col-sm-2 control-label">成分</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control update" id="ingredients" data-name="ingredients">{$good.ingredients}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- 固定数据 -->
+                    <input type="hidden" name="quantity" value="1">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面控制器 -->
+    <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
+
+    <script>
+        // 修改数据后加入name属性
+        $(".update").on("change", function() {
+            var tar = $(this);
+            var name = tar.data("name");
+            tar.attr("name", name);
+        });
+    </script>
+</body>
+</html>

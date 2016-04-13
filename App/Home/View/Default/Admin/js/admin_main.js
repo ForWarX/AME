@@ -14,3 +14,13 @@ function select_all(e) {
         $(".select_tar").removeAttr("checked");
     }
 }
+
+// 模糊查找条件检查
+function check_cond(e) {
+    var cond = e.find("#condition").val();
+    if (cond.indexOf("/") != -1) {
+        alert("查询条件不能带有 /");
+        return false;
+    }
+    return true;
+}

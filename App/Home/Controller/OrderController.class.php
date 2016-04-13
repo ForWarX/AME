@@ -61,20 +61,20 @@ class OrderController extends Controller {
                 // 基本信息
                 $order = array(
                     's_id' => $data['s_id'],
-                    's_name' => $data['s_name'],
-                    's_company' => $data['s_company'],
-                    's_city' => $data['s_city'],
-                    's_province' => $data['s_province'],
-                    's_address' => $data['s_address'],
+                    's_name' => t2s($data['s_name']),
+                    's_company' => t2s($data['s_company']),
+                    's_city' => t2s($data['s_city']),
+                    's_province' => t2s($data['s_province']),
+                    's_address' => t2s($data['s_address']),
                     's_zip' => strtoupper($data['s_zip']),
                     's_country' => $data['s_country'],
                     's_email' => $data['s_email'],
                     's_phone' => $data['s_phone'],
-                    'r_name' => $data['r_name'],
-                    'r_company' => $data['r_company'],
-                    'r_city' => $data['r_city'],
-                    'r_province' => $data['r_province'],
-                    'r_address' => $data['r_address'],
+                    'r_name' => t2s($data['r_name']),
+                    'r_company' => t2s($data['r_company']),
+                    'r_city' => t2s($data['r_city']),
+                    'r_province' => t2s($data['r_province']),
+                    'r_address' => t2s($data['r_address']),
                     'r_zip' => strtoupper($data['r_zip']),
                     'r_country' => $data['r_country'],
                     'r_email' => $data['r_email'],
@@ -88,9 +88,9 @@ class OrderController extends Controller {
                     if (!empty($val)) {
                         $good = array(
                             'code' => $val,
-                            'brand' => $data['brand'][$key],
+                            'brand' => t2s($data['brand'][$key]),
                             'name_en' => $data['name_en'][$key],
-                            'name_cn' => $data['name_cn'][$key],
+                            'name_cn' => t2s($data['name_cn'][$key]),
                             'quantity' => $data['quantity'][$key],
                             'unit_value' => $data['unit_value'][$key],
                         );
@@ -156,8 +156,8 @@ class OrderController extends Controller {
     // 查看已保存的订单
     // 为了防止查看别人的订单，统一从session里获取订单的id，所以调用此页面前要先存订单id
     // session key: order_done_id
-    public function order_done($id=null) {
-        if (empty($id)) $id = session("order_done_id");
+    public function order_done() {
+        $id = session("order_done_id");
         if (!empty($id)) {
             // 获取订单信息
             $model = M("order");
@@ -166,6 +166,10 @@ class OrderController extends Controller {
             if (!empty($order)) {
                 $order['date'] = date("m/d/Y", $order['date']); // 处理日期
                 $this->handle_country_code($order); // 处理国家代码
+                // 简体转繁体
+                foreach($order as $key=>$val) {
+                    if (is_string($val)) $order[$key] = s2t($val);
+                }
 
                 // // 获取对应产品id
                 $model = M("order_goods");
@@ -180,9 +184,11 @@ class OrderController extends Controller {
                     $goods_id = implode(",", $goods_id);
                     $model = M("goods_record");
                     $goods = $model->where(array("id" => array("in", $goods_id)))->order("id")->select();
-                    // 设置数量（备案信息里默认1）
+                    // 设置数量（备案信息里默认1），产品名称和品牌简体转繁体
                     foreach($goods_list as $key=>$val) {
                         $goods[$key]['quantity'] = $val['quantity'];
+                        $goods[$key]['name_cn'] = s2t($goods[$key]['name_cn']);
+                        $goods[$key]['brand'] = s2t($goods[$key]['brand']);
                     }
 
                     $this->assign('order', $order);
@@ -206,11 +212,21 @@ class OrderController extends Controller {
     }
 
     // ajax获取用户信息
-    // 需要会员号参数
+    // 参数：会员号
     public function ajax_user_data($id=null) {
         if (IS_AJAX && !empty($id)) {
             $model = M("user");
             $user = $model->where("user_id='%s'", $id)->find();
+            $this->ajaxReturn($user);
+        }
+    }
+
+    // ajax获取商品信息
+    // 参数：条形码
+    public function ajax_good_data($code=null) {
+        if (IS_AJAX && !empty($code)) {
+            $model = M("goods_record");
+            $user = $model->where("code='%s'", $code)->find();
             $this->ajaxReturn($user);
         }
     }
@@ -285,7 +301,7 @@ class OrderController extends Controller {
         return null;
     }
 
-    // 处理国家代码
+    // 国家代码转成国家名
     private function handle_country_code(&$order) {
         $order['s_country'] = self::$countries[$order['s_country']];
         $order['r_country'] = self::$countries[$order['r_country']];

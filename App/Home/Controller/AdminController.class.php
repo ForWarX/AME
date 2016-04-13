@@ -96,7 +96,7 @@ class AdminController extends Controller {
             // 数据处理
             foreach($orders as $key=>$val) {
                 $orders[$key]['date'] = date("Y/m/d H:i:s", $val["date"]);           // 日期
-                $orders[$key]['state'] = self::$state_details[$val['state']];        // 订单状态
+                $orders[$key]['state_detail'] = self::$state_details[$val['state']]; // 订单状态
             }
 
             $this->assign('orders',$orders);// 赋值数据集
@@ -106,7 +106,7 @@ class AdminController extends Controller {
         $this->display();
     }
 
-    // 订单详情
+    // 订单详情：更新
     public function order_detail($id=0) {
         if ($this->auth_check()) {
             if ($id > 0) {
@@ -124,7 +124,7 @@ class AdminController extends Controller {
                     $order = $model->where("id=" . $id)->find();
                     // 数据处理
                     $order['date'] = date("Y/m/d H:i:s", $order["date"]);           // 日期
-                    $order['state'] = self::$state_details[$order['state']];        // 订单状态
+                    $order['state_detail'] = self::$state_details[$order['state']]; // 订单状态
                     // 获取订单关联产品ID
                     $model = M("order_goods");
                     $goods_list = $model->where("order_id=" . $id)->select();
@@ -277,7 +277,7 @@ class AdminController extends Controller {
     // 删除用户
     // 直接调用或者ajax
     public function user_delete($id=0) {
-        if ($this->auth_check(true)) {
+        if ($this->auth_check()) {
             if ($id > 0) {
                 $model = M("user");
                 $result = $model->where("id=%d", $id)->delete();
@@ -295,6 +295,94 @@ class AdminController extends Controller {
                 $this->error("未指定用户", "user_list", 3);
             }
         }
+
+        $this->display();
+    }
+
+    // 商品列表
+    public function good_list() {
+        if ($this->auth_check()) {
+            // 查询条件
+            // id/ame_no
+            $where = null;
+            // 之前的条件
+            $pre_conds = I("pre_conds");
+            if (is_string($pre_conds) && !empty($pre_conds)) {
+                $pre_conds = explode(",", $pre_conds);
+            }
+            // 新的条件
+            $cond = I("condition");
+            if (!empty($cond)) {
+                if (!is_array($pre_conds)) $pre_conds = array();
+                $pre_conds[] = $cond; //记录为“之前的查询条件”
+            }
+            foreach($pre_conds as $val) {
+                if ($where != null) $where .= " AND ";
+                $where .= "(";
+                $where .= "code LIKE '%" . $val . "%'";
+                $where .= " OR brand LIKE '%" . $val . "%'";
+                $where .= " OR name_cn LIKE '%" . $val . "%'";
+                $where .= " OR name_en LIKE '%" . $val . "%'";
+                $where .= ")";
+            }
+
+            if (!empty($pre_conds)) $this->assign("pre_conds", $pre_conds); // 查询条件传入页面
+
+            $model = M("goods_record");
+            $count = $model->where($where)->count(); // 记录总数
+            $Page = new \Think\Page($count, 15);// 实例化分页类 传入总记录数和每页显示的记录数
+            //分页跳转的时候保证查询条件
+            if (!empty($pre_conds)) {
+                $param = "";
+                foreach ($pre_conds as $val) {
+                    $param .= $param != "" ? "," . $val : $val;
+                }
+                if ($param != "") $Page->parameter['pre_conds'] = $param;
+            }
+            //去除之前的条件后要从分页里删掉
+            else if (!empty($Page->parameter['pre_conds'])) {
+                unset($Page->parameter['pre_conds']);
+            }
+            $show = $Page->show();// 分页显示输出
+
+            // 分页数据查询
+            $goods = $model->where($where)->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+
+            // 数据处理
+            foreach($goods as $key=>$val) {
+                $goods[$key]['state_detail'] = self::$record_state[$val['state']]; // 订单状态
+            }
+
+            $this->assign('goods',$goods);// 赋值数据集
+            $this->assign('page',$show);// 赋值分页输出
+        }
+
+        $this->display();
+    }
+
+    // 商品详情：更新
+    public function good_detail($id=0) {
+        if ($this->auth_check()) {
+            if ($id > 0) {
+                // 更新商品数据
+                if (IS_POST) {
+                    // 提交更新
+                    $data = I("post.");
+                    if (!empty($data)) {
+                        $model = M("goods_record");
+                        $model->where("id=%d", $id)->save($data);
+                    }
+                    redirect("good_detail/id/" . $id . ".html");
+                } else {
+                    // 获取商品信息
+                    $model = M("goods_record");
+                    $good = $model->where("id=" . $id)->find();
+                    $this->assign('good', $good);
+                }
+            }
+        }
+
+        $this->display();
     }
 
     /*************************************
@@ -322,9 +410,18 @@ class AdminController extends Controller {
     /**************************************
      * Private Members
      **************************************/
+    // 订单状态
     private static $state_details = array(
-        "pending" => "Pending / 待處理",
+        "pending" => "Pending / 待处理",
         "cancel" => "Cancel / 取消",
         "done" => "Done / 完成",
+    );
+
+    // 备案状态
+    private static $record_state = array(
+        "pending" => "Pending / 待处理",
+        "cancel" => "Cancel / 取消",
+        "done" => "Done / 完成",
+        "submitted" => "Submitted / 已提交",
     );
 }
