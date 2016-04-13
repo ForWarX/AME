@@ -51,7 +51,7 @@
                             <select data-name="country" id="country"  class="form-control update">
                                 <option></option>
                                 <?php foreach($countries as $country) { ?>
-                                    <option value="{$country.code}" <?php if ($country['code']==$user['country']) {?>selected<?php } ?>>{$country.name_cn}</option>
+                                    <option value="{$country.code}" <?php if ($country['code']==$user['country']) {?>selected<?php } ?>>{$country.name_en}/{$country.name_cn}</option>
                                 <?php } ?>
                             </select>
                         </div>
