@@ -359,10 +359,10 @@
 
         // 获取会员信息
         function get_member_info(e) {
-            $id = e.val();
-            if ($id.length > 0) {
-                $url = "<?php echo ROOT_PATH;?>Home/Order/ajax_user_data/id/" + $id + ".html";
-                $.get($url, function (data) {
+            var id = e.val();
+            if (id.length > 0) {
+                var url = "<?php echo ROOT_PATH;?>Home/Order/ajax_user_data/id/" + id + ".html";
+                $.get(url, function (data) {
                     if (data != null) {
                         var tar = $("#s_name");
                         if (tar.val() == "") tar.val(data['name']);
@@ -389,10 +389,10 @@
 
         // 获取商品信息
         function get_good_info(e) {
-            $code = e.val();
-            if ($id.length > 0) {
-                $url = "<?php echo ROOT_PATH;?>Home/Order/ajax_good_data/code/" + $code + ".html";
-                $.get($url, function (data) {
+            var code = e.val();
+            if (code.length > 0) {
+                var url = "<?php echo ROOT_PATH;?>Home/Order/ajax_good_data/code/" + code + ".html";
+                $.get(url, function (data) {
                     if (data != null) {
                         e = e.parent().parent();
                         tar = e.find("#brand");

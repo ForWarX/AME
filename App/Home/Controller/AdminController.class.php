@@ -296,7 +296,7 @@ class AdminController extends Controller {
             }
         }
 
-        $this->display();
+        $this->display("empty");
     }
 
     // 商品列表
@@ -377,12 +377,29 @@ class AdminController extends Controller {
                     // 获取商品信息
                     $model = M("goods_record");
                     $good = $model->where("id=" . $id)->find();
+                    $good['state_detail'] = self::$record_state[$good['state']];
                     $this->assign('good', $good);
                 }
             }
         }
 
         $this->display();
+    }
+
+    // ajax 商品备案状态更改
+    public function ajax_good_state($id=null, $state=null) {
+        if ($this->auth_check()) {
+            if (IS_AJAX && !empty($id) && !empty($state)) {
+                $model = M("goods_record");
+                $data = array("state" => $state);
+                $result = $model->where("id=%d", $id)->save($data);
+                $data['result'] = $result !== false;
+                $data['state_detail'] = self::$record_state[$state];
+                $this->ajaxReturn($data);
+            }
+        }
+
+        $this->display("empty");
     }
 
     /*************************************

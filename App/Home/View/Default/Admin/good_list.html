@@ -45,9 +45,13 @@
                                 <td>{$good.name_cn}</td>
                                 <td>{$good.name_en}</td>
                                 <td>{$good.unit_value}</td>
-                                <td>{$good.state_detail}</td>
+                                <td class="state_detail">{$good.state_detail}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="good_detail/id/{$good.id}.html" role="button">修改</a>
+                                    <a class="btn btn-default btn-xs state-case case-pending" href="#" role="button" onclick="update_good_state($(this), {$good.id}, 'submitted');" <?php if ($good['state'] != 'pending') { ?>style="display:none;"<?php } ?>>已提交</a>
+                                    <a class="btn btn-default btn-xs state-case case-submitted" href="#" role="button" onclick="update_good_state($(this), {$good.id}, 'pending');" <?php if ($good['state'] != 'submitted') { ?>style="display:none;"<?php } ?>>未提交</a>
+                                    <a class="btn btn-default btn-xs state-case case-submitted" href="#" role="button" onclick="update_good_state($(this), {$good.id}, 'done');" <?php if ($good['state'] != 'submitted') { ?>style="display:none;"<?php } ?>>已备案</a>
+                                    <a class="btn btn-default btn-xs state-case case-done" href="#" role="button" onclick="update_good_state($(this), {$good.id}, 'submitted');" <?php if ($good['state'] != 'done') { ?>style="display:none;"<?php } ?>>未备案</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -64,5 +68,31 @@
 
     <!-- 页面控制器 -->
     <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
+
+    <script>
+        // 更新商品备案状态
+        function update_good_state(e, id, state) {
+            var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_good_state/id/" + id + "/state/" + state + ".html";
+            $.get(url, function (data) {
+                if (data != null && data['result']) {
+                    e = e.parent(); // <td>
+                    e.parent().find(".state_detail").html(data['state_detail']); // 修改备案状态内容
+                    // 改变按钮
+                    e.find(".state-case").css("display", "none");
+                    switch(data['state']) {
+                        case "pending":
+                            e.find(".case-pending").css("display", "");
+                            break;
+                        case "submitted":
+                            e.find(".case-submitted").css("display", "");
+                            break;
+                        case "done":
+                            e.find(".case-done").css("display", "");
+                            break;
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
