@@ -164,7 +164,7 @@ class AdminController extends Controller {
                 // 生成订单
                 $order = array();
                 $order['date'] = time();
-                $order['state'] = 'pending';
+                $order['state'] = 'empty';
                 $order['ame_no'] = \Home\Controller\OrderController::create_ame_no(); // 生成订单号
 
                 // 保存订单
@@ -454,16 +454,17 @@ class AdminController extends Controller {
      **************************************/
     // 订单状态
     private static $state_details = array(
-        "pending" => "Pending / 待处理",
-        "cancel" => "Cancel / 取消",
-        "done" => "Done / 完成",
+        "pending"    => "Pending / 待处理",
+        "cancel"     => "Cancel / 取消",
+        "done"       => "Done / 完成",
+        "empty"      => "Empty / 空白",
     );
 
     // 备案状态
     private static $record_state = array(
-        "pending" => "Pending / 待处理",
-        "cancel" => "Cancel / 取消",
-        "done" => "Done / 完成",
-        "submitted" => "Submitted / 已提交",
+        "pending"    => "Pending / 待处理",
+        "cancel"     => "Cancel / 取消",
+        "done"       => "Done / 完成",
+        "submitted"  => "Submitted / 已提交",
     );
 }
