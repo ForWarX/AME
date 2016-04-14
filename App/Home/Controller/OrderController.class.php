@@ -106,7 +106,7 @@ class OrderController extends Controller {
                 // 其它信息
                 $order['date'] = time();
                 $order['state'] = 'pending';
-                $order['ame_no'] = $this->create_ame_no();
+                $order['ame_no'] = $this->create_ame_no(); // 生成订单号
                 /* 整理数据结束 */
 
                 // 保存订单
@@ -171,7 +171,9 @@ class OrderController extends Controller {
                     if (is_string($val)) $order[$key] = s2t($val);
                 }
 
-                // // 获取对应产品id
+                $this->assign('order', $order);
+
+                // 获取对应产品id
                 $model = M("order_goods");
                 $goods_list = $model->where("order_id=" . $id)->order("good_id")->select();
 
@@ -191,14 +193,13 @@ class OrderController extends Controller {
                         $goods[$key]['brand'] = s2t($goods[$key]['brand']);
                     }
 
-                    $this->assign('order', $order);
                     $this->assign('goods', $goods);
-
-                    // 二维码
-                    $qr_data = urlencode('http://' . $_SERVER['HTTP_HOST'] . ROOT_PATH . 'Home/Track/track/ame_no/' . $order['ame_no'] . '.html');
-                    $qr_url = ROOT_PATH . 'Home/QRCode/create.html?code=' . $qr_data;
-                    $this->assign('QRCode', $qr_url);
                 }
+
+                // 二维码
+                $qr_data = urlencode('http://' . $_SERVER['HTTP_HOST'] . ROOT_PATH . 'Home/Track/track/ame_no/' . $order['ame_no'] . '.html');
+                $qr_url = ROOT_PATH . 'Home/QRCode/create.html?code=' . $qr_data;
+                $this->assign('QRCode', $qr_url);
             }
         }
 
@@ -269,7 +270,7 @@ class OrderController extends Controller {
     // ================================================================================================
 
     // 生成AME订单号
-    private function create_ame_no() {
+    public static function create_ame_no() {
         $date = explode('-', date("m-d-Y"));
         $month = intval($date[0]);
         $day = intval($date[1]);

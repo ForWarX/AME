@@ -137,15 +137,29 @@
                                     <th style="text-align: center;">Unit value/單價</th>
                                 </tr></thead>
                                 <tbody>
-                                    <?php foreach($goods as $good) { ?>
-                                        <tr>
-                                            <td>{$good.code}</td>
-                                            <td>{$good.brand}</td>
-                                            <td>{$good.name_en}</td>
-                                            <td>{$good.name_cn}</td>
-                                            <td>{$good.quantity}</td>
-                                            <td>{$good.unit_value}</td>
-                                        </tr>
+                                    <?php if ($goods) { ?>
+                                        <?php foreach($goods as $good) { ?>
+                                            <tr>
+                                                <td>{$good.code}</td>
+                                                <td>{$good.brand}</td>
+                                                <td>{$good.name_en}</td>
+                                                <td>{$good.name_cn}</td>
+                                                <td>{$good.quantity}</td>
+                                                <td>{$good.unit_value}</td>
+                                            </tr>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <!-- 空白订单预留字段 -->
+                                        <?php for($i=0; $i < 10; $i++) { ?>
+                                            <tr style="height: 31px;">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        <?php } ?>
                                     <?php } ?>
                                 </tbody>
                             </table>

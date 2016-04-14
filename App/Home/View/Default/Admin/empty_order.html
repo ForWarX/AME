@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html class="admin-full-height">
+<head>
+    <?php include("App/Home/View/Default/common/admin_head.html"); ?>
+</head>
+<body class="admin-full-height" data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
+    <div class="container-fluid admin-container">
+        <div class="row">
+            <div class="col-sm-12 col-xs-12 admin-full-height admin-div-table">
+                <form action="" method="post" style="margin-top: 30px;">
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary btn-lg">生成空白订单</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面控制器 -->
+    <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
+</body>
+</html>

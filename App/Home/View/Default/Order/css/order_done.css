@@ -3,6 +3,7 @@
 }
 .order_print_data {
     padding-left: 4px;
+    min-width: 100px;
 }
 .receiver .order_print_field {
     border-right: 1px;

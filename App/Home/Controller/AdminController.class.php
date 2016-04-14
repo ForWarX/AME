@@ -157,6 +157,31 @@ class AdminController extends Controller {
         $this->display();
     }
 
+    // 空白订单
+    public function empty_order() {
+        if ($this->auth_check()) {
+            if (IS_POST) {
+                // 生成订单
+                $order = array();
+                $order['date'] = time();
+                $order['state'] = 'pending';
+                $order['ame_no'] = \Home\Controller\OrderController::create_ame_no(); // 生成订单号
+
+                // 保存订单
+                $model_order = M("order");
+                $order_id = $model_order->add($order);
+                if ($order_id) {
+                    session("order_done_id", $order_id);
+                    redirect('../Order/order_done.html');
+                } else {
+                    echo "订单生成失败";
+                }
+            }
+        }
+
+        $this->display();
+    }
+
     // 用户列表
     public function user_list() {
         if ($this->auth_check()) {
