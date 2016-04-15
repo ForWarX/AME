@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php include("App/Home/View/Default/common/head.html"); ?>
+    <?php include("App/Home/View/Default/common/admin_head.html"); ?>
 
     <style>
         .order_block {
@@ -25,14 +25,25 @@
         }
     </style>
 </head>
-<body>
-    <!-- 页头 -->
-    <?php include("App/Home/View/Default/common/header.html"); ?>
-
-    <div class="container-fluid">
+<body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
+    <div class="container-fluid" style="margin-top: 30px;">
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
                 <form class="form-horizontal" action="" method="post" onsubmit="return order_form_check($(this));">
+                    <!-- AME单号与日期 -->
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="ame_no" class="col-sm-2 control-label">AME#/單號*</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control order_required" id="ame_no" name="ame_no" value="<?php echo $ame_no ? $ame_no : $post['ame_no']; ?>" <?php if ($ame_no) echo 'readonly'; ?>>
+                            </div>
+                            <label for="date" class="col-sm-2 control-label">Date/日期</label>
+                            <div class="col-sm-4">
+                                <input type="datetime-local" class="form-control" id="date" name="date" value="{$post.date}">
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 会员号 -->
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -263,9 +274,6 @@
             </div>
         </div>
     </div>
-
-    <!-- 页脚 -->
-    <?php include("App/Home/View/Default/common/footer.html"); ?>
 
     <script>
         // 表单信息检查

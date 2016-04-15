@@ -282,7 +282,7 @@ class OrderController extends Controller {
 
         $prefix = "AME" . substr($date[2], 2) . $date[0] . $date[1];
         if (empty($last_no)) {
-            $ame_no = $prefix . "0501";
+            $ame_no = $prefix . "0001";
         } else {
             $no = intval(substr($last_no, strlen($prefix))) + 1;
             $ame_no = $prefix . sprintf("%04u", $no);
@@ -292,7 +292,7 @@ class OrderController extends Controller {
     }
 
     // 根据编码获取产品信息
-    private function get_good_record_by_code($code=null) {
+    public static function get_good_record_by_code($code=null) {
         if ($code != null) {
             $model = M("goods_record");
             $data = $model->where("code=" . $code)->find();

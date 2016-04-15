@@ -91,7 +91,7 @@ class AdminController extends Controller {
             $show = $Page->show();// 分页显示输出
 
             // 分页数据查询
-            $orders = $model->where($where)->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+            $orders = $model->where($where)->order('ame_no desc')->limit($Page->firstRow.','.$Page->listRows)->select();
 
             // 数据处理
             foreach($orders as $key=>$val) {
@@ -125,6 +125,9 @@ class AdminController extends Controller {
                     // 数据处理
                     $order['date'] = date("Y/m/d H:i:s", $order["date"]);           // 日期
                     $order['state_detail'] = self::$state_details[$order['state']]; // 订单状态
+
+                    $this->assign('order', $order);
+
                     // 获取订单关联产品ID
                     $model = M("order_goods");
                     $goods_list = $model->where("order_id=" . $id)->select();
@@ -142,7 +145,6 @@ class AdminController extends Controller {
                             $goods[$key]['quantity'] = $val['quantity'];
                         }
 
-                        $this->assign('order', $order);
                         $this->assign('goods', $goods);
                     }
 
@@ -158,7 +160,7 @@ class AdminController extends Controller {
     }
 
     // 空白订单
-    public function empty_order() {
+    public function order_empty() {
         if ($this->auth_check()) {
             if (IS_POST) {
                 // 生成订单
@@ -177,6 +179,169 @@ class AdminController extends Controller {
                     echo "订单生成失败";
                 }
             }
+        }
+
+        $this->display();
+    }
+
+    // 空白订单添加内容
+    public function order_add($ame_no=null) {
+        if ($this->auth_check()) {
+            if (IS_POST) {
+                // 提交订单
+                $data = I("post.");
+                $noError = true;
+
+                /* 检验订单完整性开始 */
+                // 检验寄/收件人信息
+                foreach(self::$err_msg as $key=>$val) {
+                    if (empty($data[$key])) {
+                        $noError = false;
+                        $this->assign("order_error", self::$err_msg[$key]);
+                    }
+                }
+                // 检验产品信息
+                $code_list = array();
+                if (!empty($data['code'])) {
+                    foreach ($data['code'] as $key => $val) {
+                        // 检查信息是否不全
+                        $noData = empty($val);
+                        if (empty($data['brand'][$key]) != $noData
+                            || empty($data['name_en'][$key]) != $noData
+                            || empty($data['name_cn'][$key]) != $noData
+                            || empty($data['quantity'][$key]) != $noData
+                            || empty($data['unit_value'][$key]) != $noData
+                        ) {
+                            $noError = false;
+                            $this->assign("order_error", "Goods info missing / 產品信息不全");
+                            break;
+                        }
+
+                        // 检查信息是否重复
+                        if (in_array($val, $code_list)) {
+                            $noError = false;
+                            $this->assign("order_error", "Duplicate goods info / 產品信息重複");
+                            break;
+                        } else {
+                            $code_list[] = $val;
+                        }
+                    }
+                }
+                if ($noError && empty($code_list)) {
+                    $noError = false;
+                    $this->assign("order_error", "No goods info / 無產品信息");
+                }
+                /* 检验订单完整性结束 */
+
+                if (!$noError) {
+                    $this->assign("post", $data);
+                } else {
+                    /* 整理数据开始 */
+                    // 基本信息
+                    $order = array(
+                        's_id' => $data['s_id'],
+                        's_name' => t2s($data['s_name']),
+                        's_company' => t2s($data['s_company']),
+                        's_city' => t2s($data['s_city']),
+                        's_province' => t2s($data['s_province']),
+                        's_address' => t2s($data['s_address']),
+                        's_zip' => strtoupper($data['s_zip']),
+                        's_country' => $data['s_country'],
+                        's_email' => $data['s_email'],
+                        's_phone' => $data['s_phone'],
+                        'r_name' => t2s($data['r_name']),
+                        'r_company' => t2s($data['r_company']),
+                        'r_city' => t2s($data['r_city']),
+                        'r_province' => t2s($data['r_province']),
+                        'r_address' => t2s($data['r_address']),
+                        'r_zip' => strtoupper($data['r_zip']),
+                        'r_country' => $data['r_country'],
+                        'r_email' => $data['r_email'],
+                        'r_phone' => $data['r_phone'],
+                        'r_id' => $data['r_id'],
+                    );
+
+                    // 产品信息
+                    $order_goods = array();
+                    foreach($data['code'] as $key=>$val) {
+                        if (!empty($val)) {
+                            $good = array(
+                                'code' => $val,
+                                'brand' => t2s($data['brand'][$key]),
+                                'name_en' => $data['name_en'][$key],
+                                'name_cn' => t2s($data['name_cn'][$key]),
+                                'quantity' => $data['quantity'][$key],
+                                'unit_value' => $data['unit_value'][$key],
+                            );
+                            $record = \Home\Controller\OrderController::get_good_record_by_code($val);
+                            if (!empty($record)) {
+                                $good['id'] = $record['id'];
+                            }
+
+                            $order_goods[] = $good;
+                        }
+                    }
+
+                    // 其它信息
+                    $order['date'] = empty($data['date']) ? time() : strtotime($data['date']);
+                    $order['state'] = 'pending';
+                    $order['ame_no'] = !empty($data['ame_no']) ? $data['ame_no'] : \Home\Controller\OrderController::create_ame_no(); // 订单号
+                    /* 整理数据结束 */
+
+                    $model_order = M("order");
+
+                    // 获取订单ID
+                    $no = empty($ame_no) ? $data['ame_no'] : $ame_no;
+                    if (!empty($no)) $order_id = $model_order->where("ame_no='%s'", $no)->getField("id");
+
+                    // 保存订单
+                    if (empty($order_id)) {
+                        $order_id = $model_order->add($order);
+                    } else {
+                        $model_order->where("id=%d", $order_id)->save($order);
+                    }
+                    if ($order_id) {
+                        // 保存产品并与订单关联
+                        $model_goods = M("goods_record");
+                        $model_order = M("order_goods");
+                        foreach($order_goods as $val) {
+                            $quantity = $val['quantity'];
+
+                            if (empty($val['id'])) {
+                                // 未备案产品进行备案
+                                $val['quantity'] = 1; // 备案里数量只需填1
+                                $val['state'] = 'pending';
+                                $good_id = $model_goods->add($val); // 保存产品
+                            } else {
+                                $good_id = $val['id'];
+                            }
+
+                            // 关联产品与订单
+                            $order_good = array(
+                                'order_id' => $order_id,
+                                'good_id' => $good_id,
+                                'quantity' => $quantity
+                            );
+                            $model_order->add($order_good);
+                        }
+
+                        $url = empty($ame_no) ? 'order_list.html' : '../../order_list.html';
+                        redirect($url);
+                    } else {
+                        $this->assign("order_error", "ERROR: Cannot save order / 訂單無法保存");
+                    }
+                }
+            }
+
+            // 赋值订单号
+            if (!empty($ame_no)) {
+                $this->assign("ame_no", $ame_no);
+            }
+
+            // 获取国家代码
+            $model = M("order_country");
+            $countries = $model->where("is_open=1")->order("name_en")->select();
+            $this->assign("countries", $countries);
         }
 
         $this->display();
@@ -450,7 +615,7 @@ class AdminController extends Controller {
     }
 
     /**************************************
-     * Private Members
+     * 成员数据
      **************************************/
     // 订单状态
     private static $state_details = array(
@@ -466,5 +631,27 @@ class AdminController extends Controller {
         "cancel"     => "Cancel / 取消",
         "done"       => "Done / 完成",
         "submitted"  => "Submitted / 已提交",
+    );
+
+    // 错误信息，与页面统一
+    private static $err_msg = array(
+        "ame_no" => "AME#/單號* 不能為空",
+        "s_name" => "Sender/寄件人* 不能為空",
+        "s_city" => "City/城市* 不能為空",
+        "s_province" => "Prov/省* 不能為空",
+        "s_address" => "Address/地址* 不能為空",
+        "s_zip" => "Postcode/郵編* 不能為空",
+        "s_country" => "Country/國家* 不能為空",
+        "s_email" => "Email/電郵* 不能為空",
+        "s_phone" => "Phone/電話* 不能為空",
+        "r_name" => "Recipient/收件人* 不能為空",
+        "r_city" => "City/城市* 不能為空",
+        "r_province" => "Prov/省* 不能為空",
+        "r_address" => "Address/地址* 不能為空",
+        "r_zip" => "Postcode/郵編* 不能為空",
+        "r_country" => "Country/國家* 不能為空",
+        "r_email" => "Email/電郵* 不能為空",
+        "r_phone" => "Phone/電話* 不能為空",
+        "r_id" => "China ID #/中國身份證* 不能為空",
     );
 }

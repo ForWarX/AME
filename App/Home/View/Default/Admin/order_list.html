@@ -52,13 +52,16 @@
                                 <td>{$order.r_name}</td>
                                 <td>{$order.weight}</td>
                                 <td>{$order.track_company}</td>
-                                <td>{$order.trank_no}</td>
+                                <td>{$order.track_no}</td>
                                 <td>{$order.state_detail}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_done/id/{$order.id}.html" role="button">查看</a>
-                                    <?php if ($order['state'] == 'pending' || $order['state'] == 'empty' || $order['state'] == 'cancel') { ?>
+                                    <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel') { ?>
                                         <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
                                         <a class="btn btn-default btn-xs" href="#" role="button">发送</a>
+                                    <?php } ?>
+                                    <?php if ($order['state'] == 'empty') { ?>
+                                        <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'empty') { ?>
                                         <a class="btn btn-default btn-xs" href="#" role="button">取消</a>
