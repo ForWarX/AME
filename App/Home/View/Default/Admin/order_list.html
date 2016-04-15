@@ -58,7 +58,7 @@
                                     <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_done/id/{$order.id}.html" role="button">查看</a>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel') { ?>
                                         <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
-                                        <a class="btn btn-default btn-xs" href="#" role="button">发送</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_ws($(this), {$order.id}); return false;">发送</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'empty') { ?>
                                         <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
@@ -82,5 +82,17 @@
 
     <!-- 页面控制器 -->
     <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
+
+    <script>
+        // 推送给威盛
+        function push_to_ws(e, id) {
+            if (confirm("确定发送？")) {
+                /*var url = "<?php echo ROOT_PATH;?>Home/Order/push_to_ws.html";
+                $.post(url, {'order_id':id}, function(data) {
+                    //location.reload();
+                });*/
+            }
+        }
+    </script>
 </body>
 </html>

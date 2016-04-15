@@ -592,8 +592,43 @@ class AdminController extends Controller {
         $this->display("empty");
     }
 
+    // 推送订单给威盛
+    public function push_to_ws() {
+        if ($this->auth_check()) {
+            if (IS_POST) {
+                $id = I("order_id");
+                if (empty($id)) {
+
+                }
+
+                // 检查数据完整性
+
+                //$url = 'http://180.153.86.138:8002/index.php?r=order/new'; // 主站
+                $url = 'http://218.80.251.194:7000/index.php?r=order/new'; // 测试
+                $appname = 'XY-004';
+                $appid = '68D718C824315B57C6F048DA8EB74AA6';
+                $ware_house = 'A056';
+                $exp_no = 'YTO';
+                $key = 'E77112A23EC91AC835BAB08E561B5B23';
+
+                $data='{"appname":"' . $appname .
+                    '","appid":"' . $appid .
+                    '","orders":[{"OpType":"N","OrderNo":"7459174169239","TrackingNo":"123123","WarehouseCode":"' . $ware_house . '","Weight":"12","ExpressName":"' . $exp_no . '","Remark":"","PayType":"ALIPAY","PayMoney":"200","PaySerialNo":"12124545454545","PacksCount":"3","Shipper":{"SenderName":"YHD","SenderCompanyName":"YHD","SenderCountry":"US","SenderProvince":"Beaverton","SenderCity":"Beaverton","SenderAddr":"Wherexpress 7858 SW Nimbus Ave. Beaverton, OR 9700","SenderZip":"","SenderTel":"+1 510-508-631212"},"Cosignee":{"RecPerson":"兰ww","RecPhone":"187217222244","RecMail":"187217222244","RecCountry":"CN","RecProvince":"上海市","RecCity":"上海市","RecAddress":"上海市浦东新区1155号3A","RecZip":"201204","Name":"兰ww","CitizenID":"330205199702171234"},"Goods":[{"CommodityLinkage":"0508274951","Commodity":"百味来 255g/盒 美国进口","CommodityNum":"1","CommodityUnitPrice":"20.55"},{"CommodityLinkage":"0508273652","Commodity":"星巴克 S咖啡  26.4g/盒 8袋装 美国进口","CommodityNum":"1","CommodityUnitPrice":"48"},{"CommodityLinkage":"0508274633","Commodity":"卡夫 432g/盒 美国进口","CommodityNum":"1","CommodityUnitPrice":"65.5"}]}]}';
+
+
+                $code = md5($data . $key);
+                $data = urlencode(urlencode($data));
+                $data = 'EData=' . $data . "&SignMsg=" . $code;
+
+                $result = $this->curl_post($url, $data);
+            }
+        }
+
+        $this->display("empty");
+    }
+
     /*************************************
-     * 私有函数
+     * 辅助函数
      *************************************/
     // 权限检查
     // $doRedirect: 是否直接跳转，默认不跳转
@@ -612,6 +647,21 @@ class AdminController extends Controller {
             $this->assign("AUTH", true);
             return true;
         }
+    }
+
+    // curl post数据
+    private function curl_post($url, $data) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $data = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+
+        return array("data"=>$data, "info"=>$info);
     }
 
     /**************************************
