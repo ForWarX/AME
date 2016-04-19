@@ -595,32 +595,103 @@ class AdminController extends Controller {
     // 推送订单给威盛
     public function push_to_ws() {
         if ($this->auth_check()) {
-            if (IS_POST) {
+            if (IS_POST || true) {
+                // 获取订单ID
                 $id = I("order_id");
                 if (empty($id)) {
-
+                    $result = array("state"=>"error", "msg"=>"require order_id");
+                    if (IS_AJAX) {
+                        $this->ajaxReturn($result);
+                    } else {
+                        dump($result);
+                        exit;
+                    }
                 }
 
                 // 检查数据完整性
+                $model = M("order");
+                $order_data = $model->where("id=%d", $id)->find();
+                $err_check = self::$err_msg;
+                foreach($err_check as $key=>$val) {
+                    if (empty($order_data[$key])) {
+                        $result = array("state"=>"error", "msg"=>$val);
+                        if (IS_AJAX) {
+                            $this->ajaxReturn($result);
+                        } else {
+                            dump($result);
+                            exit;
+                        }
+                    }
+                }
+                // 设置公司地址
+                if (empty($order_data['s_company'])) {
+                    $order_data['s_company'] = $order_data['s_name'];
+                }
+                // 检查是否有商品数据以及是否备案
+                $model = M("order_goods");
+                $id_list = $model->where("order_id=%d", $id)->select();
+                if (empty($id_list)) {
+                    $result = array("state"=>"error", "msg"=>"訂單無商品");
+                    if (IS_AJAX) {
+                        $this->ajaxReturn($result);
+                    } else {
+                        dump($result);
+                        exit;
+                    }
+                }
+                $goods_id = array();
+                foreach($id_list as $val) {
+                    $goods_id[] = $val['good_id'];
+                }
+                $map = array();
+                $map['id'] = array("IN", $goods_id);
+                $model = M("goods_record");
+                $goods_data = $model->where($map)->select();
+                foreach($goods_data as $val) {
+                    if ($val['state'] != "done") {
+                        $result = array("state"=>"error", "msg"=>"商品（條形碼 " . $val['code'] . "）未備案");
+                        if (IS_AJAX) {
+                            $this->ajaxReturn($result);
+                        } else {
+                            dump($result);
+                            exit;
+                        }
+                    }
+                }
 
-                //$url = 'http://180.153.86.138:8002/index.php?r=order/new'; // 主站
-                $url = 'http://218.80.251.194:7000/index.php?r=order/new'; // 测试
-                $appname = 'XY-004';
-                $appid = '68D718C824315B57C6F048DA8EB74AA6';
-                $ware_house = 'A056';
-                $exp_no = 'YTO';
-                $key = 'E77112A23EC91AC835BAB08E561B5B23';
+                // 威盛配置
+                $url = self::$config_ws['url'];
+                $appname =  self::$config_ws['appname'];
+                $appid =  self::$config_ws['appid'];
+                $ware_house =  self::$config_ws['ware_house'];
+                $exp_no =  self::$config_ws['exp_no'];
+                $key =  self::$config_ws['key'];
 
                 $data='{"appname":"' . $appname .
                     '","appid":"' . $appid .
                     '","orders":[{"OpType":"N","OrderNo":"7459174169239","TrackingNo":"123123","WarehouseCode":"' . $ware_house . '","Weight":"12","ExpressName":"' . $exp_no . '","Remark":"","PayType":"ALIPAY","PayMoney":"200","PaySerialNo":"12124545454545","PacksCount":"3","Shipper":{"SenderName":"YHD","SenderCompanyName":"YHD","SenderCountry":"US","SenderProvince":"Beaverton","SenderCity":"Beaverton","SenderAddr":"Wherexpress 7858 SW Nimbus Ave. Beaverton, OR 9700","SenderZip":"","SenderTel":"+1 510-508-631212"},"Cosignee":{"RecPerson":"兰ww","RecPhone":"187217222244","RecMail":"187217222244","RecCountry":"CN","RecProvince":"上海市","RecCity":"上海市","RecAddress":"上海市浦东新区1155号3A","RecZip":"201204","Name":"兰ww","CitizenID":"330205199702171234"},"Goods":[{"CommodityLinkage":"0508274951","Commodity":"百味来 255g/盒 美国进口","CommodityNum":"1","CommodityUnitPrice":"20.55"},{"CommodityLinkage":"0508273652","Commodity":"星巴克 S咖啡  26.4g/盒 8袋装 美国进口","CommodityNum":"1","CommodityUnitPrice":"48"},{"CommodityLinkage":"0508274633","Commodity":"卡夫 432g/盒 美国进口","CommodityNum":"1","CommodityUnitPrice":"65.5"}]}]}';
-
 
                 $code = md5($data . $key);
                 $data = urlencode(urlencode($data));
                 $data = 'EData=' . $data . "&SignMsg=" . $code;
 
                 $result = $this->curl_post($url, $data);
+                $data = json_decode($result['data']);
+                $data = $result['data'];
+                if ($result['info']['http_code'] == 200 && $data->rtnCode == '000000') {
+                    // 推送成功
+                    $result['state'] = 'success';
+                    $result['data'] = $data;
+                } else {
+                    // 推送失败
+                    //$result = array("state"=>"fail", "msg"=>"数据推送失败");
+                }
+                if (IS_AJAX) {
+                    $this->ajaxReturn($result);
+                } else {
+                    dump($result);
+                    exit;
+                }
             }
         }
 
@@ -703,5 +774,16 @@ class AdminController extends Controller {
         "r_email" => "Email/電郵* 不能為空",
         "r_phone" => "Phone/電話* 不能為空",
         "r_id" => "China ID #/中國身份證* 不能為空",
+    );
+
+    // 威盛配置
+    private static $config_ws = array(
+        //'url' => 'http://180.153.86.138:8002/index.php?r=order/new', // 主站
+        'url' => 'http://218.80.251.194:7000/index.php?r=order/new', // 测试
+        'appname' => 'XY-004',
+        'appid' => '68D718C824315B57C6F048DA8EB74AA6',
+        'ware_house' => 'A056',
+        'exp_no' => 'YTO',
+        'key' => 'E77112A23EC91AC835BAB08E561B5B23',
     );
 }

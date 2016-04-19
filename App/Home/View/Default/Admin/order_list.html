@@ -55,7 +55,7 @@
                                 <td>{$order.track_no}</td>
                                 <td>{$order.state_detail}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_done/id/{$order.id}.html" role="button">查看</a>
+                                    <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_test/id/{$order.id}.html" role="button">查看</a>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel') { ?>
                                         <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
                                         <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_ws($(this), {$order.id}); return false;">发送</a>
@@ -87,10 +87,22 @@
         // 推送给威盛
         function push_to_ws(e, id) {
             if (confirm("确定发送？")) {
-                /*var url = "<?php echo ROOT_PATH;?>Home/Order/push_to_ws.html";
+                var url = "<?php echo ROOT_PATH;?>Home/Admin/push_to_ws.html";
                 $.post(url, {'order_id':id}, function(data) {
+                    switch(data['state']) {
+                        case 'success':
+                            console.log(data);
+                            break;
+                        case 'error':
+                            alert(data['msg']);
+                            break;
+                        case 'fail':
+                            alert(data['msg']);
+                            console.log(data);
+                            break;
+                    }
                     //location.reload();
-                });*/
+                });
             }
         }
     </script>
