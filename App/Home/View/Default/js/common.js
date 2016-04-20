@@ -84,3 +84,15 @@
         }
     });
 })(jQuery);
+
+// 判断数组中是否存在重复值
+function array_has_repeat(arr) {
+    var obj = {};
+    for(var index=0; index < arr.length; index++) {
+        if (obj[arr[index]]) {
+            return true;
+        }
+        obj[arr[index]] = true;
+    }
+    return false;
+}

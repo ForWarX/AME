@@ -30,6 +30,10 @@
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
                 <form class="form-horizontal" action="" method="post" onsubmit="return order_form_check($(this));">
+                    <div class="page-header">
+                        <h3 class="text-center">带*号为必填项</h3>
+                    </div>
+
                     <!-- AME单号与日期 -->
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -207,7 +211,7 @@
                                             </td>
                                             <td>
                                                 <label for="quantity" class="sr-only"></label>
-                                                <input type="text" name="quantity[]" id="quantity" value="{$post.quantity.$i}">
+                                                <input type="number" name="quantity[]" id="quantity" value="{$post.quantity.$i}">
                                             </td>
                                             <td>
                                                 <label for="unit_value" class="sr-only"></label>
@@ -248,7 +252,7 @@
                                                         </td>
                                                         <td>
                                                             <label for="quantity" class="sr-only"></label>
-                                                            <input type="text" name="quantity[]" id="quantity" disabled>
+                                                            <input type="number" name="quantity[]" id="quantity" disabled>
                                                         </td>
                                                         <td>
                                                             <label for="unit_value" class="sr-only"></label>
@@ -347,6 +351,14 @@
                             return false; // 跳出each
                         }
                     });
+                    var unit_value = Number($(this).find("#unit_value").val());
+                    if (isNaN(unit_value)) {
+                        doSubmit = false;
+                        alert("Please input correct price / 請輸入正確的金額");
+                    } else if (unit_value > 100) {
+                        doSubmit = false;
+                        alert("Price cannot be over C$100 / 單價不能超過100加幣");
+                    }
 
                     if (!doSubmit) {
                         return false; // 跳出each

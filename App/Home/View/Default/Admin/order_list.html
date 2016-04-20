@@ -4,6 +4,27 @@
     <?php include("App/Home/View/Default/common/admin_head.html"); ?>
 </head>
 <body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
+    <!-- 模态框 -->
+    <div class="modal fade" id="ModalWait" tabindex="-1" role="dialog" aria-labelledby="ModalWaitLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">推送中……</h4>
+                </div>
+                <div class="modal-body" style="padding: 0;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 text-center" style="padding: 0;">
+                                <img style="width: 100%;" src="<?php echo ROOT_PATH; ?>App/Home/View/Default/img/animation/loading2.gif">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- 模态框结束 -->
+
     <div class="container-fluid container-top-margin">
         <div class="row">
             <div class="col-sm-12 col-xs-12">
@@ -38,6 +59,8 @@
                         <th>重量(kg)</th>
                         <th>快递公司</th>
                         <th>快递单号</th>
+                        <th>备案</th>
+                        <th>已付款</th>
                         <th>订单状态</th>
                         <th>操作</th>
                     </tr></thead>
@@ -53,18 +76,32 @@
                                 <td>{$order.weight}</td>
                                 <td>{$order.track_company}</td>
                                 <td>{$order.track_no}</td>
+                                <td>
+                                    <?php if ($order['num_total_goods'] > 0) { ?>
+                                        <?php if ($order['num_records'] < $order['num_total_goods']) { ?>
+                                            {$order.num_records} / {$order.num_total_goods}
+                                        <?php } else { ?>
+                                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <a style="cursor: pointer;" onclick="paid($(this));" data-id="{$order.id}" data-paid="{$order.paid}">
+                                        <span class="glyphicon glyphicon-<?php if ($order['paid']) { ?>ok<?php } else { ?>remove<?php } ?>" aria-hidden="true"></span>
+                                    </a>
+                                </td>
                                 <td>{$order.state_detail}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_test/id/{$order.id}.html" role="button">查看</a>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel') { ?>
                                         <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
-                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_ws($(this), {$order.id}); return false;">发送</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_ws($(this), {$order.id}); return false;">推送</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'empty') { ?>
                                         <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'empty') { ?>
-                                        <a class="btn btn-default btn-xs" href="#" role="button">取消</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="return false;">取消</a>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -86,12 +123,14 @@
     <script>
         // 推送给威盛
         function push_to_ws(e, id) {
-            if (confirm("确定发送？")) {
+            if (confirm("确定推送？")) {
+                $("#ModalWait").modal({keyboard:false});
                 var url = "<?php echo ROOT_PATH;?>Home/Admin/push_to_ws.html";
                 $.post(url, {'order_id':id}, function(data) {
+                    $("#ModalWait").modal('hide');
                     switch(data['state']) {
                         case 'success':
-                            console.log(data);
+                            location.reload();
                             break;
                         case 'error':
                             alert(data['msg']);
@@ -100,10 +139,30 @@
                             alert(data['msg']);
                             console.log(data);
                             break;
+                        case 'repeat':
+                            alert(data['msg']);
+                            location.reload();
+                            break;
                     }
-                    //location.reload();
                 });
             }
+        }
+
+        // 付款处理
+        function paid(e) {
+            var id = e.data("id");
+            var paid = e.data("paid") ? 0 : 1;
+            var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_order_paid.html";
+            $.post(url, {'id':id, 'paid':paid}, function(data) {
+                switch(data['state']) {
+                    case 'success':
+                        var sign = paid ? "glyphicon-ok" : "glyphicon-remove";
+                        e.data('paid', paid).find('.glyphicon').attr('class', 'glyphicon').addClass(sign); // 修改状态图标
+                        break;
+                    default:
+                        alert(data['msg']);
+                }
+            });
         }
     </script>
 </body>

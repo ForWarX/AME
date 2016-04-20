@@ -47,6 +47,17 @@ class OrderController extends Controller {
                     } else {
                         $code_list[] = $val;
                     }
+
+                    // 检查价格是否超标
+                    if (!is_numeric($data['unit_value'][$key])) {
+                        $noError = false;
+                        $this->assign("order_error", "Please input correct price / 請輸入正確的金額");
+                        break;
+                    } else if (floatval($data['unit_value'][$key]) > 100) {
+                        $noError = false;
+                        $this->assign("order_error", "Price cannot be over C$100 / 單價不能超過100加幣");
+                        break;
+                    }
                 }
             } else {
                 $noError = false;

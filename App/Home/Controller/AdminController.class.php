@@ -99,8 +99,24 @@ class AdminController extends Controller {
                 $orders[$key]['state_detail'] = self::$state_details[$val['state']]; // 订单状态
             }
 
-            $this->assign('orders',$orders);// 赋值数据集
-            $this->assign('page',$show);// 赋值分页输出
+            // 获取商品数及备案数
+            $model = M('order_goods');
+            $record_model = M('goods_record');
+            foreach($orders as $key=>$order) {
+                $ids = $model->where("order_id=%d", $order['id'])->getField("good_id", true);
+                $orders[$key]['num_total_goods'] = count($ids); // 订单商品总数
+
+                // 备案数
+                if (!empty($ids)) {
+                    $map['id'] = array('IN', $ids);
+                    $map['state'] = 'done';
+                    $records_num = $record_model->where($map)->count();
+                    $orders[$key]['num_records'] = $records_num;
+                }
+            }
+
+            $this->assign('orders',$orders); // 赋值订单信息
+            $this->assign('page',$show);     // 赋值分页输出
         }
 
         $this->display();
@@ -225,6 +241,17 @@ class AdminController extends Controller {
                         } else {
                             $code_list[] = $val;
                         }
+
+                        // 检查价格是否超标
+                        if (!is_numeric($data['unit_value'][$key])) {
+                            $noError = false;
+                            $this->assign("order_error", "Please input correct price / 請輸入正確的金額");
+                            break;
+                        } else if (floatval($data['unit_value'][$key]) > 100) {
+                            $noError = false;
+                            $this->assign("order_error", "Price cannot be over C$100 / 單價不能超過100加幣");
+                            break;
+                        }
                     }
                 }
                 if ($noError && empty($code_list)) {
@@ -345,6 +372,34 @@ class AdminController extends Controller {
         }
 
         $this->display();
+    }
+
+    // ajax订单付款状态更改
+    public function ajax_order_paid() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $id = I("id");
+                $paid = I("paid");
+                if (!empty($id)) {
+                    $model = M("order");
+                    $data['id'] = $id;
+                    $data['paid'] = $paid ? 1 : 0;
+                    if ($model->save($data)) {
+                        $result['state'] = 'success';
+                    } else {
+                        $result['state'] = 'fail';
+                        $result['msg'] = '更新失败';
+                    }
+                } else {
+                    $result['state'] = 'error';
+                    $result['msg'] = '缺少ID';
+                }
+
+                $this->ajaxReturn($result);
+            }
+        }
+
+        $this->display("empty");
     }
 
     // 用户列表
@@ -609,8 +664,17 @@ class AdminController extends Controller {
                 }
 
                 // 检查数据完整性
-                $model = M("order");
-                $order_data = $model->where("id=%d", $id)->find();
+                $order_model = M("order");
+                $order_data = $order_model->where("id=%d", $id)->find();
+                if (!$order_data['paid']) {
+                    $result = array("state"=>"error", "msg"=>"訂單未付款");
+                    if (IS_AJAX) {
+                        $this->ajaxReturn($result);
+                    } else {
+                        dump($result);
+                        exit;
+                    }
+                }
                 $err_check = self::$err_msg;
                 foreach($err_check as $key=>$val) {
                     if (empty($order_data[$key])) {
@@ -623,13 +687,25 @@ class AdminController extends Controller {
                         }
                     }
                 }
+                // 检查重量
+                if ($order_data['weight'] <= 0) {
+                    $result = array("state"=>"error", "msg"=>"未填寫重量");
+                    if (IS_AJAX) {
+                        $this->ajaxReturn($result);
+                    } else {
+                        dump($result);
+                        exit;
+                    }
+                }
                 // 设置公司地址
                 if (empty($order_data['s_company'])) {
                     $order_data['s_company'] = $order_data['s_name'];
                 }
-                // 检查是否有商品数据以及是否备案
+
+                /* 检查是否有商品数据以及是否备案 */
+                // 获取订单商品信息
                 $model = M("order_goods");
-                $id_list = $model->where("order_id=%d", $id)->select();
+                $id_list = $model->where("order_id=%d", $id)->getField('good_id,quantity');
                 if (empty($id_list)) {
                     $result = array("state"=>"error", "msg"=>"訂單無商品");
                     if (IS_AJAX) {
@@ -639,16 +715,20 @@ class AdminController extends Controller {
                         exit;
                     }
                 }
+                // 商品ID合集
                 $goods_id = array();
-                foreach($id_list as $val) {
-                    $goods_id[] = $val['good_id'];
+                foreach($id_list as $key=>$val) {
+                    $goods_id[] = $key;
                 }
                 $map = array();
                 $map['id'] = array("IN", $goods_id);
+                // 获取商品数据
                 $model = M("goods_record");
-                $goods_data = $model->where($map)->select();
-                foreach($goods_data as $val) {
-                    if ($val['state'] != "done") {
+                $goods_data = $model->where($map)->getField("id,code,name_cn,unit_value,state");
+                // 检查商品数据
+                $ex_rate = C("EX_RATE_CAD_2_RMB");
+                foreach($goods_data as $key=>$val) {
+                    if ($val['state'] != "done") { // 未备案
                         $result = array("state"=>"error", "msg"=>"商品（條形碼 " . $val['code'] . "）未備案");
                         if (IS_AJAX) {
                             $this->ajaxReturn($result);
@@ -656,6 +736,9 @@ class AdminController extends Controller {
                             dump($result);
                             exit;
                         }
+                    } else {
+                        $goods_data[$key]['quantity'] = $id_list[$key]['quantity']; // 设置数量
+                        $goods_data[$key]['unit_value'] = (string)($val['unit_value'] * $ex_rate); // 加币转换人民币
                     }
                 }
 
@@ -667,24 +750,92 @@ class AdminController extends Controller {
                 $exp_no =  self::$config_ws['exp_no'];
                 $key =  self::$config_ws['key'];
 
-                $data='{"appname":"' . $appname .
-                    '","appid":"' . $appid .
-                    '","orders":[{"OpType":"N","OrderNo":"7459174169239","TrackingNo":"123123","WarehouseCode":"' . $ware_house . '","Weight":"12","ExpressName":"' . $exp_no . '","Remark":"","PayType":"ALIPAY","PayMoney":"200","PaySerialNo":"12124545454545","PacksCount":"3","Shipper":{"SenderName":"YHD","SenderCompanyName":"YHD","SenderCountry":"US","SenderProvince":"Beaverton","SenderCity":"Beaverton","SenderAddr":"Wherexpress 7858 SW Nimbus Ave. Beaverton, OR 9700","SenderZip":"","SenderTel":"+1 510-508-631212"},"Cosignee":{"RecPerson":"兰ww","RecPhone":"187217222244","RecMail":"187217222244","RecCountry":"CN","RecProvince":"上海市","RecCity":"上海市","RecAddress":"上海市浦东新区1155号3A","RecZip":"201204","Name":"兰ww","CitizenID":"330205199702171234"},"Goods":[{"CommodityLinkage":"0508274951","Commodity":"百味来 255g/盒 美国进口","CommodityNum":"1","CommodityUnitPrice":"20.55"},{"CommodityLinkage":"0508273652","Commodity":"星巴克 S咖啡  26.4g/盒 8袋装 美国进口","CommodityNum":"1","CommodityUnitPrice":"48"},{"CommodityLinkage":"0508274633","Commodity":"卡夫 432g/盒 美国进口","CommodityNum":"1","CommodityUnitPrice":"65.5"}]}]}';
+                // 推送数据
+                $goods_array = array();
+                foreach($goods_data as $val) {
+                    $goods_array[] = array(
+                        "CommodityLinkage"    => $val['code'],
+                        "Commodity"           => $val['name_cn'],
+                        "CommodityNum"        => $val['quantity'],
+                        "CommodityUnitPrice"  => $val['unit_value'],
+                    );
+                }
+                $data = array(
+                    "appname"       => $appname,
+                    "appid"         => $appid,
+                    "orders"        => array(
+                        array(
+                            "OpType"        => "N",
+                            "OrderNo"       => $order_data['ame_no'],
+                            "TrackingNo"    => $order_data['ame_no'],
+                            "WarehouseCode" => $ware_house,
+                            "Weight"        => $order_data['weight'],
+                            "ExpressName"   => $exp_no,
+                            "Remark"        => "",
+                            "Shipper"       => array(
+                                "SenderName"        => $order_data['s_name'],
+                                "SenderCompanyName" => $order_data['s_company'],
+                                "SenderCountry"     => $order_data['s_country'],
+                                "SenderProvince"    => $order_data['s_province'],
+                                "SenderCity"        => $order_data['s_city'],
+                                "SenderAddr"        => $order_data['s_address'],
+                                "SenderZip"         => $order_data['s_zip'],
+                                "SenderTel"         => $order_data['s_phone'],
+                            ),
+                            "Cosignee"      => array(
+                                "RecPerson"         => $order_data['r_name'],
+                                "RecPhone"          => $order_data['r_phone'],
+                                "RecMail"           => $order_data['r_email'],
+                                "RecCountry"        => $order_data['r_country'],
+                                "RecProvince"       => $order_data['r_province'],
+                                "RecCity"           => $order_data['r_city'],
+                                "RecAddress"        => $order_data['r_address'],
+                                "RecZip"            => $order_data['r_zip'],
+                                "Name"              => $order_data['r_name'],
+                                "CitizenID"         => $order_data['r_id'],
+                            ),
+                            "Goods"         => $goods_array,
+                        ),
+                    ),
+                );
 
+                $data = json_encode($data);
                 $code = md5($data . $key);
                 $data = urlencode(urlencode($data));
                 $data = 'EData=' . $data . "&SignMsg=" . $code;
 
                 $result = $this->curl_post($url, $data);
                 $data = json_decode($result['data']);
-                $data = $result['data'];
-                if ($result['info']['http_code'] == 200 && $data->rtnCode == '000000') {
-                    // 推送成功
-                    $result['state'] = 'success';
-                    $result['data'] = $data;
+                if ($result['info']['http_code'] == 200) {
+                    // 要更新的数据
+                    $data_save = array(
+                        "track_no"      => $data->orderList[0]->TrackingNo,
+                        "track_company" => "WS",
+                        "state"         => "done",
+                    );
+
+                    // 判断返回值状态
+                    if ($data->rtnCode == '000000') {
+                        // 推送成功
+                        $result['state'] = 'success';
+                        $result['data'] = $data;
+
+                        $order_model->where("id=%d", $id)->save($data_save);
+                    } else if ($data->rtnCode == '000003') {
+                        // 重复推送
+                        $result['state'] = 'repeat';
+                        $result['msg'] = "重複推送";
+                        $result['data'] = $data;
+
+                        $order_model->where("id=%d", $id)->save($data_save);
+                    } else {
+                        // 推送失败
+                        $result = array("state"=>"fail", "msg"=>$data->rtnList[0]->reason);
+                    }
                 } else {
-                    // 推送失败
-                    //$result = array("state"=>"fail", "msg"=>"数据推送失败");
+                    // 推送出错
+                    $result['state'] = 'fail';
+                    $result['msg'] = '数据推送失败';
                 }
                 if (IS_AJAX) {
                     $this->ajaxReturn($result);
