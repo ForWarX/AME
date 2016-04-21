@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <?php include("App/Home/View/Default/common/admin_head.html"); ?>
+</head>
+<body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
+    <div class="container-fluid container-top-margin">
+        <!-- 新加区域 -->
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">
+                <?php if ($error) { ?>
+                    <h3 class="text-center">{$error}</h3>
+                <?php } ?>
+
+                <form class="form-inline" action="" method="post">
+                    <div class="form-group">
+                        <label for="area">区域编号</label>
+                        <input type="text" id="area" name="area" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-default">添加</button>
+                </form>
+            </div>
+        </div><!-- 新加区域结束 -->
+
+        <!-- 已有区域 -->
+        <div class="row">
+            <div class="page-header">
+                <h3 class="text-center">存放区域</h3>
+            </div>
+            <div class="col-sm-12 col-xs-12 container-top-margin" style="display: flex; flex-wrap: wrap;">
+                <?php foreach($areas as $area) { ?>
+                    <div class="col-sm-1 col-xs-1">{$area.area} <a href="#" data-id="{$area.id}" onclick="area_delete($(this)); return false;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面控制器 -->
+    <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
+
+    <script>
+        // 删除区域
+        function area_delete(ele) {
+            var id = ele.data("id");
+            $.post('', {'id':id}, function() {
+                // 刷新页面，同时清空之前提交的数据避免重复提交
+                var url = window.location.href;
+                window.location.href = url;
+            });
+        }
+    </script>
+</body>
+</html>

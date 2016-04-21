@@ -61,6 +61,7 @@
                         <th>快递单号</th>
                         <th>备案</th>
                         <th>已付款</th>
+                        <th>区域</th>
                         <th>订单状态</th>
                         <th>操作</th>
                     </tr></thead>
@@ -86,9 +87,22 @@
                                     <?php } ?>
                                 </td>
                                 <td>
-                                    <a style="cursor: pointer;" onclick="paid($(this));" data-id="{$order.id}" data-paid="{$order.paid}">
-                                        <span class="glyphicon glyphicon-<?php if ($order['paid']) { ?>ok<?php } else { ?>remove<?php } ?>" aria-hidden="true"></span>
-                                    </a>
+                                    <?php if ($order['state'] != 'done') { ?>
+                                        <a style="cursor: pointer;" onclick="paid($(this));" data-id="{$order.id}" data-paid="{$order.paid}">
+                                    <?php } ?>
+                                            <span class="glyphicon glyphicon-<?php if ($order['paid']) { ?>ok<?php } else { ?>remove<?php } ?>" aria-hidden="true"></span>
+                                    <?php if ($order['state'] != 'done') { ?>
+                                        </a>
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <label for="area" class="sr-only">不显示的标签</label>
+                                    <select id="area" onchange="store_area($(this));" data-id="{$order.id}">
+                                        <option></option>
+                                        <?php foreach($areas as $area) { ?>
+                                            <option <?php if ($order['area']==$area) { ?>selected<?php } ?>>{$area}</option>
+                                        <?php } ?>
+                                    </select>
                                 </td>
                                 <td>{$order.state_detail}</td>
                                 <td>
@@ -161,6 +175,16 @@
                         break;
                     default:
                         alert(data['msg']);
+                }
+            });
+        }
+
+        // 修改存放区域
+        function store_area(ele) {
+            var url = "<?php echo ROOT_PATH; ?>Home/Admin/ajax_update_store_area.html";
+            $.post(url, {'id':ele.data("id"), 'area':ele.val()}, function(data) {
+                if (data['result'] == 'fail') {
+                    alert($data['msg']);
                 }
             });
         }

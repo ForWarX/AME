@@ -49,8 +49,7 @@ class AdminController extends Controller {
     // 订单列表
     public function order_list() {
         if ($this->auth_check()) {
-            // 查询条件
-            // id/ame_no
+            // 查询条件：id/ame_no
             $where = null;
             // 之前的条件
             $pre_conds = I("pre_conds");
@@ -117,6 +116,11 @@ class AdminController extends Controller {
 
             $this->assign('orders',$orders); // 赋值订单信息
             $this->assign('page',$show);     // 赋值分页输出
+
+            // 存放区域
+            $model = M("store_area");
+            $areas = $model->order("area")->getField("area", true);
+            $this->assign("areas", $areas);
         }
 
         $this->display();
@@ -843,6 +847,56 @@ class AdminController extends Controller {
                     dump($result);
                     exit;
                 }
+            }
+        }
+
+        $this->display("empty");
+    }
+
+    // 存放区域
+    public function store_area() {
+        if ($this->auth_check()) {
+            $model = M("store_area");
+
+            if (IS_POST) {
+                $area = I("area");
+                if (empty($area)) {
+                    // 删除
+                    $model->where("id=%d", I('id', 0))->delete();
+                    if (IS_AJAX) {
+                        $this->ajaxReturn(array("result"=>"success"));
+                    }
+                } else {
+                    // 添加
+                    if ($model->create()) {
+                        if (!$model->add()) {
+                            $this->assign("error", "添加失败");
+                        }
+                    }
+                }
+            }
+
+            $areas = $model->order('area')->select();
+            $this->assign("areas", $areas);
+        }
+
+        $this->display();
+    }
+
+    // ajax修改存放区域
+    public function ajax_update_store_area() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $model = M("order");
+                $data['id'] = I("id");
+                $data['area'] = I("area");
+                if ($model->save($data)) {
+                    $result['result'] = 'success';
+                } else {
+                    $result['result'] = 'fail';
+                    $result['msg'] = '更新失败';
+                }
+                $this->ajaxReturn($result);
             }
         }
 
