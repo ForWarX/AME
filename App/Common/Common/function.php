@@ -41,3 +41,18 @@ function s2t($str) {
 function t2s($str) {
     return \Org\Util\FanJianConvert::tradition2simple($str);
 }
+
+// curl post数据
+function curl_post($url, $data) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    $data = curl_exec($ch);
+    $info = curl_getinfo($ch);
+    curl_close($ch);
+
+    return array("data"=>$data, "info"=>$info);
+}

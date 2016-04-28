@@ -9,9 +9,21 @@ class TrackController extends Controller {
         }
         if (!empty($ame_no)) {
             $model = M("order");
-            $data = $model->field("ame_no,date,state")->where("ame_no='" . $ame_no . "'")->find();
+            $data = $model->field("ame_no,date,state,track_company,track_no")->where("ame_no='" . $ame_no . "'")->find();
             $data['date'] = date("m/d/Y", $data['date']);
             $data['state'] = self::$state_details[$data['state']];
+            if ($data['track_company'] == 'WS') { // 追踪威盛
+                $result = $this->track_ws($data['track_no']);
+                if (!empty($result)) {
+                    // 数据处理
+                    $result = object_to_array($result);
+                    foreach($result['rtnList'] as $key=>$val) {
+                        $result['rtnList'][$key]['Remark'] = s2t($val['Remark']); // 简体转繁体
+                    }
+
+                    $this->assign('track_result', $result);
+                }
+            }
 
             $this->assign("order_info", $data);
         }
@@ -26,8 +38,39 @@ class TrackController extends Controller {
         "pending" => "Pending / 待處理",
         "cancel" => "Cancel / 取消",
         "done" => "Done / 完成",
+        "empty" => "Empty / 空白",
     );
 
+    /**************************************
+     * 辅助函数
+     **************************************/
+    // 威盛订单追踪
+    private function track_ws($track_no=null) {
+        if (!empty($track_no)) {
+            // 威盛配置
+            $url = C('ws_url_track');
+            $appname = C('ws_appname');
+            $appid = C('ws_appid');
+            $key = C('ws_key');
+
+            $data = array(
+                'appname' => $appname,
+                'appid' => $appid,
+                'TrackingID' => $track_no,
+            );
+            $data = json_encode($data);
+            $code = md5($data . $key);
+            $data = urlencode(urlencode($data));
+            $data = 'EData=' . $data . "&SignMsg=" . $code;
+
+            $result = curl_post($url, $data);
+            $data = json_decode($result['data']);
+
+            return $data;
+        }
+
+        return null;
+    }
 
     /**************************************
      * Canada Post Functions

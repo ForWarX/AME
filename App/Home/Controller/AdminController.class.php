@@ -747,12 +747,12 @@ class AdminController extends Controller {
                 }
 
                 // 威盛配置
-                $url = self::$config_ws['url'];
-                $appname =  self::$config_ws['appname'];
-                $appid =  self::$config_ws['appid'];
-                $ware_house =  self::$config_ws['ware_house'];
-                $exp_no =  self::$config_ws['exp_no'];
-                $key =  self::$config_ws['key'];
+                $url = C('ws_url_push');
+                $appname = C('ws_appname');
+                $appid = C('ws_appid');
+                $ware_house = C('ws_ware_house');
+                $exp_no = C('ws_exp_no');
+                $key = C('ws_key');
 
                 // 推送数据
                 $goods_array = array();
@@ -808,7 +808,7 @@ class AdminController extends Controller {
                 $data = urlencode(urlencode($data));
                 $data = 'EData=' . $data . "&SignMsg=" . $code;
 
-                $result = $this->curl_post($url, $data);
+                $result = curl_post($url, $data);
                 $data = json_decode($result['data']);
                 if ($result['info']['http_code'] == 200) {
                     // 要更新的数据
@@ -925,21 +925,6 @@ class AdminController extends Controller {
         }
     }
 
-    // curl post数据
-    private function curl_post($url, $data) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $data = curl_exec($ch);
-        $info = curl_getinfo($ch);
-        curl_close($ch);
-
-        return array("data"=>$data, "info"=>$info);
-    }
-
     /**************************************
      * 成员数据
      **************************************/
@@ -979,16 +964,5 @@ class AdminController extends Controller {
         "r_email" => "Email/電郵* 不能為空",
         "r_phone" => "Phone/電話* 不能為空",
         "r_id" => "China ID #/中國身份證* 不能為空",
-    );
-
-    // 威盛配置
-    private static $config_ws = array(
-        //'url' => 'http://180.153.86.138:8002/index.php?r=order/new', // 主站
-        'url' => 'http://218.80.251.194:7000/index.php?r=order/new', // 测试
-        'appname' => 'XY-004',
-        'appid' => '68D718C824315B57C6F048DA8EB74AA6',
-        'ware_house' => 'A056',
-        'exp_no' => 'YTO',
-        'key' => 'E77112A23EC91AC835BAB08E561B5B23',
     );
 }
