@@ -74,7 +74,9 @@
                                 <td>{$order.date}</td>
                                 <td>{$order.s_name}</td>
                                 <td>{$order.r_name}</td>
-                                <td>{$order.weight}</td>
+                                <td class="editable" ondblclick="editable($(this));" data-editing="false"  data-type="text" data-url="<?php echo ROOT_PATH;?>Home/Admin/ajax_order_data.html" data-name="weight" data-max_width="50" data-data_num="1" data-key1="id" data-val1="{$order.id}">
+                                    {$order.weight}
+                                </td>
                                 <td>{$order.track_company}</td>
                                 <td>{$order.track_no}</td>
                                 <td>
@@ -115,7 +117,7 @@
                                         <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'empty') { ?>
-                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="return false;">取消</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_delete($(this)); return false;" data-id="{$order.id}">删除</a>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -187,6 +189,26 @@
                     alert($data['msg']);
                 }
             });
+        }
+
+        // 删除订单
+        function order_delete(e) {
+            if (confirm("确定删除？")) {
+                e.html("处理中");
+
+                var id = e.data("id");
+                var state = "delete";
+                var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_order_state.html";
+                $.post(url, {'id': id, 'state': state}, function (data) {
+                    switch (data['result']) {
+                        case true:
+                            e.parent().parent().hide('normal');
+                            break;
+                        default:
+                            alert(data['state_detail']);
+                    }
+                });
+            }
         }
     </script>
 </body>

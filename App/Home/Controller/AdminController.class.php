@@ -50,7 +50,7 @@ class AdminController extends Controller {
     public function order_list() {
         if ($this->auth_check()) {
             // 查询条件：id/ame_no
-            $where = null;
+            $where = "state!='delete'";
             // 之前的条件
             $pre_conds = I("pre_conds");
             if (is_string($pre_conds) && !empty($pre_conds)) {
@@ -406,6 +406,36 @@ class AdminController extends Controller {
         $this->display("empty");
     }
 
+    // ajax订单状态更改
+    public function ajax_order_state($id=null, $state=null) {
+        if ($this->auth_check()) {
+            if (IS_AJAX && !empty($id) && !empty($state)) {
+                $model = M("order");
+                $data = array("state" => $state);
+                $result = $model->where("id=%d", $id)->save($data);
+                $data['result'] = $result !== false;
+                $data['state_detail'] = self::$state_details[$state];
+                $this->ajaxReturn($data);
+            }
+        }
+
+        $this->display("empty");
+    }
+
+    // ajax订单数据更改
+    // post数据必须包含id，且key必须和数据库一直
+    public function ajax_order_data() {
+        if ($this->auth_check()) {
+            $model = M("order");
+            $data = I("post.");
+            $result = $model->save($data);
+            $data['result'] = $result !== false;
+            $this->ajaxReturn($data);
+        }
+
+        $this->display("empty");
+    }
+
     // 用户列表
     public function user_list() {
         if ($this->auth_check()) {
@@ -635,7 +665,7 @@ class AdminController extends Controller {
         $this->display();
     }
 
-    // ajax 商品备案状态更改
+    // ajax商品备案状态更改
     public function ajax_good_state($id=null, $state=null) {
         if ($this->auth_check()) {
             if (IS_AJAX && !empty($id) && !empty($state)) {
@@ -789,7 +819,6 @@ class AdminController extends Controller {
                             "Cosignee"      => array(
                                 "RecPerson"         => $order_data['r_name'],
                                 "RecPhone"          => $order_data['r_phone'],
-                                "RecMail"           => $order_data['r_email'],
                                 "RecCountry"        => $order_data['r_country'],
                                 "RecProvince"       => $order_data['r_province'],
                                 "RecCity"           => $order_data['r_city'],
@@ -934,6 +963,7 @@ class AdminController extends Controller {
         "cancel"     => "Cancel / 取消",
         "done"       => "Done / 完成",
         "empty"      => "Empty / 空白",
+        "delete"     => 'Delete / 删除',
     );
 
     // 备案状态

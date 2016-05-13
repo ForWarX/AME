@@ -143,3 +143,7 @@
 .admin_goods_list tr {
     cursor: pointer;
 }
+/*可编辑格子*/
+.editable:hover {
+    background-color: #E4B4B4;
+}

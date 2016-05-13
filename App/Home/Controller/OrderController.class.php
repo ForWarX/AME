@@ -263,7 +263,6 @@ class OrderController extends Controller {
         "r_address" => "Address/地址* 不能為空",
         "r_zip" => "Postcode/郵編* 不能為空",
         "r_country" => "Country/國家* 不能為空",
-        "r_email" => "Email/電郵* 不能為空",
         "r_phone" => "Phone/電話* 不能為空",
         "r_id" => "China ID #/中國身份證* 不能為空",
     );

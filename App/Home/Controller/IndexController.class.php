@@ -44,7 +44,7 @@ class IndexController extends Controller {
     public function login(){
         $this->display();
     }
-    public function Jingdong_channel(){
+    public function jingdong_channel(){
         $this->display();
     }
     public function customer_process(){  //服务流程
