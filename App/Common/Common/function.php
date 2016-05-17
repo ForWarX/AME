@@ -56,3 +56,16 @@ function curl_post($url, $data) {
 
     return array("data"=>$data, "info"=>$info);
 }
+
+// 磅转千克
+function lb2kg($weight=0, $prec=3) {
+    $weight *= 0.4535924;
+    if ($prec > 0) $weight = round($weight, $prec);
+    return $weight;
+}
+// 千克转磅
+function kg2lb($weight=0, $prec=3) {
+    $weight /= 0.4535924;
+    if ($prec > 0) $weight = round($weight, $prec);
+    return $weight;
+}

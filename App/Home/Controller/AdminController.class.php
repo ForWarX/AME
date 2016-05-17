@@ -96,6 +96,7 @@ class AdminController extends Controller {
             foreach($orders as $key=>$val) {
                 $orders[$key]['date'] = date("Y/m/d H:i:s", $val["date"]);           // 日期
                 $orders[$key]['state_detail'] = self::$state_details[$val['state']]; // 订单状态
+                $orders[$key]['weight'] = kg2lb($orders[$key]['weight']);            // 重量
             }
 
             // 获取商品数及备案数
@@ -134,6 +135,7 @@ class AdminController extends Controller {
                     // 提交更新
                     $data = I("post.");
                     if (!empty($data)) {
+                        if (!empty($data['weight'])) $data['weight'] = lb2kg($data['weight'], 0);
                         $model = M("order");
                         $model->where("id=%d", $id)->save($data);
                     }
@@ -145,6 +147,7 @@ class AdminController extends Controller {
                     // 数据处理
                     $order['date'] = date("Y/m/d H:i:s", $order["date"]);           // 日期
                     $order['state_detail'] = self::$state_details[$order['state']]; // 订单状态
+                    $order['weight'] = kg2lb($order['weight']);                     // 重量
 
                     $this->assign('order', $order);
 
@@ -428,8 +431,10 @@ class AdminController extends Controller {
         if ($this->auth_check()) {
             $model = M("order");
             $data = I("post.");
+            if (!empty($data['weight'])) $data['weight'] = lb2kg($data['weight'], 0); // 重量单位转换
             $result = $model->save($data);
             $data['result'] = $result !== false;
+            if (!empty($data['weight'])) $data['weight'] = kg2lb($data['weight']); // 重量单位转换
             $this->ajaxReturn($data);
         }
 

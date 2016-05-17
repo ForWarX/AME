@@ -170,6 +170,7 @@
                                         <th>Brand/品牌*</th>
                                         <th>English Name/英文名*</th>
                                         <th>Chinese Name/中文名*</th>
+                                        <th>Spec/規格*</th>
                                         <th>Quantity/數量*</th>
                                         <th>Unit Value/單價（C$）*</th>
                                         <th></th>
@@ -193,6 +194,10 @@
                                             <td>
                                                 <label for="name_cn" class="sr-only"></label>
                                                 <input type="text" name="name_cn[]" id="name_cn" value="{$post.name_cn.$i}">
+                                            </td>
+                                            <td>
+                                                <label for="spec" class="sr-only"></label>
+                                                <input type="text" name="spec[]" id="spec" value="{$post.spec.$i}">
                                             </td>
                                             <td>
                                                 <label for="quantity" class="sr-only"></label>
@@ -234,6 +239,10 @@
                                                         <td>
                                                             <label for="name_cn" class="sr-only"></label>
                                                             <input type="text" name="name_cn[]" id="name_cn" disabled>
+                                                        </td>
+                                                        <td>
+                                                            <label for="spec" class="sr-only"></label>
+                                                            <input type="text" name="spec[]" id="spec" disabled>
                                                         </td>
                                                         <td>
                                                             <label for="quantity" class="sr-only"></label>
@@ -410,6 +419,8 @@
                         tar.val(data['name_en']);
                         tar = e.find("#name_cn");
                         tar.val(data['name_cn']);
+                        tar = e.find("#spec");
+                        tar.val(data['spec']);
                         tar = e.find("#unit_value");
                         tar.val(data['unit_value']);
                     }
