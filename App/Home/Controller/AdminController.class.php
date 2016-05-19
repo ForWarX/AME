@@ -937,6 +937,25 @@ class AdminController extends Controller {
         $this->display("empty");
     }
 
+    // ajax自动生成会员号
+    public function ajax_get_member_id() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $id = $this->generate_member_id();
+                if ($id !== false) {
+                    $result['result'] = 'success';
+                    $result['id'] = $id;
+                } else {
+                    $result['result'] = 'fail';
+                    $result['msg'] = '本月会员数已达上限';
+                }
+                $this->ajaxReturn($result);
+            }
+        }
+
+        $this->display("empty");
+    }
+
     /*************************************
      * 辅助函数
      *************************************/
@@ -957,6 +976,66 @@ class AdminController extends Controller {
             $this->assign("AUTH", true);
             return true;
         }
+    }
+
+    // 自动生成会员号
+    // 十位
+    // AME#  年份  三位数  月份  两位数
+    //  1     16    361     05     92
+    private function generate_member_id() {
+        $date = explode('-', date("Y-m"));
+        $year = substr($date[0], -2);
+        $month = $date[1];
+        $ame_prefix = '1';
+        $id = $ame_prefix . $year; // 新ID
+
+        $model = M('user');
+        $data = $model->where('user_id LIKE "' . $id . '%"')->getField('user_id', true);
+        usort($data, array($this, "_member_id_sort"));
+
+        if ($month == substr($data[0], 6, 2)) {
+            // 当前月份有过会员注册
+            $code3 = substr($data[0], 3, 3); // 最新的3位编号
+            $code2 = array();
+            foreach ($data as $user_id) {
+                if (substr($user_id, 6, 2) == $month) $code2[] = intval(substr($user_id, -2));
+                else break;
+            }
+            if (count($code2) < 100) {
+                // 还有未注册的2位号
+                $code2 = array_diff(range(0, 99), $code2); // 获取未被注册的会员2位编号
+                $code2 =  $code2 = sprintf("%02d", array_rand($code2));
+            } else {
+                // 所有2位号都注册了，增加3位号
+                $code3 = intval($code3) + 1;
+                if ($code3 < 1000) {
+                    $code2 = sprintf("%02d", rand(0, 99));
+                } else {
+                    // 已达到本月最大注册数
+                    return false;
+                }
+            }
+        } else {
+            // 当前月份无会员注册
+            $code3 = "000";
+            $code2 = sprintf("%02d", rand(0, 99));
+        }
+
+        $id .= $code3 . $month . $code2;
+        return $id;
+    }
+
+    // 会员号排序
+    private function _member_id_sort($a, $b) {
+        $a_month = substr($a, 6, 2);
+        $b_month = substr($b, 6, 2);
+        $a_code = substr($a, 3, 3);
+        $b_code = substr($b, 3, 3);
+        if ($a_month > $b_month) return -1;
+        elseif ($a_month < $b_month) return 1;
+        elseif ($a_code > $b_code) return -1;
+        elseif ($a_code < $b_code) return 1;
+        return 0;
     }
 
     /**************************************

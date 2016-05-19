@@ -21,7 +21,7 @@
                             <input type="text" class="form-control update" id="user_id" data-name="user_id" value="{$user.user_id}">
                         </div>
                         <div class="col-sm-1">
-                            <button class="btn btn-default" onclick="return false;">自动生成</button>
+                            <button class="btn btn-default" onclick="get_member_id(); return false;">自动生成</button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -94,6 +94,18 @@
             var name = tar.data("name");
             tar.attr("name", name);
         });
+
+        // 自动获取会员号
+        function get_member_id() {
+            var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_get_member_id.html";
+            $.post(url, function(data) {
+                if (data['result']) {
+                    $('#user_id').val(data['id']).trigger("change");
+                } else {
+                    alert(data['msg']);
+                }
+            });
+        }
     </script>
 </body>
 </html>
