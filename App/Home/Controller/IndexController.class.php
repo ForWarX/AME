@@ -83,5 +83,8 @@ class IndexController extends Controller {
     public function location_share(){
         $this->display();
     }
+    public function open_hours(){
+        $this->display();
+    }
 
 }
