@@ -689,7 +689,7 @@ class AdminController extends Controller {
     // 推送订单给威盛
     public function push_to_ws() {
         if ($this->auth_check()) {
-            if (IS_POST || true) {
+            if (IS_POST) {
                 // 获取订单ID
                 $id = I("order_id");
                 if (empty($id)) {
@@ -887,6 +887,35 @@ class AdminController extends Controller {
         $this->display("empty");
     }
 
+    // 保存海丝路
+    public function push_to_hsl() {
+        if ($this->auth_check()) {
+            $data['id'] = I('order_id');
+            $data['track_no'] = I('track_no');
+            $data['track_company'] = 'HSL';
+            $data['state'] = 'delivery';
+
+            $model = M('order');
+            $res = $model->save($data);
+            if ($res === false) {
+                $result = array("state"=>"fail", "msg"=>"數據更新失敗");
+            } else if ($res == 0) {
+                $result = array("state"=>"fail", "msg"=>"未找到該訂單");
+            } else {
+                $data['state_detail'] = self::$state_details[$data['state']];
+                $result = array("state"=>"success", "data"=>$data);
+            }
+            if (IS_AJAX) {
+                $this->ajaxReturn($result);
+            } else {
+                dump($result);
+                exit;
+            }
+        }
+
+        $this->display("empty");
+    }
+
     // 存放区域
     public function store_area() {
         if ($this->auth_check()) {
@@ -1048,6 +1077,7 @@ class AdminController extends Controller {
         "done"       => "Done / 完成",
         "empty"      => "Empty / 空白",
         "delete"     => 'Delete / 删除',
+        "delivery"   => 'Delivering / 已發貨',
     );
 
     // 备案状态

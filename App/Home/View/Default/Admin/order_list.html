@@ -4,19 +4,45 @@
     <?php include("App/Home/View/Default/common/admin_head.html"); ?>
 </head>
 <body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
-    <!-- 模态框 -->
-    <div class="modal fade" id="ModalWait" tabindex="-1" role="dialog" aria-labelledby="ModalWaitLabel">
+    <!-- 威盛模态框 -->
+    <div class="modal fade" id="ModalWS" tabindex="-1" role="dialog" aria-labelledby="ModalWSLabel">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">推送中……</h4>
+                    <h4 class="modal-title" id="ModalWSLabel">推送中……</h4>
                 </div>
                 <div class="modal-body" style="padding: 0;">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-xs-12 text-center" style="padding: 0;">
                                 <img style="width: 100%;" src="<?php echo ROOT_PATH; ?>App/Home/View/Default/img/animation/loading2.gif">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- 模态框结束 -->
+    <!-- 海丝路模态框 -->
+    <div class="modal fade" id="ModalHSL" tabindex="-1" role="dialog" aria-labelledby="ModalHSLLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="ModalHSLLabel">海丝路追踪号</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <form action="" method="post" onsubmit="confirm_hsl($(this)); return false;" data-order_id="0">
+                                    <div class="form-group">
+                                        <label for="HSL-track-no"></label>
+                                        <input type="text" class="form-control" id="HSL-track-no">
+                                    </div>
+                                    <button type="submit" class="btn btn-default btn-sm">确认</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -67,7 +93,7 @@
                     </tr></thead>
                     <tbody>
                         <?php foreach($orders as $order) { ?>
-                            <tr>
+                            <tr id="order_{$order.id}">
                                 <td><input type="checkbox" class="select_tar"></td>
                                 <td>{$order.id}</td>
                                 <td>{$order.ame_no}</td>
@@ -77,8 +103,8 @@
                                 <td class="editable" ondblclick="editable($(this));" data-editing="false"  data-type="text" data-url="<?php echo ROOT_PATH;?>Home/Admin/ajax_order_data.html" data-name="weight" data-max_width="50" data-data_num="1" data-key1="id" data-val1="{$order.id}">
                                     {$order.weight}
                                 </td>
-                                <td>{$order.track_company}</td>
-                                <td>{$order.track_no}</td>
+                                <td class="track_company">{$order.track_company}</td>
+                                <td class="track_no">{$order.track_no}</td>
                                 <td>
                                     <?php if ($order['num_total_goods'] > 0) { ?>
                                         <?php if ($order['num_records'] < $order['num_total_goods']) { ?>
@@ -106,18 +132,24 @@
                                         <?php } ?>
                                     </select>
                                 </td>
-                                <td>{$order.state_detail}</td>
+                                <td class="state_detail">{$order.state_detail}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_test/id/{$order.id}.html" role="button">查看</a>
-                                    <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel') { ?>
+                                    <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel' || $order['state'] == 'delivery') { ?>
                                         <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
-                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_ws($(this), {$order.id}); return false;">推送</a>
+                                    <?php } ?>
+                                    <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel') { ?>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_ws($(this), {$order.id}); return false;">威盛</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_hsl({$order.id}); return false;">海丝路</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'empty') { ?>
                                         <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
                                     <?php } ?>
+                                    <?php if ($order['state'] == 'delivery') { ?>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_state($(this), 'done'); return false;" data-id="{$order.id}">完成</a>
+                                    <?php } ?>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'empty') { ?>
-                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_delete($(this)); return false;" data-id="{$order.id}">删除</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_state($(this), 'delete'); return false;" data-id="{$order.id}">删除</a>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -140,10 +172,10 @@
         // 推送给威盛
         function push_to_ws(e, id) {
             if (confirm("确定推送？")) {
-                $("#ModalWait").modal({keyboard:false});
+                $("#ModalWS").modal({keyboard:false});
                 var url = "<?php echo ROOT_PATH;?>Home/Admin/push_to_ws.html";
                 $.post(url, {'order_id':id}, function(data) {
-                    $("#ModalWait").modal('hide');
+                    $("#ModalWS").modal('hide');
                     switch(data['state']) {
                         case 'success':
                             location.reload();
@@ -162,6 +194,37 @@
                     }
                 });
             }
+        }
+
+        // 推送给海丝路
+        function push_to_hsl(id) {
+            if (id > 0) {
+                var modal = $("#ModalHSL");
+                modal.find('form').attr('data-order_id', id);
+                modal.modal({keyboard: false});
+            }
+        }
+
+        // 海丝路追踪号确认
+        function confirm_hsl(e) {
+            var order_id = e.data('order_id');
+            var input = e.find('#HSL-track-no');
+            var track_no = input.val();
+            var url = "<?php echo ROOT_PATH;?>Home/Admin/push_to_hsl.html";
+            input.val('');
+            $('#ModalHSL').modal('hide');
+
+            $.post(url, {'order_id':order_id, 'track_no':track_no}, function(data) {
+                $("#ModalWS").modal('hide');
+                switch(data['state']) {
+                    case 'success':
+                        location.reload();
+                        break;
+                    case 'fail':
+                        alert(data['msg']);
+                        break;
+                }
+            });
         }
 
         // 付款处理
@@ -191,18 +254,18 @@
             });
         }
 
-        // 删除订单
-        function order_delete(e) {
-            if (confirm("确定删除？")) {
+        // 修改订单状态
+        function order_state(e, state) {
+            if (confirm("确定？")) {
                 e.html("处理中");
 
                 var id = e.data("id");
-                var state = "delete";
                 var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_order_state.html";
                 $.post(url, {'id': id, 'state': state}, function (data) {
                     switch (data['result']) {
                         case true:
-                            e.parent().parent().hide('normal');
+                            //e.parent().parent().hide('normal');
+                            location.reload();
                             break;
                         default:
                             alert(data['state_detail']);
