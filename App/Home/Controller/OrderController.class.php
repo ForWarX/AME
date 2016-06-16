@@ -8,7 +8,7 @@ use Think\Controller;
 
 class OrderController extends Controller {
     // 下单界面
-    public function order() {
+    public function order($id=0) {
         if (IS_POST) {
             // 提交订单
             $data = I("post.");
@@ -156,8 +156,12 @@ class OrderController extends Controller {
                     $this->assign("order_error", "ERROR: Cannot save order / 訂單無法保存");
                 }
             }
+        } else if ($id > 0) {
+            $model = M("order");
+            $data = $model->where("id=%d", $id)->find();
+            $this->assign("post", $data);
         }
-
+        
         // 获取国家代码
         $model = M("order_country");
         $countries = $model->where("is_open=1")->order("name_en")->select();
@@ -180,9 +184,11 @@ class OrderController extends Controller {
                 $order['date'] = date("m/d/Y", $order['date']); // 处理日期
                 $this->handle_country_code($order); // 处理国家代码
                 // 简体转繁体
+                // 暂且不转
+                /*
                 foreach($order as $key=>$val) {
                     if (is_string($val)) $order[$key] = s2t($val);
-                }
+                }*/
 
                 $this->assign('order', $order);
 
@@ -202,8 +208,9 @@ class OrderController extends Controller {
                     // 设置数量（备案信息里默认1），产品名称和品牌简体转繁体
                     foreach($goods_list as $key=>$val) {
                         $goods[$key]['quantity'] = $val['quantity'];
-                        $goods[$key]['name_cn'] = s2t($goods[$key]['name_cn']);
-                        $goods[$key]['brand'] = s2t($goods[$key]['brand']);
+                        //暂且不转了
+                        //$goods[$key]['name_cn'] = s2t($goods[$key]['name_cn']);
+                        //$goods[$key]['brand'] = s2t($goods[$key]['brand']);
                     }
 
                     $this->assign('goods', $goods);
