@@ -151,7 +151,11 @@ class OrderController extends Controller {
                     }
 
                     session("order_done_id", $order_id);
-                    redirect('order_done.html');
+                    if ($id > 0) {
+                        redirect('../../order_done.html');
+                    } else {
+                        redirect('order_done.html');
+                    }
                 } else {
                     $this->assign("order_error", "ERROR: Cannot save order / 訂單無法保存");
                 }
