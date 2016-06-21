@@ -318,7 +318,7 @@ class OrderController extends Controller {
     public static function get_good_record_by_code($code=null) {
         if ($code != null) {
             $model = M("goods_record");
-            $data = $model->where("code=" . $code)->find();
+            $data = $model->where("code='%s'", $code)->find();
             return $data;
         }
 
