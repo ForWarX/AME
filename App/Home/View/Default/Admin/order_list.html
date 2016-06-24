@@ -4,6 +4,34 @@
     <?php include("App/Home/View/Default/common/admin_head.html"); ?>
 </head>
 <body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
+    <!-- 推送选择公司模态框 -->
+    <div class="modal fade" id="ModalPick" tabindex="-1" role="dialog" aria-labelledby="ModalPickLabel" data-id="0">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="ModalPickLabel">选择公司</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_ws(); return false;">威盛API</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_other('hsl'); return false;">海丝路</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_other('yt'); return false;">圆通</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_other('ems'); return false;">EMS</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_other('xgyd'); return false;">香港邮递</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- 模态框结束 -->
     <!-- 威盛模态框 -->
     <div class="modal fade" id="ModalWS" tabindex="-1" role="dialog" aria-labelledby="ModalWSLabel">
         <div class="modal-dialog modal-sm" role="document">
@@ -24,22 +52,22 @@
             </div>
         </div>
     </div><!-- 模态框结束 -->
-    <!-- 海丝路模态框 -->
-    <div class="modal fade" id="ModalHSL" tabindex="-1" role="dialog" aria-labelledby="ModalHSLLabel">
+    <!-- 追踪号模态框 -->
+    <div class="modal fade" id="ModalPush" tabindex="-1" role="dialog" aria-labelledby="ModalPushLabel">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="ModalHSLLabel">海丝路追踪号</h4>
+                    <h4 class="modal-title" id="ModalPushLabel"></h4>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-xs-12 text-center">
-                                <form action="" method="post" onsubmit="confirm_hsl($(this)); return false;" data-order_id="0">
+                                <form action="" method="post" onsubmit="confirm_track_no($(this)); return false;" data-code="" data-order_id="0">
                                     <div class="form-group">
-                                        <label for="HSL-track-no"></label>
-                                        <input type="text" class="form-control" id="HSL-track-no">
+                                        <label for="track-no">追踪号</label>
+                                        <input type="text" class="form-control" id="track-no">
                                     </div>
                                     <button type="submit" class="btn btn-default btn-sm">确认</button>
                                 </form>
@@ -138,9 +166,8 @@
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel' || $order['state'] == 'delivery') { ?>
                                         <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
                                     <?php } ?>
-                                    <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel') { ?>
-                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_ws($(this), {$order.id}); return false;">威盛</a>
-                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_to_hsl({$order.id}); return false;">海丝路</a>
+                                    <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel' || $order['state'] == 'delivery') { ?>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_order({$order.id}); return false;">推送</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'empty') { ?>
                                         <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
@@ -169,9 +196,28 @@
     <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
 
     <script>
+        // 全局变量
+        var g_code = {
+            'hsl': '海丝路',
+            'yt': '圆通',
+            'ems': 'EMS',
+            'xgyd': '香港邮递'
+        };
+    </script>
+    <script>
+        // 推送订单
+        function push_order(id) {
+            $("#ModalPick").data("id", id).modal({keyboard:false});
+        }
+
         // 推送给威盛
-        function push_to_ws(e, id) {
+        function push_to_ws() {
             if (confirm("确定推送？")) {
+                // 获取ID
+                var pick = $("#ModalPick");
+                var id = pick.data("id");
+                pick.modal('hide');
+
                 $("#ModalWS").modal({keyboard:false});
                 var url = "<?php echo ROOT_PATH;?>Home/Admin/push_to_ws.html";
                 $.post(url, {'order_id':id}, function(data) {
@@ -196,26 +242,30 @@
             }
         }
 
-        // 推送给海丝路
-        function push_to_hsl(id) {
-            if (id > 0) {
-                var modal = $("#ModalHSL");
-                modal.find('form').attr('data-order_id', id);
-                modal.modal({keyboard: false});
-            }
+        // 推送给其它公司
+        function push_to_other(code) {
+            // 获取ID
+            var pick = $("#ModalPick");
+            var id = pick.data("id");
+            pick.modal('hide');
+
+            $("#ModalPushLabel").html(g_code[code]);
+            var modal = $("#ModalPush");
+            modal.find('form').data('order_id', id).data('code', code);
+            modal.modal({keyboard: false});
         }
 
-        // 海丝路追踪号确认
-        function confirm_hsl(e) {
+        // 提交追踪号确认
+        function confirm_track_no(e) {
+            var code = e.data('code');
             var order_id = e.data('order_id');
-            var input = e.find('#HSL-track-no');
+            var input = e.find('#track-no');
             var track_no = input.val();
-            var url = "<?php echo ROOT_PATH;?>Home/Admin/push_to_hsl.html";
+            var url = "<?php echo ROOT_PATH;?>Home/Admin/push_to_other.html";
             input.val('');
-            $('#ModalHSL').modal('hide');
+            $('#ModalPush').modal('hide');
 
-            $.post(url, {'order_id':order_id, 'track_no':track_no}, function(data) {
-                $("#ModalWS").modal('hide');
+            $.post(url, {'code':code, 'order_id':order_id, 'track_no':track_no}, function(data) {
                 switch(data['state']) {
                     case 'success':
                         location.reload();

@@ -94,9 +94,10 @@ class AdminController extends Controller {
 
             // 数据处理
             foreach($orders as $key=>$val) {
-                $orders[$key]['date'] = date("Y/m/d H:i:s", $val["date"]);           // 日期
-                $orders[$key]['state_detail'] = self::$state_details[$val['state']]; // 订单状态
-                $orders[$key]['weight'] = kg2lb($orders[$key]['weight']);            // 重量
+                $orders[$key]['date'] = date("Y/m/d H:i:s", $val["date"]);                            // 日期
+                $orders[$key]['state_detail'] = self::$state_details[$val['state']];                  // 订单状态
+                $orders[$key]['weight'] = kg2lb($val['weight']);                                      // 重量
+                $orders[$key]['track_company'] = self::$track_company_name[$val['track_company']];    // 快递公司
             }
 
             // 获取商品数及备案数
@@ -888,11 +889,11 @@ class AdminController extends Controller {
     }
 
     // 保存海丝路
-    public function push_to_hsl() {
+    public function push_to_other() {
         if ($this->auth_check()) {
             $data['id'] = I('order_id');
             $data['track_no'] = I('track_no');
-            $data['track_company'] = 'HSL';
+            $data['track_company'] = strtoupper(I('code'));
             $data['state'] = 'delivery';
 
             $model = M('order');
@@ -1108,5 +1109,13 @@ class AdminController extends Controller {
         "r_email" => "Email/電郵* 不能為空",
         "r_phone" => "Phone/電話* 不能為空",
         "r_id" => "China ID #/中國身份證* 不能為空",
+    );
+
+    private static $track_company_name = array(
+        "WS" => "威盛",
+        "HSL" => "海丝路",
+        "YT" => "圆通",
+        "EMS" => "EMS",
+        "XGYD" => "香港邮递",
     );
 }
