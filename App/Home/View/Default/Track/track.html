@@ -13,15 +13,20 @@
                 <h1>查询结果</h1>
                 <h3>快递单号：{$order_info.ame_no}</h3>
                 <h3>日期：{$order_info.date}</h3>
-                <?php if ($track_result) { ?>
+                <?php if ($track_result_ws) { ?>
                     <h3>状态：</h3>
                     <ul>
-                        <?php foreach($track_result['rtnList'] as $track_info) { ?>
+                        <?php foreach($track_result_ws['rtnList'] as $track_info) { ?>
                             <li>{$track_info.Remark}</li>
                         <?php } ?>
                     </ul>
                 <?php } else { ?>
                     <h3>状态：{$order_info.state}</h3>
+                    <ul>
+                        <?php foreach($track_result as $track_info) { ?>
+                            <li>{$track_info.history}</li>
+                        <?php } ?>
+                    </ul>
                 <?php } ?>
             </div>
         </div>

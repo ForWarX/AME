@@ -12,7 +12,7 @@ class TrackController extends Controller {
 
         if (!empty($ame_no)) {
             $model = M("order");
-            $data = $model->field("ame_no,date,state,track_company,track_no")->where("ame_no='" . $ame_no . "' AND state<>'cancel' AND state<>'delete'")->find();
+            $data = $model->field("id, ame_no,date,state,track_company,track_no")->where("ame_no='" . $ame_no . "' AND state<>'cancel' AND state<>'delete'")->find();
             $data['date'] = date("m/d/Y", $data['date']);
             $data['state'] = self::$state_details[$data['state']];
             switch($data['track_company']) {
@@ -26,9 +26,22 @@ class TrackController extends Controller {
                             $result['rtnList'][$key]['Remark'] = s2t($val['Remark']); // 简体转繁体
                         }
 
-                        $this->assign('track_result', $result);
+                        $this->assign('track_result_ws', $result);
                     }
                     break;
+                default:
+                    // 获取数据
+                    $model = M("order_history");
+                    $result = $model->where("order_id='%s'", $data['id'])->order('id desc')->select();
+
+                    if (!empty($result)) {
+                        // 数据处理
+                        foreach($result as $key=>$val) {
+                            $result[$key]['history'] = s2t($val['history']); // 简体转繁体
+                        }
+
+                        $this->assign('track_result', $result);
+                    }
             }
 
             $this->assign("order_info", $data);

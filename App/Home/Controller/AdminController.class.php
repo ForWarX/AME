@@ -986,6 +986,66 @@ class AdminController extends Controller {
         $this->display("empty");
     }
 
+    // ajax获取追踪历史记录
+    public function ajax_get_order_history() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $id = I("order_id");
+                $result['result'] = 'fail';
+                if (!empty($id) && $id > 0) {
+                    $model = M("order_history");
+                    $data = $model->where("order_id='%d'", $id)->order("id desc")->select();
+                    $result['result'] = 'success';
+                    $result['data'] = $data;
+                }
+                $this->ajaxReturn($result);
+            }
+        }
+
+        $this->display("empty");
+    }
+
+    // ajax添加追踪历史记录
+    public function ajax_add_order_history() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $id = I("order_id");
+                $result['result'] = 'fail';
+                if (!empty($id) && $id > 0) {
+                    $model = M("order_history");
+                    if ($model->create()) {
+                        $id = $model->add();
+                        if ($id) {
+                            $result['result'] = 'success';
+                            $result['id'] = $id;
+                        }
+                    }
+                }
+                $this->ajaxReturn($result);
+            }
+        }
+
+        $this->display("empty");
+    }
+
+    // ajax删除追踪历史记录
+    public function ajax_delete_order_history() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $id = I("id");
+                $result['result'] = 'fail';
+                if (!empty($id) && $id > 0) {
+                    $model = M("order_history");
+                    $model->delete($id);
+                    $result['result'] = 'success';
+                }
+                $this->ajaxReturn($result);
+            }
+        }
+
+        $this->display("empty");
+    }
+
     /*************************************
      * 辅助函数
      *************************************/

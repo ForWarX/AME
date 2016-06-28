@@ -78,6 +78,35 @@
             </div>
         </div>
     </div><!-- 模态框结束 -->
+    <!-- 追踪历史模态框 -->
+    <div class="modal fade" id="ModalHistory" tabindex="-1" role="dialog" aria-labelledby="ModalHistoryLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="ModalHistoryLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <form action="" method="post" onsubmit="add_history($(this)); return false;" data-order_id="0">
+                                    <div class="form-group">
+                                        <label for="new-history">追踪历史</label>
+                                        <textarea class="form-control" id="new-history"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-default btn-sm">添加历史</button>
+                                </form>
+                            </div>
+                            <div class="col-xs-12 text-center" id="order-history" style="margin-top: 5px; border-top: 1px solid #000;">
+                                <ul></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- 模态框结束 -->
 
     <div class="container-fluid container-top-margin">
         <div class="row">
@@ -173,7 +202,8 @@
                                         <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'delivery') { ?>
-                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_state($(this), 'done'); return false;" data-id="{$order.id}">完成</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="track_history($(this)); return false;" data-id="{$order.id}" data-ame_no="{$order.ame_no}">追踪历史</a>
+                                        <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_state($(this), 'done'); return false;" data-id="{$order.id}">送达</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'empty') { ?>
                                         <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_state($(this), 'delete'); return false;" data-id="{$order.id}">删除</a>
@@ -319,6 +349,65 @@
                             break;
                         default:
                             alert(data['state_detail']);
+                    }
+                });
+            }
+        }
+
+        // 追踪历史
+        function track_history(e) {
+            var id = e.data("id");
+            var ame_no = e.data("ame_no");
+            var modal = $("#ModalHistory");
+            modal.find("form").data("order_id", id);
+            modal.find("#ModalHistoryLabel").html(ame_no);
+            modal.modal({keyboard:false});
+
+            var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_get_order_history.html";
+            var data = {order_id:id};
+            var history = $("#order-history").find("ul");
+            history.html("<li>loading</li>");
+            $.post(url, data, function(res){
+                history.html("");
+                if (res['result'] == 'success') {
+                    res['data'].forEach(function(val) {
+                        var html = "<li data-id='" + val['id'] + "'>";
+                        html += val['history'];
+                        html += "<a href='' style='float:right;' onclick='delete_history($(this)); return false;'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a>";
+                        //html += "<a href='' style='float:right;' onclick='return false;'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a>";
+                        html += "</li>";
+                        history.append(html);
+                    });
+                }
+            });
+        }
+
+        // 添加追踪历史
+        function add_history(e) {
+            var id = e.data("order_id");
+            var content = $("#new-history").val();
+            var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_add_order_history.html";
+            var data = {order_id:id, history:content};
+            $.post(url, data, function(res) {
+                if (res['result'] == 'success') {
+                    var html = "<li data-id='" + res['id'] + "'>";
+                    html += content;
+                    html += "<a href='' style='float:right;' onclick='delete_history($(this)); return false;'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a>";
+                    //html += "<a href='' style='float:right;' onclick='return false;'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a>";
+                    html += "</li>";
+                    $("#order-history").find("ul").prepend(html);
+                }
+            });
+        }
+
+        // 删除追踪历史
+        function delete_history(e) {
+            if (confirm("确定？")) {
+                var id = e.parent().data("id");
+                var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_delete_order_history.html";
+                $.post(url, {id:id}, function(res) {
+                    if (res['result'] == 'success') {
+                        e.parent().remove();
                     }
                 });
             }
