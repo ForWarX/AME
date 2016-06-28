@@ -201,8 +201,10 @@
                                     <?php if ($order['state'] == 'empty') { ?>
                                         <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
                                     <?php } ?>
-                                    <?php if ($order['state'] == 'delivery') { ?>
+                                    <?php if ($order['state'] == 'delivery' || $order['state'] == 'done') { ?>
                                         <a class="btn btn-default btn-xs" href="#" role="button" onclick="track_history($(this)); return false;" data-id="{$order.id}" data-ame_no="{$order.ame_no}">追踪历史</a>
+                                    <?php } ?>
+                                    <?php if ($order['state'] == 'delivery') { ?>
                                         <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_state($(this), 'done'); return false;" data-id="{$order.id}">送达</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'empty') { ?>
