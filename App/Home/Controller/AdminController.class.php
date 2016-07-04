@@ -233,6 +233,7 @@ class AdminController extends Controller {
                         if (empty($data['brand'][$key]) != $noData
                             || empty($data['name_en'][$key]) != $noData
                             || empty($data['name_cn'][$key]) != $noData
+                            || empty($data['spec'][$key]) != $noData
                             || empty($data['quantity'][$key]) != $noData
                             || empty($data['unit_value'][$key]) != $noData
                         ) {
@@ -305,6 +306,7 @@ class AdminController extends Controller {
                                 'brand' => t2s($data['brand'][$key]),
                                 'name_en' => $data['name_en'][$key],
                                 'name_cn' => t2s($data['name_cn'][$key]),
+                                'spec' => t2s($data['spec'][$key]),
                                 'quantity' => $data['quantity'][$key],
                                 'unit_value' => $data['unit_value'][$key],
                             );
