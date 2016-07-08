@@ -1014,13 +1014,17 @@ class AdminController extends Controller {
                 $id = I("order_id");
                 $result['result'] = 'fail';
                 if (!empty($id) && $id > 0) {
+                    $history = str_replace("\n", "<br>", I('history'));
                     $model = M("order_history");
-                    if ($model->create()) {
-                        $id = $model->add();
-                        if ($id) {
-                            $result['result'] = 'success';
-                            $result['id'] = $id;
-                        }
+                    $data = array(
+                        'order_id'=>$id,
+                        'history'=>$history,
+                    );
+                    $id = $model->data($data)->add();
+                    if ($id) {
+                        $result['result'] = 'success';
+                        $result['id'] = $id;
+                        $result['history'] = $history;
                     }
                 }
                 $this->ajaxReturn($result);

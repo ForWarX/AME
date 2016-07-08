@@ -22,9 +22,10 @@ class TrackController extends Controller {
                     if (!empty($result)) {
                         // 数据处理
                         $result = object_to_array($result);
+                        /* 暂且不转
                         foreach($result['rtnList'] as $key=>$val) {
                             $result['rtnList'][$key]['Remark'] = s2t($val['Remark']); // 简体转繁体
-                        }
+                        }*/
 
                         $this->assign('track_result_ws', $result);
                     }
@@ -36,9 +37,11 @@ class TrackController extends Controller {
 
                     if (!empty($result)) {
                         // 数据处理
+                        /* 暂且不转
                         foreach($result as $key=>$val) {
                             $result[$key]['history'] = s2t($val['history']); // 简体转繁体
                         }
+                        */
 
                         $this->assign('track_result', $result);
                     }
