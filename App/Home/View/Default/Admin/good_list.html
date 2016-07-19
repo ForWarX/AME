@@ -47,7 +47,7 @@
                                 <td>{$good.unit_value}</td>
                                 <td class="state_detail">{$good.state_detail}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="good_detail/id/{$good.id}.html" role="button">修改</a>
+                                    <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Admin/good_detail/id/{$good.id}.html" role="button">修改</a>
                                     <a class="btn btn-default btn-xs state-case case-pending" href="#" role="button" onclick="update_good_state($(this), {$good.id}, 'submitted');" <?php if ($good['state'] != 'pending') { ?>style="display:none;"<?php } ?>>已提交</a>
                                     <a class="btn btn-default btn-xs state-case case-submitted" href="#" role="button" onclick="update_good_state($(this), {$good.id}, 'pending');" <?php if ($good['state'] != 'submitted') { ?>style="display:none;"<?php } ?>>未提交</a>
                                     <a class="btn btn-default btn-xs state-case case-submitted" href="#" role="button" onclick="update_good_state($(this), {$good.id}, 'done');" <?php if ($good['state'] != 'submitted') { ?>style="display:none;"<?php } ?>>已备案</a>

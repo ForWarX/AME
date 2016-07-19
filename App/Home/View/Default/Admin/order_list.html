@@ -194,13 +194,13 @@
                                 <td>
                                     <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_test/id/{$order.id}.html" role="button">查看</a>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel' || $order['state'] == 'delivery') { ?>
-                                        <a class="btn btn-default btn-xs" href="order_detail/id/{$order.id}.html" role="button">修改</a>
+                                        <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Admin/order_detail/id/{$order.id}.html" role="button">修改</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel' || $order['state'] == 'delivery') { ?>
                                         <a class="btn btn-default btn-xs" href="#" role="button" onclick="push_order({$order.id}); return false;">推送</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'empty') { ?>
-                                        <a class="btn btn-default btn-xs" href="order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
+                                        <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Admin/order_add/ame_no/{$order.ame_no}.html" role="button">添加</a>
                                     <?php } ?>
                                     <?php if ($order['state'] == 'delivery' || $order['state'] == 'done') { ?>
                                         <a class="btn btn-default btn-xs" href="#" role="button" onclick="track_history($(this)); return false;" data-id="{$order.id}" data-ame_no="{$order.ame_no}">追踪历史</a>
