@@ -115,7 +115,7 @@
                 <form class="form-inline" action="" method="post" onsubmit="return check_cond($(this));">
                     <div class="form-group">
                         <label for="condition">模糊查找</label>
-                        <input type="text" id="condition" name="condition" placeholder="ID、单号">
+                        <input type="text" id="condition" name="condition" placeholder="ID、单号、姓名、电话">
                     </div>
 
                     <!-- 之前的查询内容 -->
@@ -253,7 +253,7 @@
                 pick.modal('hide');
 
                 $("#ModalWS").modal({keyboard:false});
-                var url = "<?php echo ROOT_PATH;?>Home/Admin/push_to_ws.html";
+                var url = "<?php echo ROOT_PATH; ?>Home/Admin/push_to_ws.html";
                 $.post(url, {'order_id':id}, function(data) {
                     $("#ModalWS").modal('hide');
                     switch(data['state']) {

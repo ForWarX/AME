@@ -67,6 +67,10 @@ class AdminController extends Controller {
                 $where .= "(ame_no LIKE '%" . $val . "%'";
                 $id = intval($val);
                 if ($id > 0) $where .= " OR id='" . $id . "'";
+                $where .= " OR s_name LIKE '%" . $val . "%'";
+                $where .= " OR r_name LIKE '%" . $val . "%'";
+                $where .= " OR s_phone LIKE '%" . $val . "%'";
+                $where .= " OR r_phone LIKE '%" . $val . "%'";
                 $where .= ")";
             }
 
@@ -429,16 +433,100 @@ class AdminController extends Controller {
     }
 
     // ajax订单数据更改
-    // post数据必须包含id，且key必须和数据库一直
+    // post数据的key必须和数据库一致
+    // 一次只能更新一个字段
+    // 可以设置键名为database的值来指定数据表
     public function ajax_order_data() {
         if ($this->auth_check()) {
-            $model = M("order");
-            $data = I("post.");
-            if (!empty($data['weight'])) $data['weight'] = lb2kg($data['weight'], 0); // 重量单位转换
-            $result = $model->save($data);
-            $data['result'] = $result !== false;
-            if (!empty($data['weight'])) $data['weight'] = kg2lb($data['weight']); // 重量单位转换
-            $this->ajaxReturn($data);
+            if (IS_AJAX) {
+                $data = I("post.");
+                $res['debug'] = $data;
+                if (!empty($data['database'])) {
+                    $model = M($data['database']);
+                    unset($data['database']);
+                } else {
+                    $model = M("order");
+                }
+
+                // 处理要更新的数据
+                $key = $data['update_key'];
+                $val = $data[$key];
+                if ($key == 'weight') $val = lb2kg($val, 0); // 重量单位转换
+                $update_data = array($key => $val);
+                unset($data['update_key']);
+                unset($data[$key]);
+
+                // $data里只剩下条件
+                $result = $model->where($data)->save($update_data);
+
+                $res['result'] = $result !== false;
+                if ($key == 'weight') $val = kg2lb($val, 0); // 重量单位转换
+                $res[$key] = $val;
+                $this->ajaxReturn($res);
+            }
+        }
+
+        $this->display("empty");
+    }
+
+    // ajax删除订单里的商品
+    public function ajax_delete_order_good() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $order_id = I("order_id");
+                $good_id = I("good_id");
+                $result['result'] = 'fail';
+                if (!empty($order_id) && $order_id > 0 && !empty($good_id) && $good_id > 0) {
+                    $model = M("order_goods");
+                    $cond = array('order_id'=>$order_id, 'good_id'=>$good_id);
+                    $model->where($cond)->delete();
+                    $result['result'] = 'success';
+                }
+                $this->ajaxReturn($result);
+            }
+        }
+
+        $this->display("empty");
+    }
+
+    // ajax订单添加商品
+    public function ajax_add_order_good() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $order_id = I("order_id");
+                $result['result'] = 'fail';
+                if (!empty($order_id) && $order_id > 00) {
+                    $model = M("order_goods");
+
+                    $good_id = I('good_id');
+                    if (empty($good_id)) {
+                        // 新产品
+                        $model_goods = M('goods_record');
+                        $good = array(
+                            'code' => I('code'),
+                            'brand' => I('brand'),
+                            'name_en' => I('name_en'),
+                            'name_cn' => I('name_cn'),
+                            'spec' => I('spec'),
+                            'quantity' => 1,
+                            'unit_value' => I('unit_value'),
+                            'state' => 'pending',
+                        );
+                        $good_id = $model_goods->add($good); // 保存产品
+                    }
+                    // 关联产品与订单
+                    $order_good = array(
+                        'order_id' => $order_id,
+                        'good_id' => $good_id,
+                        'quantity' => I('quantity'),
+                    );
+                    $res = $model->add($order_good);
+                    if ($res) {
+                        $result['result'] = 'success';
+                    }
+                }
+                $this->ajaxReturn($result);
+            }
         }
 
         $this->display("empty");

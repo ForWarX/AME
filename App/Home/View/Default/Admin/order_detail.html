@@ -142,22 +142,63 @@
                             <th>中文名</th>
                             <th>英文名</th>
                             <th>品牌</th>
+                            <th>规格</th>
                             <th>数量</th>
                             <th>单价（C$）</th>
                             <th>备案状态</th>
+                            <th></th>
                         </tr></thead>
                         <tbody class="admin_goods_list">
                             <?php foreach($goods as $good) { ?>
-                                <tr onclick="good_detail({$good.id});">
+                                <tr>
                                     <td>{$good.code}</td>
                                     <td>{$good.name_cn}</td>
                                     <td>{$good.name_en}</td>
                                     <td>{$good.brand}</td>
-                                    <td>{$good.quantity}</td>
+                                    <td>{$good.spec}</td>
+                                    <td class="editable" ondblclick="editable($(this));" data-editing="false"  data-type="text" data-url="<?php echo ROOT_PATH; ?>Home/Admin/ajax_order_data.html" data-name="quantity" data-max_width="50" data-data_num="3" data-key1="order_id" data-val1="{$order.id}" data-key2="good_id" data-val2="{$good.id}" data-key3="database" data-val3="order_goods">
+                                        {$good.quantity}
+                                    </td>
                                     <td>{$good.unit_value}</td>
                                     <td>{$good.state}</td>
+                                    <td class="text-center"><a href="" onclick="order_remove_good($(this)); return false;" data-order_id="{$order.id}" data-good_id="{$good.id}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
                                 </tr>
                             <?php } ?>
+                            <!-- 添加新商品 -->
+                            <tr id="add_new_good" data-order_id="{$order.id}">
+                                <td>
+                                    <label for="code" class="sr-only"></label>
+                                    <input type="text" id="code" onchange="get_good_info($(this));" placeholder="先填条形码">
+                                </td>
+                                <td>
+                                    <label for="name_cn" class="sr-only"></label>
+                                    <input type="text" id="name_cn" readonly>
+                                </td>
+                                <td>
+                                    <label for="name_en" class="sr-only"></label>
+                                    <input type="text" id="name_en" readonly>
+                                </td>
+                                <td>
+                                    <label for="brand" class="sr-only"></label>
+                                    <input type="text" id="brand" readonly>
+                                </td>
+                                <td>
+                                    <label for="spec" class="sr-only"></label>
+                                    <input type="text" id="spec" readonly>
+                                </td>
+                                <td>
+                                    <label for="quantity" class="sr-only"></label>
+                                    <input type="number" id="quantity" value="1">
+                                </td>
+                                <td>
+                                    <label for="unit_value" class="sr-only"></label>
+                                    <input type="text" id="unit_value" readonly>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-default btn-xs" onclick="order_add_good(); return false;">添加</button>
+                                </td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </form>
@@ -169,17 +210,86 @@
     <script src="<?php echo ROOT_PATH; ?>App/Home/View/Default/Admin/js/admin_main.js"></script>
 
     <script>
-        // 转到产品详情页
-        function good_detail($id) {
-            //window.location = "";
-        }
-
         // 修改数据后加入name属性
         $(".update").on("change", function() {
             var tar = $(this);
             var name = tar.data("name");
             tar.attr("name", name);
         });
+
+        // 删除商品
+        function order_remove_good(e) {
+            if (confirm("确定删除？")) {
+                var url = "<?php echo ROOT_PATH; ?>Home/Admin/ajax_delete_order_good.html";
+                var data = {'order_id': e.data('order_id'), 'good_id': e.data('good_id')};
+                $.post(url, data, function(result) {
+                    if (result['result'] == 'success') {
+                        e.parent().parent().remove();
+                    }
+                });
+            }
+        }
+
+        // 添加商品
+        function order_add_good(e) {
+            if (confirm("确定添加？")) {
+                var tar = $("#add_new_good");
+                var url = "<?php echo ROOT_PATH; ?>Home/Admin/ajax_add_order_good.html";
+                var data = {'order_id':tar.data('order_id'), 'quantity':tar.find('#quantity').val()};
+                if (tar.data('good_id')) {
+                    data['good_id'] = tar.data('good_id');
+                } else {
+                    data['code'] = tar.find('#code').val();
+                    data['name_cn'] = tar.find('#name_cn').val();
+                    data['name_en'] = tar.find('#name_en').val();
+                    data['brand'] = tar.find('#brand').val();
+                    data['spec'] = tar.find('#spec').val();
+                    data['unit_value'] = tar.find('#unit_value').val();
+                }
+                $.post(url, data, function (result) {
+                    if (result['result'] == 'success') {
+                        location.reload();
+                    }
+                });
+            }
+        }
+
+        // 根据条形码获取商品信息
+        function get_good_info(e) {
+            var code = e.val();
+            if (code.length > 0) {
+                var url = "<?php echo ROOT_PATH;?>Home/Order/ajax_good_data/code/" + code + ".html";
+                $.get(url, function (data) {
+                    if (data != null) {
+                        $('#add_new_good').data('good_id', data['id']);
+                        e = e.parent().parent();
+                        tar = e.find("#brand");
+                        tar.val(data['brand']).attr('readonly', 'readonly');
+                        tar = e.find("#name_en");
+                        tar.val(data['name_en']).attr('readonly', 'readonly');
+                        tar = e.find("#name_cn");
+                        tar.val(data['name_cn']).attr('readonly', 'readonly')
+                        tar = e.find("#spec");
+                        tar.val(data['spec']).attr('readonly', 'readonly');
+                        tar = e.find("#unit_value");
+                        tar.val(data['unit_value']).attr('readonly', 'readonly');
+                    } else {
+                        $('#add_new_good').removeData('good_id');
+                        e = e.parent().parent();
+                        tar = e.find("#brand");
+                        tar.val('').removeAttr('readonly');
+                        tar = e.find("#name_en");
+                        tar.val('').removeAttr('readonly');
+                        tar = e.find("#name_cn");
+                        tar.val('').removeAttr('readonly');
+                        tar = e.find("#spec");
+                        tar.val('').removeAttr('readonly');
+                        tar = e.find("#unit_value");
+                        tar.val('').removeAttr('readonly');
+                    }
+                });
+            }
+        }
     </script>
 </body>
 </html>

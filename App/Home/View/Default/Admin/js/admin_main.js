@@ -59,6 +59,7 @@ function editable_ajax(e) {
     e.after("处理中...");
 
     var post_data = {};
+    post_data['update_key'] = e.attr('name'); // 要更新的键名
     post_data[e.attr('name')] = e.val();
     var data_num = e.data("data_num");
     for(var i=1; i <= data_num; i++) {
@@ -67,6 +68,8 @@ function editable_ajax(e) {
     $.post(e.data('url'), post_data, function(result) {
         if (result['result']) {
             $('#editing').html(result[e.attr('name')]).data('editing', false).removeAttr('id');
+        } else {
+            $('#editing').html('Error').data('editing', false).removeAttr('id');
         }
     });
 }
