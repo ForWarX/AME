@@ -168,8 +168,6 @@ class AdminController extends Controller {
                         $goods_id = implode(",", $goods_id);
                         $model = M("goods_record");
                         $goods = $model->where(array("id" => array("in", $goods_id)))->order("id")->select();
-                        nice_print($goods_list);
-                        nice_print($goods);
                         // 设置数量（备案信息里默认1）
                         foreach ($goods_list as $val) {
                             foreach($goods as $k => $v) {
