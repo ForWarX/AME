@@ -2,6 +2,15 @@
 <html>
 <head>
     <?php include("App/Home/View/Default/common/admin_head.html"); ?>
+
+    <script src="<?php echo ROOT_PATH; ?>Public/bootstrap/js/jquery-migrate-1.1.0.js"></script><!--jqprint不兼容高版本jquery，这是迁移辅助插件-->
+    <script src="<?php echo ROOT_PATH; ?>Public/bootstrap/js/jquery.jqprint.js"></script>
+
+    <style>
+        #print_area {
+            display: none;
+        }
+    </style>
 </head>
 <body data-auth="<?php echo $AUTH ? 'true' : 'false'; ?>" data-login="{$auth_url}">
     <!-- 推送选择公司模态框 -->
@@ -193,6 +202,8 @@
                                 <td class="state_detail">{$order.state_detail}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Order/order_test/id/{$order.id}.html" role="button">查看</a>
+                                    <a class="btn btn-default btn-xs" href="" role="button" onclick="printer('print_area', $(this)); return false;" data-ame_no="{$order.ame_no}" data-receiver="{$order.r_name}"
+                                       data-addr="{$order.r_address} {$order.r_city} {$order.r_province} {$order.r_country}" data-order_id="{$order.id}">打印小单</a>
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'cancel' || $order['state'] == 'delivery') { ?>
                                         <a class="btn btn-default btn-xs" href="<?php echo ROOT_PATH; ?>Home/Admin/order_detail/id/{$order.id}.html" role="button">修改</a>
                                     <?php } ?>
@@ -223,6 +234,14 @@
                 {$page}
             </div>
         </div>
+        <!-- 打印订单小票 -->
+        <div id="print_area" style="width: 500px; border: 1px solid #000; padding-left: 15px;">
+            <h3 id="ticket_ame_no"></h3>
+            <p id="ticket_receiver"></p>
+            <p id="ticket_addr"></p>
+            <p>商品：</p>
+            <ul id="ticket_goods" style="list-style: none;"></ul>
+        </div>
     </div>
 
     <!-- 页面控制器 -->
@@ -239,6 +258,30 @@
         };
     </script>
     <script>
+        // 打印
+        function printer(id, tar) {
+            var url = "<?php echo ROOT_PATH; ?>Home/Admin/ajax_get_order_goods.html";
+            $.post(url, {"order_id":tar.data("order_id")}, function(result) {
+                if (result['result'] == 'success') {
+                    var area = $("#print_area");
+                    area.find("#ticket_ame_no").html(tar.data("ame_no"));
+                    area.find("#ticket_receiver").html("收件人：" + tar.data("receiver"));
+                    area.find("#ticket_addr").html("收件地址：" + tar.data("addr"));
+                    var ul = area.find("#ticket_goods");
+                    ul.html("");
+                    $.each(result['data'], function(key, val) {
+                        ul.append("<li>" + val['name_en'] + " X " + val['quantity'] + "</li>");
+                    });
+
+                    $("#" + id).jqprint({
+                        importCSS: false
+                    });
+                } else {
+                    alert("Error：获取商品数据失败");
+                }
+            });
+        }
+
         // 推送订单
         function push_order(id) {
             $("#ModalPick").data("id", id).modal({keyboard:false});

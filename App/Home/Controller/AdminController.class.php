@@ -102,6 +102,7 @@ class AdminController extends Controller {
                 $orders[$key]['state_detail'] = self::$state_details[$val['state']];                  // 订单状态
                 $orders[$key]['weight'] = kg2lb($val['weight']);                                      // 重量
                 $orders[$key]['track_company'] = self::$track_company_name[$val['track_company']];    // 快递公司
+                $this->handle_country_code($orders[$key]);                                            // 国家
             }
 
             // 获取商品数及备案数
@@ -1144,6 +1145,27 @@ class AdminController extends Controller {
         $this->display("empty");
     }
 
+    // ajax获取订单的商品信息
+    public function ajax_get_order_goods() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $id = I("order_id");
+                $result['result'] = 'fail';
+                if (!empty($id) && $id > 0) {
+                    $model = M("order_goods");
+                    $data = $model->join("LEFT JOIN ame_goods_record ON ame_order_goods.good_id=ame_goods_record.id")
+                        ->field("ame_order_goods.*, ame_goods_record.code, ame_goods_record.brand, ame_goods_record.name_cn, ame_goods_record.name_en, ame_goods_record.spec")
+                        ->where("order_id='%d'", $id)->select();
+                    $result['result'] = 'success';
+                    $result['data'] = $data;
+                }
+                $this->ajaxReturn($result);
+            }
+        }
+
+        $this->display("empty");
+    }
+
     /*************************************
      * 辅助函数
      *************************************/
@@ -1226,6 +1248,12 @@ class AdminController extends Controller {
         return 0;
     }
 
+    // 国家代码转成国家名
+    private function handle_country_code(&$order) {
+        $order['s_country'] = self::$countries[$order['s_country']];
+        $order['r_country'] = self::$countries[$order['r_country']];
+    }
+
     /**************************************
      * 成员数据
      **************************************/
@@ -1276,5 +1304,13 @@ class AdminController extends Controller {
         "EMS"     => "EMS",
         "XGYD"    => "香港邮递",
         "OTHER"   => "其它",
+    );
+
+    // 国家
+    private static $countries = array(
+        "US" => "America/美國",
+        "CA" => "Canada/加拿大",
+        "CN" => "China/中國",
+        "TW" => "Taiwan/台灣",
     );
 }
