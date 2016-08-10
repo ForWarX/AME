@@ -277,11 +277,7 @@
                         ul.append("<li>" + val['name_en'] + " X " + val['quantity'] + "</li>");
                     });
 
-
-
-                    $("#" + id).jqprint({
-                        importCSS: false
-                    });
+                    $("#" + id).jqprint();
                 } else {
                     alert("Error：获取商品数据失败");
                 }
