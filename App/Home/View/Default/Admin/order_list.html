@@ -236,7 +236,10 @@
         </div>
         <!-- 打印订单小票 -->
         <div id="print_area" style="width: 500px; border: 1px solid #000; padding-left: 15px;">
-            <h3 id="ticket_ame_no"></h3>
+            <h3 id="ticket_ame_no" style="width: 40%; display: inline-block;"></h3>
+            <h3 id="ticket_barcode" style="width: 55%; display: inline-block;">
+                <img src="" style="width: 100%;">
+            </h3>
             <p id="ticket_receiver"></p>
             <p id="ticket_addr"></p>
             <p>商品：</p>
@@ -265,6 +268,7 @@
                 if (result['result'] == 'success') {
                     var area = $("#print_area");
                     area.find("#ticket_ame_no").html(tar.data("ame_no"));
+                    area.find("#ticket_barcode").find("img").attr("src", "<?php echo ROOT_PATH; ?>Home/BarCode/create/code/" + tar.data("ame_no") + "/text/" + tar.data("ame_no") + ".html");
                     area.find("#ticket_receiver").html("收件人：" + tar.data("receiver"));
                     area.find("#ticket_addr").html("收件地址：" + tar.data("addr"));
                     var ul = area.find("#ticket_goods");
@@ -272,6 +276,8 @@
                     $.each(result['data'], function(key, val) {
                         ul.append("<li>" + val['name_en'] + " X " + val['quantity'] + "</li>");
                     });
+
+
 
                     $("#" + id).jqprint({
                         importCSS: false
