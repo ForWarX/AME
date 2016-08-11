@@ -293,6 +293,8 @@ class OrderController extends Controller {
     // ================================================================================================
 
     // 生成AME订单号
+    // 每天刷新，即从001开始
+    /*
     public static function create_ame_no() {
         $date = explode('-', date("m-d-Y"));
         $month = intval($date[0]);
@@ -308,6 +310,26 @@ class OrderController extends Controller {
             $ame_no = $prefix . "0001";
         } else {
             $no = intval(substr($last_no, strlen($prefix))) + 1;
+            $ame_no = $prefix . sprintf("%04u", $no);
+        }
+
+        return $ame_no;
+    }*/
+
+    // 生成AME订单号
+    // 不刷新，到9999之后返回0001
+    public static function create_ame_no() {
+        $date = explode('-', date("m-d-Y"));
+
+        $model = M("order");
+        $last_no = $model->order('id desc')->limit(1)->getField('ame_no'); // 获取最后一个单号
+
+        $prefix = "AME" . substr($date[2], 2) . $date[0] . $date[1];
+        if (empty($last_no)) {
+            $ame_no = $prefix . "0001";
+        } else {
+            $no = intval(substr($last_no, strlen($prefix)));
+            $no = $no < 9999 ? $no+1 : 1;
             $ame_no = $prefix . sprintf("%04u", $no);
         }
 
