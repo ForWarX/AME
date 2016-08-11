@@ -1,5 +1,6 @@
 .order_print_field {
     padding-left: 4px;
+    min-width: 135px;
 }
 .order_print_data {
     padding-left: 4px;
@@ -11,7 +12,7 @@
 .sender, .receiver {
     font-size: medium;
     margin-top: 20px;
-    width: 49%;
+    width: 49.9%;
     line-height: 35px;
 }
 .sender {
@@ -19,5 +20,5 @@
 }
 .receiver {
     border-right: 0;
-    margin-left: 2%;
+    margin-left: 0.3%;
 }
