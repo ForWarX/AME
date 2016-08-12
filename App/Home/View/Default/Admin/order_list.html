@@ -274,7 +274,7 @@
                     var ul = area.find("#ticket_goods");
                     ul.html("");
                     $.each(result['data'], function(key, val) {
-                        ul.append("<li>" + val['name_en'] + " X " + val['quantity'] + "</li>");
+                        ul.append("<li>" + val['brand'] + ' ' + val['name_cn'] + '/' + val['name_en'] + " X " + val['quantity'] + "</li>");
                     });
 
                     $("#" + id).jqprint();
