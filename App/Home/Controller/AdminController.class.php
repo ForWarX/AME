@@ -50,7 +50,9 @@ class AdminController extends Controller {
     public function order_list() {
         if ($this->auth_check()) {
             // 查询条件：id/ame_no
-            $where = "state!='delete'";
+            $state = I("state");
+            $where = $state == null ? "state!='delete'" : "state='".$state."'";
+            if ($state) $this->assign("state", $state);
             // 之前的条件
             $pre_conds = I("pre_conds");
             if (is_string($pre_conds) && !empty($pre_conds)) {
