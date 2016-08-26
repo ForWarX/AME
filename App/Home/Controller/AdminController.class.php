@@ -73,6 +73,7 @@ class AdminController extends Controller {
                 $where .= " OR r_name LIKE '%" . $val . "%'";
                 $where .= " OR s_phone LIKE '%" . $val . "%'";
                 $where .= " OR r_phone LIKE '%" . $val . "%'";
+                $where .= " OR track_no LIKE '%" . $val . "%'";
                 $where .= ")";
             }
 
