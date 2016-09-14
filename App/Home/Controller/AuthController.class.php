@@ -8,7 +8,7 @@ use Think\Controller;
 
 class AuthController extends Controller {
     private static $m_usr = "ameadmin";
-    private static $m_pwd = "Wingon123@";
+    private static $m_pwd = "Pbcc2015@";
 
     // 管理员登录，成功返回true，失败返回false
     public function admin_login($usr=null, $pwd=null) {
