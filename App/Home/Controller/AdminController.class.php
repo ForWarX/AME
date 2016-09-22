@@ -50,9 +50,14 @@ class AdminController extends Controller {
     public function order_list() {
         if ($this->auth_check()) {
             // 查询条件：id/ame_no
-            $state = I("state");
+            $state = I("state"); // 订单状态
             $where = $state == null ? "state!='delete'" : "state='".$state."'";
             if ($state) $this->assign("state", $state);
+            $remarked = I("remarked"); // 是否有备注
+            if ($remarked) {
+                $where .= " AND remark<>''";
+                $this->assign("remarked", $remarked);
+            }
             // 之前的条件
             $pre_conds = I("pre_conds");
             if (is_string($pre_conds) && !empty($pre_conds)) {
@@ -986,7 +991,7 @@ class AdminController extends Controller {
         $this->display("empty");
     }
 
-    // 保存海丝路
+    // 推送给其它公司
     public function push_to_other() {
         if ($this->auth_check()) {
             $data['id'] = I('order_id');
@@ -1162,6 +1167,43 @@ class AdminController extends Controller {
                     $result['result'] = 'success';
                     $result['data'] = $data;
                 }
+                $this->ajaxReturn($result);
+            }
+        }
+
+        $this->display("empty");
+    }
+
+    // ajax订单备注查看/更改
+    public function ajax_order_remark() {
+        if ($this->auth_check()) {
+            if (IS_AJAX) {
+                $id = I("id");
+                if (!empty($id)) {
+                    $model = M("order");
+                    $doUpdate = I("doUpdate");
+                    if ($doUpdate) {
+                        // 更新
+                        $data['id'] = $id;
+                        $data['remark'] = I("remark");
+                        if ($model->save($data)) {
+                            $result['state'] = 'success';
+                            $result['remark'] = $data['remark'];
+                        } else {
+                            $result['state'] = 'fail';
+                            $result['msg'] = '更新失败';
+                        }
+                    } else {
+                        // 查看
+                        $data = $model->where('id="%d"', $id)->find();
+                        $result['state'] = 'success';
+                        $result['remark'] = $data['remark'];
+                    }
+                } else {
+                    $result['state'] = 'error';
+                    $result['msg'] = '缺少ID';
+                }
+
                 $this->ajaxReturn($result);
             }
         }

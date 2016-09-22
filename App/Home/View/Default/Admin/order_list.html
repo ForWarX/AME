@@ -117,6 +117,33 @@
             </div>
         </div>
     </div><!-- 模态框结束 -->
+    <!-- 备注模态框 -->
+    <div class="modal fade" id="ModalRemark" tabindex="-1" role="dialog" aria-labelledby="ModalRemarkLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="ModalRemarkLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <form action="" method="post" onsubmit="remark($(this)); return false;" data-order_id="0">
+                                    <div class="form-group">
+                                        <label for="order-remark">备注</label>
+                                        <textarea class="form-control" id="order-remark"></textarea>
+                                        <input type="hidden" id="remark-old">
+                                    </div>
+                                    <button type="submit" class="btn btn-default btn-sm">保存</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- 模态框结束 -->
 
     <div class="container-fluid container-top-margin">
         <div class="row">
@@ -138,6 +165,9 @@
                     <?php } ?>
                     <?php if ($state) { ?>
                         <input type="hidden" name="state" value="{$state}">
+                    <?php } ?>
+                    <?php if ($remarked) { ?>
+                    <input type="hidden" name="remarked" value="{$remarked}">
                     <?php } ?>
                 </form>
             </div>
@@ -225,6 +255,7 @@
                                     <?php if ($order['state'] == 'pending' || $order['state'] == 'empty') { ?>
                                         <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_state($(this), 'delete'); return false;" data-id="{$order.id}">删除</a>
                                     <?php } ?>
+                                    <a class="btn btn-default btn-xs" href="#" role="button" onclick="order_remark($(this)); return false;" data-id="{$order.id}" data-ame_no="{$order.ame_no}" <?php if ($order['remark']) { ?>style="background-color: yellowgreen;"<?php } ?>>备注</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -460,6 +491,51 @@
                 $.post(url, {id:id}, function(res) {
                     if (res['result'] == 'success') {
                         e.parent().remove();
+                    }
+                });
+            }
+        }
+
+        // 查看备注
+        function order_remark(e) {
+            var id = e.data("id");
+            var ame_no = e.data("ame_no");
+            var modal = $("#ModalRemark");
+            modal.find("form").data("order_id", id);
+            modal.find("#ModalRemarkLabel").html(ame_no);
+            modal.modal({keyboard:false});
+
+            var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_order_remark.html";
+            var data = {id:id};
+            var textarea = modal.find("#order-remark");
+            textarea.val("loading");
+            $.post(url, data, function(res){
+                textarea.val("");
+                if (res['state'] == 'success') {
+                    textarea.val(res['remark']);
+                    modal.find("#remark-old").val(res['remark']);
+                } else {
+                    console.log(res);
+                }
+            });
+        }
+
+        // 更新备注
+        function remark(e) {
+            var id = e.data("order_id");
+            var textarea = e.find("#order-remark");
+            var old_remark = e.find("#remark-old");
+            var content = textarea.val();
+
+            if (old_remark.val() != content) {
+                var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_order_remark.html";
+                var data = {id: id, remark: content, doUpdate: true};
+                textarea.val("updating");
+                $.post(url, data, function (res) {
+                    textarea.val("");
+                    if (res['state'] == 'success') {
+                        textarea.val(res['remark']);
+                        old_remark.val(res['remark']);
                     }
                 });
             }
