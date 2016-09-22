@@ -1184,14 +1184,13 @@ class AdminController extends Controller {
                     $doUpdate = I("doUpdate");
                     if ($doUpdate) {
                         // 更新
-                        $data['id'] = $id;
-                        $data['remark'] = I("remark");
-                        if ($model->save($data)) {
+                        $data['remark'] = ''. I("remark");
+                        if ($model->where('id="%d"', $id)->save($data)) {
                             $result['state'] = 'success';
                             $result['remark'] = $data['remark'];
                         } else {
                             $result['state'] = 'fail';
-                            $result['msg'] = '更新失败';
+                            $result['msg'] = '保存失败';
                         }
                     } else {
                         // 查看

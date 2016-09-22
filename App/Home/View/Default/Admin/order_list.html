@@ -509,13 +509,11 @@
             var data = {id:id};
             var textarea = modal.find("#order-remark");
             textarea.val("loading");
-            $.post(url, data, function(res){
+            $.post(url, data, function(res) {
                 textarea.val("");
                 if (res['state'] == 'success') {
                     textarea.val(res['remark']);
                     modal.find("#remark-old").val(res['remark']);
-                } else {
-                    console.log(res);
                 }
             });
         }
@@ -531,11 +529,13 @@
                 var url = "<?php echo ROOT_PATH;?>Home/Admin/ajax_order_remark.html";
                 var data = {id: id, remark: content, doUpdate: true};
                 textarea.val("updating");
-                $.post(url, data, function (res) {
+                $.post(url, data, function(res) {
                     textarea.val("");
                     if (res['state'] == 'success') {
                         textarea.val(res['remark']);
                         old_remark.val(res['remark']);
+                    } else {
+                        textarea.val(res['msg']);
                     }
                 });
             }
