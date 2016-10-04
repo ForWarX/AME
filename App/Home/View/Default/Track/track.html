@@ -13,20 +13,26 @@
                 <h1>查询结果</h1>
                 <h3>快递单号：{$order_info.ame_no}</h3>
                 <h3>日期：{$order_info.date}</h3>
-                <?php if ($track_result_ws) { ?>
-                    <h3>状态：</h3>
-                    <ul>
-                        <?php foreach($track_result_ws['rtnList'] as $track_info) { ?>
-                            <li>{$track_info.Remark}</li>
-                        <?php } ?>
-                    </ul>
+                <?php if ($order_info['track_company'] == 'HSL') { ?>
+                    <h4>请前往<a href="http://www.kuaidi100.com/" target="_blank">快递100(www.kuaidi100.com)</a>查询包裹信息，您包裹的单号为{$order_info.track_no}</h4>
+                <?php } elseif ($order_info['track_company'] == 'EMS') { ?>
+                    <h4>请前往<a href="http://www.kuaidi100.com/" target="_blank">快递100(www.kuaidi100.com)</a>查询包裹信息，您包裹的单号为{$order_info.track_no}</h4>
                 <?php } else { ?>
-                    <h3>状态：{$order_info.state}</h3>
-                    <ul>
-                        <?php foreach($track_result as $track_info) { ?>
-                            <li>{$track_info.history}</li>
-                        <?php } ?>
-                    </ul>
+                    <?php if ($track_result_ws) { ?>
+                        <h3>状态：</h3>
+                        <ul>
+                            <?php foreach($track_result_ws['rtnList'] as $track_info) { ?>
+                                <li>{$track_info.Remark}</li>
+                            <?php } ?>
+                        </ul>
+                    <?php } else { ?>
+                        <h3>状态：{$order_info.state}</h3>
+                        <ul>
+                            <?php foreach($track_result as $track_info) { ?>
+                                <li>{$track_info.history}</li>
+                            <?php } ?>
+                        </ul>
+                    <?php } ?>
                 <?php } ?>
             </div>
         </div>
