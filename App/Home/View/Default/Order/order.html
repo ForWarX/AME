@@ -265,6 +265,19 @@
                         </div>
                     </div><!-- 产品清单结束 -->
 
+                    <!-- 总重量（lb） -->
+                    <div class="row">
+                        <div class="col-sm-4 col-sm-offset-8">
+                            <div class="form-group">
+                                <label for="total_weight" class="col-sm-6 control-label" id="total_weight_label">总重量(lb/磅)</label>
+                                <div class="col-sm-6">
+                                    <!-- 小数点后最多3位 -->
+                                    <input type="text" class="form-control" id="total_weight" name="total_weight" value="{$post.total_weight}" onblur="$(this).val(parseFloat($(this).val()).toFixed(3));">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-sm-12 text-center">
                         <button type="submit" class="btn btn-primary btn-lg">Submit / 提交</button>
                     </div>
@@ -365,6 +378,13 @@
             if (doSubmit && code_list.length == 0) {
                 doSubmit = false;
                 alert("No goods info / 無產品信息");
+            }
+
+            // 如果填写了重量，检查重量
+            $weight = $("#total_weight").val();
+            if ($weight != "" && $weight == "NaN") {
+                doSubmit = false;
+                alert("Weight is incorrect / 總重量不正確");
             }
 
             return doSubmit;

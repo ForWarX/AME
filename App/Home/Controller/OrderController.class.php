@@ -64,6 +64,11 @@ class OrderController extends Controller {
                 $noError = false;
                 $this->assign("order_error", "No goods info / 無產品信息");
             }
+            // 如果填写了总重量，则检查重量是否为小数
+            if (!is_numeric($data['total_weight'])) {
+                $noError = false;
+                $this->assign("order_error", "Weight is incorrect / 總重量不正確");
+            }
             /* 检验订单完整性结束 */
 
             if (!$noError) {
@@ -120,6 +125,7 @@ class OrderController extends Controller {
                 $order['date'] = time();
                 $order['state'] = 'pending';
                 $order['ame_no'] = $this->create_ame_no(); // 生成订单号
+                $order['weight'] = lb2kg((double)($data['total_weight']), 0); // 包裹总重
                 /* 整理数据结束 */
 
                 // 保存订单
@@ -187,6 +193,7 @@ class OrderController extends Controller {
             if (!empty($order)) {
                 $order['date'] = date("m/d/Y", $order['date']); // 处理日期
                 $this->handle_country_code($order); // 处理国家代码
+                $order['weight'] = kg2lb($order['weight'], 3); // 处理包裹总重
                 // 简体转繁体
                 // 暂且不转
                 /*
@@ -231,6 +238,7 @@ class OrderController extends Controller {
     }
 
     // 测试储存的订单，跳转到订单完成页
+    // 例：域名/路径/order_test/id/1.html即自动转至id为1的订单打印页（order_done）
     public function order_test($id=0) {
         session("order_done_id", $id);
         redirect('../../order_done.html');

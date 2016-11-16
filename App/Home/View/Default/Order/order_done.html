@@ -160,6 +160,7 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <td></td>
                                             </tr>
                                         <?php } ?>
                                     <?php } ?>
@@ -174,7 +175,15 @@
                                 <br>
                                 <span>寄件人簽名</span>
                             </div>
-                            <div style="width: 40%; border-bottom: 1px solid #000; display: inline-block; float: right;">
+                            <!-- float: right：最上面的放在最右，所以数据在前，字段名在后，显示出来的顺序才是对的 -->
+                            <?php if ($order['weight'] != 0) { ?>
+                                <div style="width: 20%; border-bottom: 1px solid #000; display: inline-block; float: right;">
+                                    <span><!--占格子--></span>
+                                    <br>
+                                    <span>{$order.weight}</span>
+                                </div>
+                            <?php } ?>
+                            <div style="border-bottom: 1px solid #000; display: inline-block; float: right; width: <?php if ($order['weight'] != 0) { ?>20%<?php } else {?>40%<?php } ?>; ">
                                 <span>Weight / lbs</span>
                                 <br>
                                 <span>重量 / 磅</span>
