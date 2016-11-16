@@ -59,11 +59,14 @@ class AdminController extends Controller {
                 $this->assign("remarked", $remarked);
             }
             // 之前的条件
+            // 改为每次查询都是新条件，不再在之前查询条件的基础上查询
+            /*
             $pre_conds = I("pre_conds");
             if (is_string($pre_conds) && !empty($pre_conds)) {
                 $pre_conds = explode(",", $pre_conds);
-            }
+            }*/
             // 新的条件
+            $pre_conds = array(); // 若要在之前的查询基础上查询，去掉这一行
             $cond = I("condition");
             if (!empty($cond)) {
                 if (!is_array($pre_conds)) $pre_conds = array();
@@ -82,7 +85,8 @@ class AdminController extends Controller {
                 $where .= ")";
             }
 
-            if (!empty($pre_conds)) $this->assign("pre_conds", $pre_conds); // 查询条件传入页面
+            // 现已无需之前的查询条件，不再传给页面
+            //if (!empty($pre_conds)) $this->assign("pre_conds", $pre_conds); // 查询条件传入页面
 
             $model = M('order');
             $count = $model->where($where)->count(); // 记录总数
