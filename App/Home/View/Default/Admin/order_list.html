@@ -161,7 +161,8 @@
 
                     <button class="btn btn-default btn-sm" type="submit">搜索</button>
                     <?php if ($pre_conds) { ?>
-                        <button class="btn btn-default btn-sm" onclick="$(this).parent().find('.pre_conds').remove(); $(this).remove(); return false;">去除之前的查询条件</button>
+                        <!-- 在之前查询基础上查询 -->
+                        <!--<button class="btn btn-default btn-sm" onclick="$(this).parent().find('.pre_conds').remove(); $(this).remove(); return false;">去除之前的查询条件</button>-->
                     <?php } ?>
                     <?php if ($state) { ?>
                         <input type="hidden" name="state" value="{$state}">
