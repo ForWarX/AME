@@ -1347,6 +1347,7 @@ class AdminController extends Controller {
         "YT"      => "圆通",
         "EMS"     => "EMS",
         "XGYD"    => "香港邮递",
+        "UEQ"     => "UEQ",
         "OTHER"   => "其它",
     );
 
