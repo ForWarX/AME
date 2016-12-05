@@ -14,9 +14,7 @@
                 <h3>快递单号：{$order_info.ame_no}</h3>
                 <h3>日期：{$order_info.date}</h3>
                 <?php if (strpos($order_info['track_no'], '申报') === false) { ?>
-                    <?php if ($order_info['track_company'] == 'HSL') { ?>
-                        <h4>请前往<a href="http://www.kuaidi100.com/" target="_blank">快递100(www.kuaidi100.com)</a>查询包裹信息，您包裹的单号为{$order_info.track_no}</h4>
-                    <?php } elseif ($order_info['track_company'] == 'XGYD') { ?>
+                    <?php if ($order_info['track_company'] == 'HSL' || $order_info['track_company'] == 'XGYD' || $order_info['track_company'] == 'UEQ') { ?>
                         <h4>请前往<a href="http://www.kuaidi100.com/" target="_blank">快递100(www.kuaidi100.com)</a>查询包裹信息，您包裹的单号为{$order_info.track_no}</h4>
                     <?php } else { ?>
                         <?php if ($track_result_ws) { ?>
